@@ -33,11 +33,7 @@ export default function Features() {
     }
   ];
 
-  const stats = [
-    { value: "99.9%", label: "Translation Accuracy" },
-    { value: "50+", label: "Special Characters Supported" },
-    { value: "0.5s", label: "Average Translation Time" }
-  ];
+  
 
   return (
     <section id="features" className="py-20 bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-28 font-lexend shadow-lg h-fit flex flex-col">
