@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 export function Navbar() {
   return (
-    <header className="flex h-20 bg-white items-center justify-between px-6 ">
+    <header className="flex h-20 bg-white w-[98%] mx-auto items-center justify-between md:px-20 px-4 font-lexend">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
         <Image src="/chip.png" width={50} height={50} alt="Morse Code" />
@@ -33,7 +33,8 @@ export function Navbar() {
 
       {/* Actions */}
       <div className="flex items-center gap-2">
-        <Button className="bg-[#3D3939] text-white hover:bg-[#2D2D2D] rounded-md px-4 py-2">Get Started</Button>
+        <Button className="hover:bg-[#1e534e] text-white bg-[#456359] rounded-md px-4 py-2">Get Started</Button>
+        <Button className="hover:bg-[#1e534e] lg:flex hidden text-white bg-[#456359] rounded-md px-4 py-2">Visit Store </Button>
 
       </div>
     </header>

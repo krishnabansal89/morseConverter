@@ -170,7 +170,7 @@ export default function MorseConverter() {
 
   return (
     <div className="  flex  flex-col font-lexend rounded-4xl text-[#372824]">
-      <div className="p-2 w-full mx-auto my-8  rounded-lg  overflow-hidden">
+      <div className="p-2 w-[100%] mx-auto my-8  rounded-lg  overflow-hidden">
         
 
         <div className="grid md:grid-cols-2">
