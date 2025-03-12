@@ -34,7 +34,6 @@ export function Navbar() {
       {/* Actions */}
       <div className="flex items-center gap-2">
         <Button className="hover:bg-[#1e534e] text-white bg-[#456359] rounded-md px-4 py-2">Get Started</Button>
-        <Button className="hover:bg-[#1e534e] lg:flex hidden text-white bg-[#456359] rounded-md px-4 py-2">Visit Store </Button>
 
       </div>
     </header>

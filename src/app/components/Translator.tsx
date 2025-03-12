@@ -170,7 +170,7 @@ export default function MorseConverter() {
 
   return (
     <div className="  flex  flex-col font-lexend rounded-4xl text-[#372824]">
-      <div className="p-2 w-[100%] mx-auto my-8  rounded-lg  overflow-hidden">
+      <div className="border border-gray-200 w-[100%] mx-auto   rounded-lg  overflow-hidden">
         
 
         <div className="grid md:grid-cols-2">
@@ -201,7 +201,7 @@ export default function MorseConverter() {
               <Button onClick={handleClear} variant="ghost" size="sm" className="text-[#372824] hover:text-black">
                 <Trash2 className="h-5 w-5" />
               </Button>
-              <Button onClick={() => {}} variant="outline" className="rounded-md px-6 text-white bg-[#456359]">
+              <Button onClick={() => {}} variant="outline" className="rounded-md px-6 text-[#2d2d2d] bg-[#ffffff] border border-[#456359]/20 hover:bg-[#456359]/10 transition-all ">
                 Submit
               </Button>
             </div>
