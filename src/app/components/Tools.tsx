@@ -12,7 +12,7 @@ interface FeatureCardProps {
 function FeatureCard({ type, title, description, href, bgColor }: FeatureCardProps) {
 
     return (
-        <div className={`rounded-3xl p-8  bg-[${bgColor}]  h-full`}>
+        <div className={`rounded-3xl p-8  ${bgColor}  h-full`}>
             <div className="flex flex-col h-full">
                 <div className="mb-6">
                     <span className="inline-block px-3 py-1 text-sm font-medium bg-white rounded-full">{type}</span>
@@ -39,35 +39,35 @@ export default function Features() {
             title: "Morse Code Translator",
             description: "Translate English to Morse Code and back with precision.",
             href: "/morse-code-translator",
-            bgColor: "#85ad85"
+            bgColor: "bg-[#85ad85]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "#99ad85"
+            bgColor: "bg-[#99ad85]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "#adad85"
+            bgColor: "bg-[#adad85]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "#99ad85"
+            bgColor: "bg-[#99ad85]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "#85ad85"
+            bgColor: "bg-[#85ad85]"
         },
     ]
 
