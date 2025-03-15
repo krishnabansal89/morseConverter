@@ -15,8 +15,8 @@ export default function Hero() {
 
                     <div className="my-4">
                         <button>
-                            <a href="#converter" className="bg-[#456359] mr-6 text-white p-4 rounded-lg font-lexend hover:bg-[#324740]">Get Started</a>
-                            <a href="#converter" className="bg-[#456359] text-white p-4 rounded-lg font-lexend hover:bg-[#324740]">Visit Store</a>
+                            <a href="#converter" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-lexend hover:bg-[#324740]">Get Started</a>
+                            <a href="#converter" className="bg-[#456359] text-white px-4 py-2 rounded-lg font-lexend hover:bg-[#324740]">Visit Store</a>
 
                         </button>
                         
