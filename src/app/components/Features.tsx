@@ -18,7 +18,7 @@ export default function Benefits() {
 
       <div className="w-full h-fit my-20 justify-center  items-start">
         <div className="flex justify-center items-center ">
-          <h1 className="md:text-4xl/snug text-3xl/snug font-medium text-[#2d2d2d]  tracking-tight md:px-10 font-[lexend]">Why Choose Our Morse Code Translator?
+          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 font-[lexend]">Why Choose Our Morse Code Translator?
           </h1>
         </div>
 
@@ -32,16 +32,16 @@ export default function Benefits() {
               <FeatureBlock title="Instant & Accurate Conversion" description="Easily translate English to Morse Code and back with precision." />
             </div>
 
-            <div className="flex-col flex  bg-white text-[#2d2d2d] rounded-2xl ">
+            <div className="flex-col flex  bg-[#f5f5f5] text-[#2d2d2d] rounded-2xl ">
               <FeatureBlock title="Simple & Intuitive Interface" description="No technical knowledge required—just enter text and translate instantly." />
             </div>
           </div>
-          <div className="grid sm:grid-cols-[40%_60%] grid-cols-1 sm:space-x-4 space-y-4 sm:space-y-0">
-            <div className="flex justify-center items-center bg-white text-[#2d2d2d] rounded-2xl">
+          <div className="sm:grid sm:grid-cols-[40%_60%] flex flex-col-reverse sm:space-x-4 space-y-4 sm:space-y-0">
+            <div className="flex justify-center items-center bg-[#f5f5f5] text-[#2d2d2d] rounded-2xl">
               <FeatureBlock title="Supports All Morse Code Variants" description="Includes international Morse code standards for accuracy."  />
             </div>
 
-            <div className="flex-col flex bg-[#456359]  text-white rounded-2xl ">
+            <div className="flex-col  flex bg-[#456359]  text-white rounded-2xl ">
               <FeatureBlock title="100% Secured & Accessible" description="  Use our Morse code generator with 100% security and it's completely accessible to all" />
             </div>
           </div>

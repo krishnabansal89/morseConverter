@@ -169,7 +169,7 @@ export default function MorseConverter() {
   }
 
   return (
-    <div className="  flex  flex-col font-lexend rounded-4xl text-[#372824]">
+    <div className="  flex  flex-col font-lexend rounded-4xl text-[#372824] ">
       <div className="border border-gray-200 w-[100%] mx-auto   rounded-lg  overflow-hidden">
         
 

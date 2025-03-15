@@ -39,35 +39,35 @@ export default function Features() {
             title: "Morse Code Translator",
             description: "Translate English to Morse Code and back with precision.",
             href: "/morse-code-translator",
-            bgColor: "bg-[#85ad85]"
+            bgColor: "bg-[#D0DDD0]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#99ad85]"
+            bgColor: "bg-[#AAB99A]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#adad85]"
+            bgColor: "bg-[#6A9C89]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#99ad85]"
+            bgColor: "bg-[#C1D8C3]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#85ad85]"
+            bgColor: "bg-[#FFB4A2]"
         },
     ]
 
@@ -76,7 +76,7 @@ export default function Features() {
             <div className="container mx-auto px-4">
                 <div className=" mx-auto">
                     <div className="text-center mb-12">
-                        <h2 className="text-2xl md:text-3xl font-bold text-neutral-800 mb-4">
+                        <h2 className=" md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-bold  mb-4">
                             Try our Free Morse Tools 
                         </h2>
                         <p className="text-neutral-600">
