@@ -14,7 +14,7 @@ function FeatureBlock({ title, description }: { title: string, description: stri
 
 export default function Benefits() {
   return (
-    <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none shadow-lg h-fit flex flex-col">
+    <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col">
 
       <div className="w-full h-fit my-20 justify-center  items-start">
         <div className="flex justify-center items-center ">
