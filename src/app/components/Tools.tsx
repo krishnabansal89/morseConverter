@@ -19,7 +19,7 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
                 </div>
 
                 <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-2xl font-bold text-[#2d2d2d]/90 ">{title}</h3>
+                    <h3 className="text-2xl font-bold text-[#f5f5f5]/90 ">{title}</h3>
                     <Link href={href} className="bg-[#2d2d2d] rounded-full p-2 flex items-center justify-center">
                         <ArrowUpRight className="h-5 w-5 text-white" />
                     </Link>
@@ -39,35 +39,35 @@ export default function Features() {
             title: "Morse Code Translator",
             description: "Translate English to Morse Code and back with precision.",
             href: "/morse-code-translator",
-            bgColor: "bg-[#D0DDD0]"
+            bgColor: "bg-[#31363F]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#AAB99A]"
+            bgColor: "bg-[#41644A]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#6A9C89]"
+            bgColor: "bg-[#705C53]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#C1D8C3]"
+            bgColor: "bg-[#31304D]"
         },
         {
             type: "Product",
             title: "Morse Code Generator",
             description: "Create Morse signals with adjustable playback speed.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#FFB4A2]"
+            bgColor: "bg-[#493628]"
         },
     ]
 

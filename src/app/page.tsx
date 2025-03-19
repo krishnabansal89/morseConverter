@@ -4,6 +4,7 @@ import Tools from "./components/Tools";
 import HowToUse from "./components/HowToUse";
 import BlogGrid from "./components/Blogs";
 import Faq from "./components/FAQ";
+import Content from "./components/Content";
 export default function Home() {
   return (
     <div className="bg-white h-full w-full m-0 p-0 ">
@@ -11,6 +12,7 @@ export default function Home() {
       <Tools />
       <Features />
       <HowToUse />
+      <Content />
       <BlogGrid />
       <Faq />
     </div>
