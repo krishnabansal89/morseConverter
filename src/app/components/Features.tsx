@@ -18,7 +18,7 @@ export default function Benefits() {
 
       <div className="w-full h-fit my-20 justify-center  ">
         <div className="flex justify-center items-center text-center ">
-          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 font-[lexend]">Why Choose Our Morse Code Translator?
+          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 font-lexend">Why Choose Our Morse Code Translator?
           </h1>
         </div>
 
