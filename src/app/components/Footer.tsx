@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+
 import Link from "next/link"
 import Image from "next/image"
-import { GraduationCap, Send, Linkedin, Twitter } from "lucide-react"
+import { Linkedin, Twitter } from "lucide-react"
 
 export default function Footer() {
     return (
