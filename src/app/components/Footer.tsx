@@ -1,90 +1,109 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Linkedin, Twitter } from "lucide-react"
+import { Instagram, Linkedin, Twitter, Youtube  } from "lucide-react"
 
 export default function Footer() {
     return (
-        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto   rounded-lg rounded-b-none rounded-t-none shadow-lg">
-        <footer className="bg-gradient-to-r from-[#705C53] to-[#382a25] rounded-t-sm md:px-16 px-4 ">
-            <div className="container  py-12 mx-auto">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 " >
-                    {/* Logo and Description */}
-                    <div className="lg:col-span-1 ">
-                        <div className="flex items-center gap-2 mb-4">
-                            <Image src="/icons/chip.png" width={50} height={50} alt="Morse Code" />
-                        </div>
-                        <p className="text-[#f5f5f5]/50">
-                            Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.
+        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto   rounded-lg rounded-b-none rounded-t-none shadow-lg font-lexend">
+     <footer className="md:bg-gradient-to-r bg-gradient-to-b from-[#7f615b] to-[#382a25] rounded-t-sm md:px-16 px-4 py-16">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+          {/* Column 1: My Music Pie Chart */}
+          <div>
+            <h3 className="text-xl font-semibold mb-8 text-gray-50">Morse Code Translator</h3>
+            <p className="text-white">
+            Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.
+</p>
+          </div>
 
-                        </p>
-                    </div>
+          {/* Column 2: Pages */}
+          <div>
+            <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/spotify-stats" className="text-white hover:text-gray-900">
+                Morse Code Alphabets
+                </Link>
+              </li>
+              <li>
+                <Link href="/top-artists" className="text-white hover:text-gray-900">
+                Morse Code Numbers
+                </Link>
+              </li>
+              <li>
+                <Link href="/top-artists" className="text-white hover:text-gray-900">
+                International Morse Codes
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-                    {/* Company Links */}
-                    <div className="lg:col-span-1 ml-20">
-                        <h3 className="mb-6 text-lg font-semibold text-white">Company</h3>
-                        <ul className="space-y-4">
-                            {["About Us", "Privacy Policy", "Contact Us", "Blogs"].map((item) => (
-                                <li key={item}>
-                                    <Link
-                                        href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                                        className="text-[#f5f5f5]/50  "
-                                    >
-                                        {item}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+          {/* Column 3: Glossary */}
+          <div>
+            <h3 className="text-xl font-semibold mb-8 text-gray-50">Glossary</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/artists-a-z" className="text-white hover:text-gray-900">
+                  A to Z Morse Codes
+                </Link>
+              </li>
+              <li>
+                <Link href="/genres-a-z" className="text-white hover:text-gray-900">
+                  0 to 9 Morse Codes
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-                    {/* GPA Links */}
-                    <div className="lg:col-span-1 ">
-                        <h3 className="mb-6 text-lg font-semibold text-white">Morse Converter</h3>
-                        <ul className="space-y-4">
-                            {[
-                                "GPA Scale",
-                                "Grade Scale",
-                                "GPA to Percentage",
-                                "Percentage to Grade Calculator",
-                                "Test Grade Calculator",
-                                "Easy Grader Calculator",
-                                "Grading Chart",
-                            ].map((item) => (
-                                <li key={item}>
-                                    <Link
-                                        href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                                        className="text-[#f5f5f5]/50"
-                                    >
-                                        {item}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+          {/* Column 4: Company */}
+          <div>
+            <h3 className="text-xl font-semibold mb-8 text-gray-50">Company</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/about" className="text-white hover:text-gray-900">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/privacy" className="text-white hover:text-gray-900">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/data-protection" className="text-white hover:text-gray-900">
+                  Data Protection Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-white hover:text-gray-900">
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-                    {/* Newsletter */}
+        {/* Social Media Icons */}
+        <div className="flex justify-center space-x-6 mb-8">
+          <Link href="https://instagram.com" className="text-white hover:text-gray-900">
+            <Instagram className="w-6 h-6" />
+            <span className="sr-only">Instagram</span>
+          </Link>
+          
+          <Link href="https://youtube.com" className="text-white hover:text-gray-900">
+            <Youtube className="w-6 h-6" />
+            <span className="sr-only">YouTube</span>
+          </Link>
+        </div>
 
-                </div>
+        {/* Footer Credits */}
+        <div className="text-center text-white">
 
-                {/* Bottom Bar */}
-                <div className="flex flex-col  items-center justify-between pt-8 mt-8 border-t md:flex-row">
-                    <p className="text-sm text-[#f5f5f5] ">© 2025 . All rights reserved</p>
-
-                    <div className="flex items-center gap-4 mt-4 md:mt-0">
-
-
-                        <div className="flex items-center gap-4 ml-4">
-                            <Link href="#" className="text-muted-foreground hover:text-blue-600">
-                                <Linkedin className="w-5 h-5" />
-                            </Link>
-                            <Link href="#" className="text-muted-foreground hover:text-blue-600">
-                                <Twitter className="w-5 h-5" />
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+          <p>© 2025 Morse Code Translator. All rights reserved</p>
+        </div>
+      </div>
+    </footer>
         </div>
     )
 }
