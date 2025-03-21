@@ -5,13 +5,14 @@ import { Linkedin, Twitter } from "lucide-react"
 
 export default function Footer() {
     return (
-        <footer className="bg-gradient-to-r from-[#705C53] to-[#382a25] rounded-t-sm ">
-            <div className="container px-4 py-12 mx-auto">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto   rounded-lg rounded-b-none rounded-t-none shadow-lg">
+        <footer className="bg-gradient-to-r from-[#705C53] to-[#382a25] rounded-t-sm md:px-16 px-4 ">
+            <div className="container  py-12 mx-auto">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 " >
                     {/* Logo and Description */}
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-1 ">
                         <div className="flex items-center gap-2 mb-4">
-                            <Image src="/chip.png" width={50} height={50} alt="Morse Code" />
+                            <Image src="/icons/chip.png" width={50} height={50} alt="Morse Code" />
                         </div>
                         <p className="text-[#f5f5f5]/50">
                             Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.
@@ -20,7 +21,7 @@ export default function Footer() {
                     </div>
 
                     {/* Company Links */}
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-1 ml-20">
                         <h3 className="mb-6 text-lg font-semibold text-white">Company</h3>
                         <ul className="space-y-4">
                             {["About Us", "Privacy Policy", "Contact Us", "Blogs"].map((item) => (
@@ -37,7 +38,7 @@ export default function Footer() {
                     </div>
 
                     {/* GPA Links */}
-                    <div className="lg:col-span-1">
+                    <div className="lg:col-span-1 ">
                         <h3 className="mb-6 text-lg font-semibold text-white">Morse Converter</h3>
                         <ul className="space-y-4">
                             {[
@@ -66,7 +67,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="flex flex-col items-center justify-between pt-8 mt-8 border-t md:flex-row">
+                <div className="flex flex-col  items-center justify-between pt-8 mt-8 border-t md:flex-row">
                     <p className="text-sm text-[#f5f5f5] ">© 2025 . All rights reserved</p>
 
                     <div className="flex items-center gap-4 mt-4 md:mt-0">
@@ -84,6 +85,8 @@ export default function Footer() {
                 </div>
             </div>
         </footer>
+        </div>
     )
 }
+
 

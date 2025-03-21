@@ -120,7 +120,7 @@ export default function BlogGrid() {
         </div>
 
         <div className="text-center">
-          <Button variant="outline" className="rounded-md px-4 py-2 hover:bg-[#1e534e] hover:text-white text-white bg-[#456359] ">
+          <Button variant="outline" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-lexend hover:bg-[#324740] ">
             View All Blogs
           </Button>
         </div>
