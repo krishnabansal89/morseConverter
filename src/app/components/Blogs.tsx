@@ -72,8 +72,8 @@ const blogPosts: BlogPost[] = [
 export default function BlogGrid() {
   return (
     <section className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center mb-10  tracking-tight md:px-10 font-lexend">Our Blogs</h2>
+      <div className="max-w-7xl mx-auto ">
+        <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center mb-12  tracking-tight md:px-10 font-poppins">Our Blogs</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {blogPosts.map((post) => (
@@ -120,7 +120,7 @@ export default function BlogGrid() {
         </div>
 
         <div className="text-center">
-          <Button variant="outline" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-lexend hover:bg-[#324740] ">
+          <Button variant="outline" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740] ">
             View All Blogs
           </Button>
         </div>

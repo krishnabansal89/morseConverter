@@ -169,7 +169,7 @@ export default function MorseConverter() {
   }
 
   return (
-    <div className="flex flex-col font-lexend rounded-4xl text-[#372824]">
+    <div className="flex flex-col font-poppins rounded-4xl text-[#372824]">
       <div className="border border-gray-200 w-[100%] mx-auto rounded-lg overflow-hidden">
         <div className="relative grid md:grid-cols-2">
           {/* Input section */}
@@ -191,7 +191,7 @@ export default function MorseConverter() {
                   ? "Enter Morse code (use spaces between characters and three spaces between words)"
                   : "Type text to convert to Morse code"
               }
-              className="min-h-[200px] md:min-h-[300px] p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="min-h-[200px] md:min-h-[300px] p-4 border-0 rounded-none resize-none font-roboto focus-visible:ring-0 focus-visible:ring-offset-0"
             />
 
             <div className="p-3 border-t flex justify-between border-gray-200">
@@ -227,7 +227,7 @@ export default function MorseConverter() {
 
             <div className="min-h-[200px] md:min-h-[300px] p-4 text-gray-800">
               {outputText || (
-                <span className="text-gray-400">
+                <span className="text-gray-400 font-roboto">
                   {mode === "morse-to-text" ? "Converted text will appear here" : "Morse code will appear here"}
                 </span>
               )}

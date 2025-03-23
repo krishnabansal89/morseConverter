@@ -26,11 +26,11 @@ Yes, but it requires memorizing Morse code symbols for each letter and number. O
 
 `;
   return (
-    <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg py-20 rounded-b-none rounded-t-none shadow-lg  font-lexend">
-            <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center mb-10 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 ">FAQs            </h2>
+    <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg py-20 rounded-b-none rounded-t-none shadow-lg  font-poppins">
+            <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center mb-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 ">FAQs            </h2>
       <Markdown components={{
         h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        body: ({ children }) => <p className="mt-2 text-[#2d2d2d] font-extralight">{children}</p>,
+        p: ({ children }) => <p className="mt-2 text-[#2d2d2d]  font-roboto">{children}</p>,
         br: () => <br />,
       }} >{content}</Markdown>
     </div>

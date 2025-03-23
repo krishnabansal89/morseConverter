@@ -1,12 +1,12 @@
 
 function FeatureBlock({ title, description }: { title: string, description: string }) {
   return (
-    <div className="flex flex-col items-center w-[90%] font-lexend py-10 text-center min-h-[30vh] mx-auto space-y-2">
+    <div className="flex flex-col items-center w-[90%] font-poppins py-10 text-center min-h-[30vh] mx-auto space-y-2">
       <div className="flex justify-center space-x-5 items-center  rounded-2xl">
         <h3 className="text-xl font-bold ">{title}</h3>
       </div>
 
-      <p className="text-lg w-[90%] mx-auto mt-5 ">{description}</p>
+      <p className="text-lg w-[90%] mx-auto mt-5 font-roboto ">{description}</p>
     </div>
   )
 
@@ -18,7 +18,7 @@ export default function Benefits() {
 
       <div className="w-full h-fit my-20 justify-center  ">
         <div className="flex justify-center items-center text-center ">
-          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 font-lexend">Why Choose Our Morse Code Translator?
+          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 font-poppins">Why Choose Our Morse Code Translator?
           </h1>
         </div>
 
@@ -29,7 +29,7 @@ export default function Benefits() {
         <div className="md:w-[75%]   flex flex-col gap-4">
           <div className="grid sm:grid-cols-[60%_40%] grid-cols-1 sm:space-x-4 space-y-4 sm:space-y-0">
             <div className="flex justify-center items-center rounded-2xl bg-[#456359]  text-white">
-              <FeatureBlock title="Instant & Accurate Conversion" description="Easily translate English to Morse Code and back with precision." />
+              <FeatureBlock title="Instant & Accurate Conversion " description="Easily translate English to Morse Code and back with precision." />
             </div>
 
             <div className="flex-col flex  bg-[#f5f5f5] text-[#2d2d2d] rounded-2xl ">

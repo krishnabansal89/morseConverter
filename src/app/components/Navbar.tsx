@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 export function Navbar() {
   return (
-    <header className="flex h-20  bg-white w-[98%] mx-auto items-center justify-between md:px-18 px-4 font-lexend">
+    <header className="flex h-20  bg-white w-[98%] mx-auto items-center justify-between md:px-18 px-4 font-poppins">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2">
         <Image src="/logo.png" width={50} height={50} alt="Morse Code" />
