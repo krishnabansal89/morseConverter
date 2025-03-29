@@ -169,7 +169,7 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-10 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium   text-lg font-maitree ">Discover what '{letter}' in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
+                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium   text-lg font-maitree ">Discover what `&apos;`{letter}`&apos;` in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
 
                         </p>
                     </div>
