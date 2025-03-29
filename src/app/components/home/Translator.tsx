@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Copy, Download, Trash2, HelpCircle, Share2, Volume2, ArrowLeftRight } from "lucide-react"
+import { Copy, Download, Trash2, HelpCircle, Share2, Volume2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 
-const morseCodeMap: Record<string, string> = {
+ export const morseCodeMap: Record<string, string> = {
   ".-": "A",
   "-...": "B",
   "-.-.": "C",
@@ -63,6 +63,9 @@ const morseCodeMap: Record<string, string> = {
   "": " ",
 }
 
+
+
+
 const textToMorseMap: Record<string, string> = Object.entries(morseCodeMap).reduce(
   (acc, [morse, text]) => {
     if (text !== " ") {
@@ -73,12 +76,23 @@ const textToMorseMap: Record<string, string> = Object.entries(morseCodeMap).redu
   {} as Record<string, string>,
 )
 
-export default function MorseConverter() {
+export default function MorseConverter({ initialText , textToMorse}: { initialText: string, textToMorse:boolean }) {
+
   const [inputText, setInputText] = useState("")
   const [outputText, setOutputText] = useState("")
   const [mode, setMode] = useState<"morse-to-text" | "text-to-morse">("morse-to-text")
   const [copied, setCopied] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  useEffect(() => {
+    setMode(textToMorse? "text-to-morse":"morse-to-text")
+    if (initialText.length > 0) setInputText(initialText)
+      if (mode === "morse-to-text") {
+        convertMorseToText(initialText)
+      } else {
+        convertTextToMorse(initialText)
+      }
+  }, [initialText ,textToMorse ,mode ])
 
   // Convert input based on selected mode
   useEffect(() => {
@@ -169,17 +183,20 @@ export default function MorseConverter() {
   }
 
   return (
-    <div className="flex flex-col font-poppins rounded-4xl text-[#372824]">
-      <div className="border border-gray-200 w-[100%] mx-auto rounded-lg overflow-hidden">
-        <div className="relative grid md:grid-cols-2">
+    <div className="  flex  flex-col font-lexend rounded-4xl text-[#372824]">
+      <div className=" w-[100%] mx-auto   rounded-lg  overflow-hidden">
+
+
+        <div className="grid md:grid-cols-2">
           {/* Input section */}
-          <div className="border-r border-gray-200">
-            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+          <div className="border-r border-gray-200 ">
+            <div className="flex justify-between items-center p-4  border-b border-gray-200">
               <div className="flex items-center">
-                <div className="text-md font-semibold text-[#456359]">
+                <button onClick={toggleMode} className="text-md font-semibold hover:text-[#372824] text-[#456359]">
                   {mode === "morse-to-text" ? "Morse Code" : "Text"}
-                </div>
+                </button>
               </div>
+
             </div>
 
             <Textarea
@@ -191,49 +208,39 @@ export default function MorseConverter() {
                   ? "Enter Morse code (use spaces between characters and three spaces between words)"
                   : "Type text to convert to Morse code"
               }
-              className="min-h-[200px] md:min-h-[300px] p-4 border-0 rounded-none resize-none font-roboto focus-visible:ring-0 focus-visible:ring-offset-0"
+              className={`${initialText.length===0?"min-h-[200px] md:min-h-[300px] ":"min-h-[100px] md:min-h-[200px]"}`+ "p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0"}
             />
 
             <div className="p-3 border-t flex justify-between border-gray-200">
               <Button onClick={handleClear} variant="ghost" size="sm" className="text-[#372824] hover:text-black">
                 <Trash2 className="h-5 w-5" />
               </Button>
-              <Button onClick={() => {}} variant="outline" className="rounded-md px-6 text-[#2d2d2d] bg-[#ffffff] border border-[#456359]/20 hover:bg-[#456359]/10 transition-all ">
+              <Button onClick={() => { }} variant="outline" className="rounded-md px-6 text-white bg-[#456359]">
                 Submit
               </Button>
             </div>
-          </div>
-
-          {/* Swap button positioned in the middle */}
-          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 md:rotate-180 rotate-90 -translate-y-1/2 z-10">
-            <Button 
-              onClick={toggleMode} 
-              className="rounded-full p-2 bg-[#456359] hover:bg-[#372824] text-white shadow-md"
-              aria-label="Switch between morse and text"
-            >
-              <ArrowLeftRight className="h-5 w-5" />
-            </Button>
           </div>
 
           {/* Output section */}
           <div>
             <div className="flex justify-between items-center p-4 border-b border-gray-200 text-[#372824]">
               <div className="flex items-center">
-                <div className="text-md font-semibold text-[#456359]">
+                <button onClick={toggleMode} className="text-md  hover:text-[#372824] text-[#456359] font-semibold ">
                   {mode === "morse-to-text" ? "Text" : "Morse Code"}
-                </div>
+                </button>
               </div>
+
             </div>
 
-            <div className="min-h-[200px] md:min-h-[300px] p-4 text-gray-800">
+            <div className={`${initialText.length===0?"min-h-[200px] md:min-h-[300px] ":"min-h-[100px] md:min-h-[200px]"}`+ "p-4 text-gray-800"}>
               {outputText || (
-                <span className="text-gray-400 font-roboto">
+                <span className="text-gray-400">
                   {mode === "morse-to-text" ? "Converted text will appear here" : "Morse code will appear here"}
                 </span>
               )}
             </div>
 
-            <div className="p-3 border-t border-gray-200 flex justify-end space-x-2">
+            <div className="p-3 border-t  border-gray-200 flex justify-end space-x-2">
               <Button
                 onClick={handleSpeak}
                 variant="ghost"
@@ -284,3 +291,4 @@ export default function MorseConverter() {
     </div>
   )
 }
+

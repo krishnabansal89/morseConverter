@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Column 1: My Music Pie Chart */}
           <div>
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Morse Code Translator</h3>
-            <p className="text-white font-roboto">
+            <p className="text-white font-maitree">
             Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.
 </p>
           </div>
@@ -19,7 +19,7 @@ export default function Footer() {
           {/* Column 2: Pages */}
           <div>
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
-            <ul className="space-y-2 font-roboto">
+            <ul className="space-y-2 font-maitree">
               <li>
                 <Link href="/spotify-stats" className="text-white hover:text-gray-900">
                 Morse Code Alphabets
@@ -41,7 +41,7 @@ export default function Footer() {
           {/* Column 3: Glossary */}
           <div>
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Glossary</h3>
-            <ul className="space-y-2 font-roboto">
+            <ul className="space-y-2 font-maitree">
               <li>
                 <Link href="/artists-a-z" className="text-white hover:text-gray-900">
                   A to Z Morse Codes
@@ -58,7 +58,7 @@ export default function Footer() {
           {/* Column 4: Company */}
           <div>
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Company</h3>
-            <ul className="space-y-2 font-roboto">
+            <ul className="space-y-2 font-maitree">
               <li>
                 <Link href="/about" className="text-white hover:text-gray-900">
                   About Us
@@ -97,7 +97,7 @@ export default function Footer() {
         </div>
 
         {/* Footer Credits */}
-        <div className="text-center text-white font-roboto">
+        <div className="text-center text-white font-maitree">
 
           <p>© 2025 Morse Code Translator. All rights reserved</p>
         </div>

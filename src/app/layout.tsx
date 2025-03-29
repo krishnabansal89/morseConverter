@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono , Poppins , Roboto } from "next/font/google";
-import { Navbar } from "./components/Navbar";
-import Footer from "./components/Footer";
+import { Geist, Geist_Mono , Poppins , Maitree } from "next/font/google";
+import { Navbar } from "./components/home/Navbar";
+import Footer from "./components/home/Footer";
 import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 const poppins = Poppins({
-  weight: [ "700"],
+  weight: [ "600"],
   style: "normal",
   variable:"--font-poppins",
   subsets:["latin"],
@@ -22,10 +22,10 @@ const poppins = Poppins({
 
 });
 
-const roboto = Roboto({
-  weight: ["500"],
+const maitree = Maitree({
+  weight: ["400" ,"700"],
   style: "normal",
-  variable: "--font-roboto",
+  variable: "--font-maitree",
   subsets: ["latin"],
   preload: true,
 });
@@ -46,7 +46,7 @@ export default function RootLayout({
     <html lang="en">
       
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${roboto.variable} antialiased  `}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased  `}
       >
         {children}
       </body>

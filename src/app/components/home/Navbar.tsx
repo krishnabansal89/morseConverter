@@ -14,13 +14,11 @@ export function Navbar() {
 
       {/* Navigation */}
       <nav className="hidden md:flex items-center gap-8">
-        <Link href="/about" className="text-[#3D3939] text-sm hover:text-black transition-colors">
-          Alphabet
-        </Link>
-        <Link href="/platform" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+        
+        <Link href="/letters" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Letters
         </Link>
-        <Link href="/team" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+        <Link href="/numbers" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Numbers
         </Link>
         <Link href="/articles" className="text-[#3D3939] text-sm hover:text-black transition-colors">

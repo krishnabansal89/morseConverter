@@ -6,7 +6,7 @@ function FeatureBlock({ title, description }: { title: string, description: stri
         <h3 className="text-xl font-bold ">{title}</h3>
       </div>
 
-      <p className="text-lg w-[90%] mx-auto mt-5 font-roboto ">{description}</p>
+      <p className="text-lg w-[90%] mx-auto mt-5 font-maitree ">{description}</p>
     </div>
   )
 

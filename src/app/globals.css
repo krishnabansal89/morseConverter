@@ -15,7 +15,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-poppins: var(--font-poppins);
-  --font-roboto: var(--font-roboto);
+  --font-maitree: var(--font-maitree);
 }
 @layer utilities {
   /* Chrome, Safari and Opera */

@@ -30,7 +30,7 @@ Yes, but it requires memorizing Morse code symbols for each letter and number. O
             <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center mb-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 ">FAQs            </h2>
       <Markdown components={{
         h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        p: ({ children }) => <p className="mt-2 text-[#2d2d2d]  font-roboto">{children}</p>,
+        p: ({ children }) => <p className="mt-2 text-[#6c6860]  font-maitree">{children}</p>,
         br: () => <br />,
       }} >{content}</Markdown>
     </div>

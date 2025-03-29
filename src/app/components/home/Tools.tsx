@@ -25,7 +25,7 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
                     </Link>
                 </div>
 
-                <p className="text-[#ffffff]/70 text-lg font-roboto">{description}</p>
+                <p className="text-[#ffffff]/70 text-lg font-maitree">{description}</p>
             </div>
         </div>
     )
@@ -79,7 +79,7 @@ export default function Features() {
                         <h2 className=" md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-bold  mb-4">
                             Try our Free Morse Tools 
                         </h2>
-                        <p className="text-neutral-600 font-roboto">
+                        <p className="text-neutral-600 font-maitree">
                             Explore our Morse code tools and services
                         </p>
                     </div>
