@@ -21,8 +21,8 @@ export function Navbar() {
         <Link href="/numbers" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Numbers
         </Link>
-        <Link href="/articles" className="text-[#3D3939] text-sm hover:text-black transition-colors">
-          Words
+        <Link href="/charts" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+          Charts
         </Link>
         <Link href="/docs" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           About
