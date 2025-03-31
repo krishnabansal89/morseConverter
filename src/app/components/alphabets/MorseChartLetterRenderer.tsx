@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from "next/link"
+import Link from "next/link";
 
 const MorseCodeTranslator = () => {
-  // Morse code mapping with dot and dash details
+  // Original Morse code mapping
   const morseCodeAlphabet = [
     { letter: 'A', code: '•−' },
     { letter: 'B', code: '−•••' },
@@ -32,38 +32,59 @@ const MorseCodeTranslator = () => {
     { letter: 'Z', code: '−−••' }
   ];
 
+  // Create pairs of letters (A,N), (B,O), (C,P), etc.
+  const createPairs = () => {
+    const pairs = [];
+    const half = Math.ceil(morseCodeAlphabet.length / 2);
+    
+    for (let i = 0; i < half; i++) {
+      pairs.push([
+        morseCodeAlphabet[i],
+        i + half < morseCodeAlphabet.length ? morseCodeAlphabet[i + half] : null
+      ]);
+    }
+    
+    return pairs;
+  };
+
   // Render individual Morse code symbol (dot or dash)
-  const renderMorseSymbol = (symbol:string) => {
-    console.log(symbol)
+  const renderMorseSymbol = (symbol: string, index: number) => {
     const isShort = symbol === '•';
     return (
       <div 
-        key={Math.random()} 
-        className={`h-10 ${isShort ? 'w-8' : 'w-12'} md:text-3xl text-2xl  `}
+        key={index} 
+        className={`${isShort ? 'h-6 w-6' : 'h-6 md:w-10 w-6'} flex items-center  text-[#6c6860] justify-center text-lg md:text-2xl  mb-1`}
       >
         {symbol}
-        </div>
+      </div>
     );
   };
 
+  // Create letter pairs
+  const letterPairs = createPairs();
+
   return (   
-    
-    <div className="w-full max-w-4xl mx-auto p-6 rounded-lg">
-      
-      <div className="grid md:grid-cols-2 grid-cols-1 gap-4 bg-[#f5f5f5] rounded-2xl p-10 font-poppins" >
-        {morseCodeAlphabet.map((item) => (
-          <Link 
-            key={item.letter} 
-            href={`/letters/${item.letter}-in-morse-code`}
-            className="flex items-center justify-between  space-x-2  bg-opacity-20 p-2 rounded cursor-pointer"
-          >
-            <span className="text-[#2d2d2d] md:text-xl text-lg font-semibold w-8 text-center">
-              {item.letter}
-            </span>
-            <div className="flex w-[60%] mx-auto items-center space-x-1 bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text">
-              {item.code.split('').map(renderMorseSymbol)}
-            </div>
-          </Link>
+    <div className="w-full md:max-w-4xl mx-auto md:p-6 pt-6 rounded-lg">
+      <div className="grid grid-cols-1 md:gap-6 gap-2 bg-[#f5f5f5]/60 rounded-2xl md:p-8 p-2 font-poppins">
+        {letterPairs.map((pair, pairIndex) => (
+          <div key={pairIndex} className="grid grid-cols-2  md:gap-10">
+            {pair.map((item) => (
+              item && (
+                <Link 
+                  key={item.letter} 
+                  href={`/letters/${item.letter}-in-morse-code`}
+                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors duration-200"
+                >
+                  <span className="text-[#6c6860] text-xl mr-2 md:text-2xl font-semibold mb-2">
+                    {item.letter}
+                  </span>
+                  <div className="flex flex-row items-center justify-start">
+                    {item.code.split('').map((symbol, index) => renderMorseSymbol(symbol, index))}
+                  </div>
+                </Link>
+              )
+            ))}
+          </div>
         ))}
       </div>
     </div>

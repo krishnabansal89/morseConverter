@@ -21,17 +21,17 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
             <ul className="space-y-2 font-maitree">
               <li>
-                <Link href="/spotify-stats" className="text-white hover:text-gray-900">
+                <Link href="/letters" className="text-white hover:text-gray-900">
                 Morse Code Alphabets
                 </Link>
               </li>
               <li>
-                <Link href="/top-artists" className="text-white hover:text-gray-900">
+                <Link href="/numbers" className="text-white hover:text-gray-900">
                 Morse Code Numbers
                 </Link>
               </li>
               <li>
-                <Link href="/top-artists" className="text-white hover:text-gray-900">
+                <Link href="/charts" className="text-white hover:text-gray-900">
                 International Morse Codes
                 </Link>
               </li>
@@ -43,12 +43,12 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Glossary</h3>
             <ul className="space-y-2 font-maitree">
               <li>
-                <Link href="/artists-a-z" className="text-white hover:text-gray-900">
+                <Link href="/letters" className="text-white hover:text-gray-900">
                   A to Z Morse Codes
                 </Link>
               </li>
               <li>
-                <Link href="/genres-a-z" className="text-white hover:text-gray-900">
+                <Link href="/numbers" className="text-white hover:text-gray-900">
                   0 to 9 Morse Codes
                 </Link>
               </li>

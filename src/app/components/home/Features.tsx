@@ -17,9 +17,12 @@ export default function Benefits() {
     <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col">
 
       <div className="w-full h-fit my-20 justify-center  ">
-        <div className="flex justify-center items-center text-center ">
-          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 font-poppins">Why Choose Our Morse Code Translator?
+        <div className="flex flex-col justify-center items-center text-center ">
+          <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium  mb-4 tracking-tight md:px-10 font-poppins">Why Choose Our Morse Code Translator?
           </h1>
+          <p className="text-neutral-600 font-maitree">
+            Explore our Morse code Features
+          </p>
         </div>
 
 
@@ -38,7 +41,7 @@ export default function Benefits() {
           </div>
           <div className="sm:grid sm:grid-cols-[40%_60%] flex flex-col-reverse sm:space-x-4 space-y-4 sm:space-y-0">
             <div className="flex justify-center items-center bg-[#f5f5f5] text-[#2d2d2d] rounded-2xl">
-              <FeatureBlock title="Supports All Morse Code Variants" description="Includes international Morse code standards for accuracy."  />
+              <FeatureBlock title="Supports All Morse Code Variants" description="Includes international Morse code standards for accuracy." />
             </div>
 
             <div className="flex-col  flex bg-[#456359]  text-white rounded-2xl ">
@@ -48,7 +51,7 @@ export default function Benefits() {
 
         </div>
         <div className="md:w-[25%]  space-x-6  bg-[#456359]  text-white  rounded-2xl ">
-          <FeatureBlock title="Mobile-Friendly & Fast" description="Works flawlessly on all devices, ensuring accessibility anywhere."  />
+          <FeatureBlock title="Mobile-Friendly & Fast" description="Works flawlessly on all devices, ensuring accessibility anywhere." />
         </div>
 
       </div>

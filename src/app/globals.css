@@ -57,3 +57,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes pulse-dot {
+  0%, 100% { background-color: #456359; }
+  50% { background-color: #5a7d73; }
+}
+
+@keyframes pulse-dash {
+  0%, 100% { background-color: #456359; }
+  50% { background-color: #3a534a; }
+}

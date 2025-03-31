@@ -1,3 +1,5 @@
+import { GoogleAnalytics } from '@next/third-parties/google'
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono , Poppins , Maitree } from "next/font/google";
 import { Navbar } from "./components/home/Navbar";
@@ -50,6 +52,7 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <GoogleAnalytics gaId="G-FVT0DZM79K" />
     </html>
     <Footer />
     </>

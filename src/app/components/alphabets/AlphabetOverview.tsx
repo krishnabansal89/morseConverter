@@ -2,13 +2,14 @@ import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
 import MorseCodeTranslator from "./MorseChartLetterRenderer";
+import Breadcrumb from "@/components/breadcrumb";
 export default function AlphabetOverview() {
 
     const overviewContent = `
-## **Introduction to Morse Code Alphabets \- Understand Letters and Use It Create Your Unique Message**
+##### **Introduction to Morse Code Alphabets**
 
 Morse code is a system of communication that represents letters, numbers, and symbols through sequences of short and long signals, commonly referred to as dots (.) and dashes (-). This system has played a critical role in telegraphy, military communications, and emergency signaling.
-
+#### 
 Understanding the Morse code alphabet is essential for anyone interested in its historical significance or practical uses today. In this article, we will explore the Morse code alphabet in detail, its history, and how it continues to be relevant in modern applications.
 
 # charts
@@ -23,34 +24,6 @@ The original Morse code was based on the frequency of letter usage in the Englis
 
 Morse code assigns each letter of the alphabet a unique combination of dots and dashes. Here’s a complete list of Morse code letters. Each letter is designed for efficient recognition, whether heard as audio beeps, seen as flashes of light, or tapped in physical signals.
 
-| Letter | Morse Code |
-| :---: | :---: |
-| A | .- |
-| B | \-... |
-| C | \-.-. |
-| D | \-.. |
-| E | . |
-| F | ..-. |
-| G | \--. |
-| H | .... |
-| I | .. |
-| J | .--- |
-| K | \-.- |
-| L | .-.. |
-| M | \-- |
-| N | \-. |
-| O | \--- |
-| P | .--. |
-| Q | \--.- |
-| R | .-. |
-| S | ... |
-| T | \- |
-| U | ..- |
-| V | ...- |
-| W | .-- |
-| X | \-..- |
-| Y | \-.-- |
-| Z | \--.. |
 
 ## **Lesser-Known Facts About Morse Code Alphabets**
 
@@ -101,7 +74,7 @@ Learning Morse code alphabets can be fun and rewarding. Here are some tips:
 4. **Try Flashcards and Apps:** Various mobile apps help learners memorize and practice Morse code efficiently.  
 5. **Engage in Real Practice:** Join amateur radio clubs or communicate with Morse code online to improve fluency.
 
-## **FAQs**
+##### **FAQs**
 
 ### **1\. What is the most common letter in Morse code?**
 
@@ -123,19 +96,35 @@ It varies, but with regular practice, a person can learn Morse code letters in a
 
     return (
         <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
-            <Image
-                src={"/charts/alphabet-chart.jpg"}
-                alt="Alphabet Chart"
-                width={1000}
-                height={1000}
-                className=" md:w-2/5  object-cover mt-20 rounded-lg shadow-lg mx-auto"
-            />
+            {/* <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
+                <div className="flex  items-center  ">
+                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">Morse Code Translator  <br></br> Instant<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Encoding & Decoding. </span></h1>
+                </div>
 
+
+            </div> */}
             <div className="max-w-5xl mx-auto">
+            <Breadcrumb/>
+   {/* <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
+                <div className="flex  items-center  ">
+                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">Morse Code Translator  <br></br> Instant<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Encoding & Decoding. </span></h1>
+                </div>
+
+
+            </div> */}
                 <Markdown remarkPlugins={[remarkGfm]} components={{
-                    h1: ({}) => <MorseCodeTranslator/>,
+                    h1: ({ }) => <MorseCodeTranslator />,
                     h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
                     h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h4: ({ }) => <Image
+                        src={"/charts/alphabet-chart.jpg"}
+                        alt="Alphabet Chart"
+                        width={1000}
+                        height={1000}
+                        className=" md:w-2/5  object-cover my-10 rounded-lg shadow-lg mx-auto"
+                    />
+                    ,
+                    h5:({children}) => <div className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</div>,
                     p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
                     li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,

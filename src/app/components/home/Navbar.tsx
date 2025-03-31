@@ -16,7 +16,7 @@ export function Navbar() {
       <nav className="hidden md:flex items-center gap-8">
         
         <Link href="/letters" className="text-[#3D3939] text-sm hover:text-black transition-colors">
-          Letters
+          Alphabets
         </Link>
         <Link href="/numbers" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Numbers

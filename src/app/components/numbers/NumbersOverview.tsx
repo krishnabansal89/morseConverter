@@ -2,29 +2,20 @@ import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
 import MorseCodeTranslator from "./MorseNumberChartRenderer";
+import Breadcrumb from "@/components/breadcrumb";
 export default function NumberOverview() {
 
-    const overviewContent = `## **Introduction to Morse Code Numbers**
+    const overviewContent = `##### **Introduction to Morse Code Numbers**
 
-Morse code, a system of encoding text through sequences of dots and dashes, has played a crucial role in global communication. While the alphabetic characters are well known, Morse code numbers are equally significant, enabling the transmission of numerical data in critical scenarios. This article explores the historical evolution and contemporary applications of Morse code numbers, uncovering lesser-known facts about their impact.
-
+Morse code, a system of encoding text through sequences of dots and dashes, has played a crucial role in global communication. While the alphabetic characters are well known, Morse code numbers are equally significant, enabling the transmission of numerical data in critical scenarios. 
 # 
+This article explores the historical evolution and contemporary applications of Morse code numbers, uncovering lesser-known facts about their impact.
+
+#### 
+
 ## **The Origin of Morse Code Numbers**
 
 Developed in the 1830s and 1840s by Samuel Morse and Alfred Vail, Morse code was designed for the telegraph system. Alongside letters, numbers were an essential part of the code, allowing for efficient communication of dates, monetary values, and coordinates. The numerical system in Morse code follows a simple yet effective structure:
-
-| Number | Morse Code |
-| :---: | :---: |
-| 0 | \----- |
-| 1 | .---- |
-| 2 | ..--- |
-| 3 | ...-- |
-| 4 | ....- |
-| 5 | ..... |
-| 6 | \-.... |
-| 7 | \--... |
-| 8 | \---.. |
-| 9 | \----. |
 
 This intuitive pattern allows for quick recognition and transmission, essential for telegraphic communication in the 19th and 20th centuries.
 
@@ -34,7 +25,7 @@ Despite advancements in digital communication, Morse code continues to hold valu
 
 ---
 
-## **FAQs**
+##### **FAQs**
 
 ### **1\. What is the difference between Morse code letters and numbers?**
 
@@ -55,19 +46,23 @@ Aviation navigation aids, such as VOR stations, transmit their identifiers in Mo
 
     return (
         <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
-            <Image
-                src={"/charts/numbers-chart.png"}
-                alt="Alphabet Chart"
-                width={1000}
-                height={1000}
-                className=" md:w-2/5  object-cover mt-20 rounded-lg shadow-lg mx-auto"
-            />
+
 
             <div className="max-w-5xl mx-auto">
+                <Breadcrumb/>
+
                 <Markdown remarkPlugins={[remarkGfm]} components={{
-                    h1: ({}) => <MorseCodeTranslator/>,
+                    h1: ({}) =>             <Image
+                    src={"/charts/numbers-chart.png"}
+                    alt="Alphabet Chart"
+                    width={1000}
+                    height={1000}
+                    className=" md:w-2/5  object-cover mt-20 rounded-lg shadow-lg mx-auto"
+                />,
                     h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
                     h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h4: ({}) => <MorseCodeTranslator/>,
+                    h5:({children}) => <div className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</div>,
                     p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
                     li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
