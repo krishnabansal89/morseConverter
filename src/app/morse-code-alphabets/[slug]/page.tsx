@@ -17,16 +17,17 @@ function getPopularLetters(parentArray: Array<string>, currentLetter: string) {
 }
 export async function generateMetadata({ params }: { params: tParams }) {
     const { slug } = await params;
+    
     const letter = slug[0].replace('-in-morse-code', '');
     const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
 
     return {
-        title: `What is ${letter.toUpperCase()}? Meaning, Representation & Uses`,
-        description: `Discover what  ${letter.toUpperCase()} is, its meaning, representation, and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
+        title: `What is ${letter.toUpperCase()} in Morse Code? Meaning, Representation & Uses`,
+        description: `Discover what  ${letter.toUpperCase()} in Morse Code is, its meaning, representation, and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
 `,
         openGraph: {
             title: `What is ${letter.toUpperCase()}? Meaning, Representation & Uses`,
-            description: `Discover what  ${letter.toUpperCase()} is, its meaning, representation, and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.`,
+            description: `Discover what  ${letter.toUpperCase()} in Morse Code is, its meaning, representation, and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.`,
         },
         alternates: {
             canonical: `${PUBLIC_URL}/morse-code-alphabets/${letter}-in-morse-code`,

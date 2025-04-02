@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import {
-  Copy, Download, Trash2, HelpCircle, Share2, Volume2,
-  Settings, ArrowLeftRight
+  Copy, Download, Trash2, HelpCircle, Volume2,
+  Settings, ArrowLeftRight, Lightbulb
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -44,6 +44,7 @@ export default function MorseConverter({
   initialText?: string,
   textToMorse?: boolean
 }) {
+  const [isVisualPlaying, setIsVisualPlaying] = useState(false)
   const [inputText, setInputText] = useState(initialText || "")
   const [outputText, setOutputText] = useState("")
   const [mode, setMode] = useState<"morse-to-text" | "text-to-morse">(textToMorse ? "text-to-morse" : "morse-to-text")
@@ -225,6 +226,74 @@ export default function MorseConverter({
       oscillatorRef.current.start()
     }
   }
+  const playVisualMorse = (morseText: string) => {
+    if (!morseText) return
+
+    setIsVisualPlaying(true)
+
+    const dotDuration = 1.2 / audioSettings.wpm
+    const dashDuration = dotDuration * 3
+    const symbolSpaceDuration = dotDuration
+    const letterSpaceDuration = dotDuration * 3
+    const wordSpaceDuration = dotDuration * 7
+
+    let t = 0 // Start time
+
+    const playSymbols = async () => {
+      const symbols = morseText.split('')
+
+      for (let i = 0; i < symbols.length; i++) {
+        const symbol = symbols[i]
+
+        if (symbol === '.' || symbol === '•') {
+          // Show dot visual
+          setTimeout(() => {
+            setVisualEffect({ active: true, isDash: false })
+          }, t * 1000)
+
+          t += dotDuration
+
+          // Hide visual
+          setTimeout(() => {
+            setVisualEffect({ active: false, isDash: false })
+          }, t * 1000)
+
+          t += symbolSpaceDuration
+        }
+        else if (symbol === '-' || symbol === '–' || symbol === '—') {
+          // Show dash visual
+          setTimeout(() => {
+            setVisualEffect({ active: true, isDash: true })
+          }, t * 1000)
+
+          t += dashDuration
+
+          // Hide visual
+          setTimeout(() => {
+            setVisualEffect({ active: false, isDash: false })
+          }, t * 1000)
+
+          t += symbolSpaceDuration
+        }
+        else if (symbol === ' ') {
+          // Handle spaces
+          if (i + 1 < symbols.length && symbols[i + 1] === ' ' && i + 2 < symbols.length && symbols[i + 2] === ' ') {
+            t += wordSpaceDuration
+            i += 2 // Skip the next two spaces
+          } else {
+            t += letterSpaceDuration
+          }
+        }
+      }
+
+      // Set a timeout to update playing state after visuals finish
+      setTimeout(() => {
+        setIsVisualPlaying(false)
+      }, t * 1000)
+    }
+
+    playSymbols()
+  }
 
   // Play morse code audio
   const playMorseAudio = (morseText: string, isInput = false) => {
@@ -277,17 +346,12 @@ export default function MorseConverter({
           }
 
           // Activate visual effect for dot
-          setTimeout(() => {
-            setVisualEffect({ active: true, isDash: false })
-          }, (t - ac.currentTime) * 1000)
 
           t += dotDuration
           gain.gain.setValueAtTime(0, t)
 
           // Deactivate visual effect
-          setTimeout(() => {
-            setVisualEffect({ active: false, isDash: false })
-          }, (t - ac.currentTime) * 1000)
+
 
           t += symbolSpaceDuration
         }
@@ -302,19 +366,15 @@ export default function MorseConverter({
             // Original CW radio tone behavior
             gain.gain.setValueAtTime(audioSettings.volume, t);
           }
-          
+
           // Activate visual effect for dash
-          setTimeout(() => {
-            setVisualEffect({ active: true, isDash: true })
-          }, (t - ac.currentTime) * 1000)
+
 
           t += dashDuration
           gain.gain.setValueAtTime(0, t)
 
           // Deactivate visual effect
-          setTimeout(() => {
-            setVisualEffect({ active: false, isDash: false })
-          }, (t - ac.currentTime) * 1000)
+
 
           t += symbolSpaceDuration
         }
@@ -505,6 +565,8 @@ export default function MorseConverter({
               >
                 <Volume2 size={18} />
               </Button>
+
+
             </div>
 
             <div className={`
@@ -535,6 +597,15 @@ export default function MorseConverter({
                 {copied && <span className="sr-only">Copied!</span>}
               </Button>
               <Button
+                onClick={() => playVisualMorse(mode === "morse-to-text" ? inputText : outputText)}
+                variant="ghost"
+                size="sm"
+                className={`text-[#456359] ${isVisualPlaying ? 'animate-pulse' : ''}`}
+                disabled={isVisualPlaying || !inputText}
+              >
+                <Lightbulb size={18} />
+              </Button>
+              <Button
                 onClick={handleDownload}
                 variant="ghost"
                 size="sm"
@@ -559,14 +630,14 @@ export default function MorseConverter({
               >
                 <HelpCircle className="h-5 w-5" />
               </Button>
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 className="text-gray-500 hover:text-gray-700"
                 disabled={!outputText}
               >
                 <Share2 className="h-5 w-5" />
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

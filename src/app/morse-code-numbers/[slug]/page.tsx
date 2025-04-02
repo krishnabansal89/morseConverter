@@ -75,16 +75,16 @@ const characterToMorseMap: Record<string, string> = {
 
 export async function generateMetadata({ params }: { params: tParams }) {
     const { slug } = await params;
-    const number = slug[0].split("-")[1]
+    const number = slug.split("-")[1] 
     const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
 
     return {
-      title: `What is ${number.toUpperCase()}? Meaning, Representation & Easy Memorization`,
-      description: `Discover what  ${number.toUpperCase()} means, how it’s used in communication, and easy tricks to remember it. 
+      title: `What is ${number.toUpperCase()} in Morse Code? Meaning, Representation & Easy Memorization`,
+      description: `Discover what  ${number.toUpperCase()} in Morse Code means, how it’s used in communication, and easy tricks to remember it. 
 `,
       openGraph: {
-        title: `What is ${number.toUpperCase()}? Meaning, Representation & Easy Memorization`,
-        description: `Discover what  ${number.toUpperCase()} means, how it’s used in communication, and easy tricks to remember it`,
+        title: `What is ${number.toUpperCase()} in Morse Code? Meaning, Representation & Easy Memorization`,
+        description: `Discover what  ${number.toUpperCase()} in Morse Code means, how it’s used in communication, and easy tricks to remember it`,
       },
 
       alternates: {
@@ -130,14 +130,15 @@ function generateMorseMarkdown(character: string, morse: string): string {
     return `In Morse code, the letter **'${upperChar}'** is represented as **${readableMorse}** (${morse.replace(/\./g, 'dot').replace(/\-/g, 'dash')}). This means:\n${signalsList}`;
 }
 
-type tParams = Promise<{ slug: string[] }>;
+type tParams = Promise<{ slug: string }>;
 
 export default async function LetterInMorseCode({ params }: { params: tParams }) {
     const { slug } = await params;
-    const letter = slug[0].split("-")[1].toUpperCase()
+    console.log(slug)
+    const letter = slug.split("-")[1]
     const alphabetsUppercase = Array.from({ length: 10 }, (_, i) => i as unknown as string);
     const popularLetters = getPopularLetters(alphabetsUppercase, letter)
-    const morseTraslation = characterToMorseMap[letter.toUpperCase()]
+    const morseTraslation = characterToMorseMap[letter]
 
     const content = `
 ## What is '${letter}' in morse code?
