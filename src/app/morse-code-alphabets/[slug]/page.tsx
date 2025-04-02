@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
         description: `Discover what  ${letter.toUpperCase()} in Morse Code is, its meaning, representation, and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
 `,
         openGraph: {
-            title: `What is ${letter.toUpperCase()}? Meaning, Representation & Uses`,
+            title: `What is ${letter.toUpperCase()} in Morse Code? Meaning, Representation & Uses`,
             description: `Discover what  ${letter.toUpperCase()} in Morse Code is, its meaning, representation, and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.`,
         },
         alternates: {
