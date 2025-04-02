@@ -21,17 +21,17 @@ export default function Footer() {
             <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
             <ul className="space-y-2 font-maitree">
               <li>
-                <Link href="/letters" className="text-white hover:text-gray-900">
+                <Link href="/morse-code-alphabets" className="text-white hover:text-gray-900">
                 Morse Code Alphabets
                 </Link>
               </li>
               <li>
-                <Link href="/numbers" className="text-white hover:text-gray-900">
+                <Link href="/morse-code-numbers" className="text-white hover:text-gray-900">
                 Morse Code Numbers
                 </Link>
               </li>
               <li>
-                <Link href="/charts" className="text-white hover:text-gray-900">
+                <Link href="/morse-code-chart" className="text-white hover:text-gray-900">
                 International Morse Codes
                 </Link>
               </li>

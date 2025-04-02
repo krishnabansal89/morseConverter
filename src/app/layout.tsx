@@ -35,6 +35,9 @@ const maitree = Maitree({
 export const metadata: Metadata = {
   title: "Morse Code Translator - Convert & Decode English to Morse Code Instantly",
   description: "Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.",
+  alternates:{
+    canonical:'./'
+  }
 };
 
 export default function RootLayout({

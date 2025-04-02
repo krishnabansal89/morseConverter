@@ -115,3 +115,8 @@ export const authorBySlugQuery = groq`
 		value,
 	}	
 }`
+
+export const blogSlugsForSiteMap = groq`*[_type == "blog"] | order(date desc, _updatedAt desc) {
+	"slug": slug.current,
+	publishedAt,
+}`

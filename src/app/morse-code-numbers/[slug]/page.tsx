@@ -2,15 +2,15 @@ import MorseConverter from "@/app/components/home/Translator";
 import Breadcrumb from "@/components/breadcrumb";
 import Link from "next/link";
 import Markdown from "react-markdown";
-import remarkGfm from 'remark-gfm';
+import remarkGfm from "remark-gfm";
 
 function getPopularLetters(parentArray: Array<string>, currentLetter: string) {
     const currentIndex = parentArray.indexOf(currentLetter)
     const popularLetters = []
-    for (let i = currentIndex + 1; i <= 25; i++) {
+    for (let i = currentIndex + 1; i <= 9; i++) {
         popularLetters.push(parentArray[i]);
         if (popularLetters.length === 6) break
-        if (i === 25) i = 0;
+        if (i === 9) i = 0;
 
     }
     return popularLetters
@@ -73,6 +73,35 @@ const characterToMorseMap: Record<string, string> = {
     ' ': ''
 }
 
+export async function generateMetadata({ params }: { params: tParams }) {
+    const { slug } = await params;
+    const number = slug[0].split("-")[1]
+    const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+
+    return {
+      title: `What is ${number.toUpperCase()}? Meaning, Representation & Easy Memorization`,
+      description: `Discover what  ${number.toUpperCase()} means, how it’s used in communication, and easy tricks to remember it. 
+`,
+      openGraph: {
+        title: `What is ${number.toUpperCase()}? Meaning, Representation & Easy Memorization`,
+        description: `Discover what  ${number.toUpperCase()} means, how it’s used in communication, and easy tricks to remember it`,
+      },
+
+      alternates: {
+        canonical: `${PUBLIC_URL}/morse-code-numbers/number-${number}-in-morse-code`,
+      },
+  
+    };
+  }
+  
+  export async function generateStaticParams() {
+    const numbers = '0123456789'.split('');
+    return numbers.map(number => ({
+      number: `number-${number}-in-morse-code`
+    }));
+  }
+  
+
 function generateMorseMarkdown(character: string, morse: string): string {
     // Get uppercase version of the character to match the keys in our reverse map
     const upperChar = character;
@@ -105,13 +134,13 @@ type tParams = Promise<{ slug: string[] }>;
 
 export default async function LetterInMorseCode({ params }: { params: tParams }) {
     const { slug } = await params;
-    const letter = slug[0].split("-")[0]
-    const alphabetsUppercase = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
+    const letter = slug[0].split("-")[1].toUpperCase()
+    const alphabetsUppercase = Array.from({ length: 10 }, (_, i) => i as unknown as string);
     const popularLetters = getPopularLetters(alphabetsUppercase, letter)
-    const morseTraslation = characterToMorseMap[letter]
+    const morseTraslation = characterToMorseMap[letter.toUpperCase()]
 
     const content = `
-# What is '${letter}' in morse code?
+## What is '${letter}' in morse code?
 
 Morse code is a method of communication that uses a series of dots and dashes to represent letters, numbers, and symbols. It was developed in the early 19th century by Samuel Morse and Alfred Vail and has since been widely used in telecommunication, military operations, and even modern-day learning applications.
 
@@ -132,7 +161,7 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
 
 
 **1\. How do you say ${letter} in Morse code out loud?**  
- **${letter}** is pronounced as ${((morseTraslation.replaceAll(".", "di ")).replaceAll("-", "dah "))} ,  with "di" representing the dot and "dah" for the dash.
+**${letter}** is pronounced as ${((morseTraslation.replaceAll(".", "di ")).replaceAll("-", "dah "))} ,  with "di" representing the dot and "dah" for the dash.
 
 **2\. How do I remember ${letter} in Morse code easily?**  
  A simple trick is to think of the letter ${letter} as an  ${morseTraslation.split('').map((signal, i) => {
@@ -202,7 +231,7 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
                         h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
                         h5:({children}) => <div className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</div>,
 
-                        p: ({ children }) => <p className="mt-2 font-maitree  mx-auto  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                        p: ({ children }) => <p className="mt-2 font-maitree  mx-auto text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                         br: () => <br />,
                         li: ({ children }) => <li className="text-[#6c6860]  mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                         table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,

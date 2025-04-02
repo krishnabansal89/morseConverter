@@ -72,7 +72,7 @@ const MorseCodeTranslator = () => {
               item && (
                 <Link 
                   key={item.letter} 
-                  href={`/letters/${item.letter}-in-morse-code`}
+                  href={`/morse-code-alphabets/${item.letter}-in-morse-code`}
                   className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors duration-200"
                 >
                   <span className="text-[#6c6860] text-xl mr-2 md:text-2xl font-semibold mb-2">

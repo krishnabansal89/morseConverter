@@ -15,16 +15,16 @@ export function Navbar() {
       {/* Navigation */}
       <nav className="hidden md:flex items-center gap-8">
         
-        <Link href="/letters" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+        <Link href="/morse-code-alphabets" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Alphabets
         </Link>
-        <Link href="/numbers" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+        <Link href="/morse-code-numbers" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Numbers
         </Link>
-        <Link href="/charts" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+        <Link href="/morse-code-chart" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           Charts
         </Link>
-        <Link href="/docs" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+        <Link href="/#" className="text-[#3D3939] text-sm hover:text-black transition-colors">
           About
         </Link>
       </nav>

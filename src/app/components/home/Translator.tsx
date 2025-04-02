@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { 
-  Copy, Download, Trash2, HelpCircle, Share2, Volume2, 
+import {
+  Copy, Download, Trash2, HelpCircle, Share2, Volume2,
   Settings, ArrowLeftRight
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -37,12 +37,12 @@ const textToMorseMap: Record<string, string> = Object.entries(morseCodeMap).redu
   {} as Record<string, string>,
 )
 
-export default function MorseConverter({ 
-  initialText = "", 
-  textToMorse = false 
-}: { 
-  initialText?: string, 
-  textToMorse?: boolean 
+export default function MorseConverter({
+  initialText = "",
+  textToMorse = false
+}: {
+  initialText?: string,
+  textToMorse?: boolean
 }) {
   const [inputText, setInputText] = useState(initialText || "")
   const [outputText, setOutputText] = useState("")
@@ -53,21 +53,23 @@ export default function MorseConverter({
   const [audioSettings, setAudioSettings] = useState({
     wpm: 15,
     frequency: 700,
-    volume: 0.5
+    volume: 0.5,
+    soundType: 'cw' // Default to CW radio tone
   })
+
   const [typingPlaceholder, setTypingPlaceholder] = useState("")
   const [inputError, setInputError] = useState<string | null>(null)
   const [visualEffect, setVisualEffect] = useState({
     active: false,
     isDash: false
   })
-  
+
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const audioContextRef = useRef<AudioContext | null>(null)
   const oscillatorRef = useRef<OscillatorNode | null>(null)
   const gainNodeRef = useRef<GainNode | null>(null)
   const converterRef = useRef<HTMLDivElement>(null)
-  
+
   // Check if it's a single letter display mode
   const isSingleLetterMode = initialText.length === 1
 
@@ -76,10 +78,10 @@ export default function MorseConverter({
     const placeholder = mode === "morse-to-text"
       ? "Enter Morse code (use dots and dashes, spaces between characters and three spaces between words)"
       : "Type text to convert to Morse code"
-    
+
     let currentIndex = 0
     let typingInterval: NodeJS.Timeout
-    
+
     const typeChar = () => {
       if (currentIndex <= placeholder.length) {
         setTypingPlaceholder(placeholder.slice(0, currentIndex))
@@ -93,9 +95,9 @@ export default function MorseConverter({
         }, 3000)
       }
     }
-    
+
     typingInterval = setInterval(typeChar, 70)
-    
+
     return () => clearInterval(typingInterval)
   }, [mode])
 
@@ -171,13 +173,13 @@ export default function MorseConverter({
     // Save current values before changing
     const currentInput = inputText
     const currentOutput = outputText
-    
+
     // Clear any existing error message
     setInputError(null)
-    
+
     // Update mode
     setMode((prev) => (prev === "morse-to-text" ? "text-to-morse" : "morse-to-text"))
-    
+
     // Swap input and output (only if there is actual output to swap)
     if (currentOutput) {
       setInputText(currentOutput)
@@ -188,18 +190,18 @@ export default function MorseConverter({
   // Handle input change with validation for Morse code mode
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    
+
     if (mode === "morse-to-text") {
       // Only allow valid Morse code characters (dots, dashes, spaces)
       const sanitizedValue = value.replace(/[^.\- ]/g, "");
-      
+
       if (sanitizedValue !== value) {
         // Show error message if invalid characters were removed
         setInputError("Only dots (.), dashes (-) and spaces are allowed in Morse code mode");
         // Clear error after 3 seconds
         setTimeout(() => setInputError(null), 3000);
       }
-      
+
       setInputText(sanitizedValue);
     } else {
       // No restrictions in text-to-morse mode
@@ -213,13 +215,13 @@ export default function MorseConverter({
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
       oscillatorRef.current = audioContextRef.current.createOscillator()
       gainNodeRef.current = audioContextRef.current.createGain()
-      
+
       oscillatorRef.current.frequency.value = audioSettings.frequency
       gainNodeRef.current.gain.value = 0
-      
+
       oscillatorRef.current.connect(gainNodeRef.current)
       gainNodeRef.current.connect(audioContextRef.current.destination)
-      
+
       oscillatorRef.current.start()
     }
   }
@@ -227,70 +229,95 @@ export default function MorseConverter({
   // Play morse code audio
   const playMorseAudio = (morseText: string, isInput = false) => {
     if (!morseText) return
-    
+
     setupAudio()
     if (!audioContextRef.current || !gainNodeRef.current || !oscillatorRef.current) return
-    
+
     isInput ? setIsInputPlaying(true) : setIsPlaying(true)
-    
+
     const dotDuration = 1.2 / audioSettings.wpm
     const dashDuration = dotDuration * 3
     const symbolSpaceDuration = dotDuration
     const letterSpaceDuration = dotDuration * 3
     const wordSpaceDuration = dotDuration * 7
-    
+
     const ac = audioContextRef.current
     const gain = gainNodeRef.current
-    
+
     let t = ac.currentTime + 0.1
-    
+
     // Set oscillator frequency
     oscillatorRef.current.frequency.value = audioSettings.frequency
-    
+
+    if (audioSettings.soundType === 'telegraph') {
+      // Create different oscillator type for telegraph sound
+      oscillatorRef.current.type = 'square'; // Square wave for more mechanical sound
+    } else {
+      // Default CW radio tone
+      oscillatorRef.current.type = 'sine'; // Sine wave for smoother tone
+    }
+
+
     const playSymbols = async () => {
       const symbols = morseText.split('')
-      
+
       for (let i = 0; i < symbols.length; i++) {
         const symbol = symbols[i]
-        
+
         if (symbol === '.' || symbol === '•') {
           // Play dot
-          gain.gain.setValueAtTime(audioSettings.volume, t)
-          
+          if (audioSettings.soundType === 'telegraph') {
+            // Add slight attack/decay for telegraph sound
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(audioSettings.volume, t + 0.01);
+            // Rest of telegraph sound logic
+          } else {
+            // Original CW radio tone behavior
+            gain.gain.setValueAtTime(audioSettings.volume, t);
+          }
+
           // Activate visual effect for dot
           setTimeout(() => {
             setVisualEffect({ active: true, isDash: false })
           }, (t - ac.currentTime) * 1000)
-          
+
           t += dotDuration
           gain.gain.setValueAtTime(0, t)
-          
+
           // Deactivate visual effect
           setTimeout(() => {
             setVisualEffect({ active: false, isDash: false })
           }, (t - ac.currentTime) * 1000)
-          
+
           t += symbolSpaceDuration
-        } 
+        }
         else if (symbol === '-' || symbol === '–' || symbol === '—') {
           // Play dash
-          gain.gain.setValueAtTime(audioSettings.volume, t)
+          if (audioSettings.soundType === 'telegraph') {
+            // Add slight attack/decay for telegraph sound
+            gain.gain.setValueAtTime(0, t);
+            gain.gain.linearRampToValueAtTime(audioSettings.volume, t + 0.01);
+            // Rest of telegraph sound logic
+          } else {
+            // Original CW radio tone behavior
+            gain.gain.setValueAtTime(audioSettings.volume, t);
+          }
           
           // Activate visual effect for dash
           setTimeout(() => {
             setVisualEffect({ active: true, isDash: true })
           }, (t - ac.currentTime) * 1000)
-          
+
           t += dashDuration
           gain.gain.setValueAtTime(0, t)
-          
+
           // Deactivate visual effect
           setTimeout(() => {
             setVisualEffect({ active: false, isDash: false })
           }, (t - ac.currentTime) * 1000)
-          
+
           t += symbolSpaceDuration
-        } 
+        }
         else if (symbol === ' ') {
           // Check if it's part of a word space (3 spaces) or letter space
           if (i + 1 < symbols.length && symbols[i + 1] === ' ' && i + 2 < symbols.length && symbols[i + 2] === ' ') {
@@ -301,14 +328,14 @@ export default function MorseConverter({
           }
         }
       }
-      
+
       // Set a timeout to update playing state after audio finishes
       const totalDuration = (t - ac.currentTime) * 1000
       setTimeout(() => {
         isInput ? setIsInputPlaying(false) : setIsPlaying(false)
       }, totalDuration)
     }
-    
+
     playSymbols()
   }
 
@@ -325,7 +352,7 @@ export default function MorseConverter({
   const handleAudioPlay = (text: string, isInput = false) => {
     // Determine if this is morse code or regular text
     const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '))
-    
+
     if (isMorse) {
       playMorseAudio(text, isInput)
     } else {
@@ -366,7 +393,7 @@ export default function MorseConverter({
   }
 
   return (
-    <div 
+    <div
       ref={converterRef}
       className={`
         flex flex-col font-lexend rounded-lg text-[#372824] transition-all duration-300
@@ -381,12 +408,14 @@ export default function MorseConverter({
               onClick={toggleMode}
               variant="outline"
               size="icon"
-              className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md"
+              className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md overflow-hidden"
             >
-              <ArrowLeftRight className="h-6 w-6 text-[#456359] animate-spin-slow" />
+              <div className="swap-arrow-container">
+                <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
+              </div>
             </Button>
           </div>
-          
+
           {/* Input section */}
           <div className="border-r border-gray-200">
             <div className="flex justify-between items-center p-4 border-b border-gray-200">
@@ -395,7 +424,7 @@ export default function MorseConverter({
                   {mode === "morse-to-text" ? "Morse Code" : "Text"}
                 </span>
               </div>
-              
+
               {/* Audio button for input */}
               <div className="flex items-center gap-2">
                 <Button
@@ -407,12 +436,12 @@ export default function MorseConverter({
                 >
                   <Volume2 size={18} />
                 </Button>
-                
+
                 {/* Show swap button on mobile */}
-                <Button 
-                  onClick={toggleMode} 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  onClick={toggleMode}
+                  variant="ghost"
+                  size="sm"
                   className="md:hidden text-[#456359]"
                 >
                   <ArrowLeftRight className="h-5 w-5" />
@@ -436,7 +465,7 @@ export default function MorseConverter({
                     : "text-base"}
                 `}
               />
-              
+
               {/* Error message */}
               {inputError && (
                 <div className="absolute bottom-2 left-0 right-0 mx-4 p-2 bg-red-50 text-red-600 text-sm rounded-md border border-red-200">
@@ -446,15 +475,15 @@ export default function MorseConverter({
             </div>
 
             <div className="p-3 border-t flex justify-between border-gray-200">
-              <Button 
-                onClick={handleClear} 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                onClick={handleClear}
+                variant="ghost"
+                size="sm"
                 className="text-[#372824] hover:text-black"
               >
                 <Trash2 className="h-5 w-5" />
               </Button>
-             
+
             </div>
           </div>
 
@@ -466,7 +495,7 @@ export default function MorseConverter({
                   {mode === "morse-to-text" ? "Text" : "Morse Code"}
                 </span>
               </div>
-              
+
               <Button
                 onClick={() => handleAudioPlay(outputText)}
                 variant="ghost"
@@ -523,17 +552,17 @@ export default function MorseConverter({
               >
                 <Trash2 className="h-5 w-5" />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 className="text-gray-500 hover:text-gray-700"
               >
                 <HelpCircle className="h-5 w-5" />
               </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-gray-500 hover:text-gray-700" 
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-gray-700"
                 disabled={!outputText}
               >
                 <Share2 className="h-5 w-5" />
@@ -541,15 +570,15 @@ export default function MorseConverter({
             </div>
           </div>
         </div>
-        
+
         {/* Audio Settings at the bottom */}
         <Collapsible className="border-t border-gray-200">
           <div className="flex justify-between items-center px-4 py-2">
             <span className="text-sm font-medium text-[#456359]">Audio Settings</span>
             <CollapsibleTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="sm" 
+              <Button
+                variant="ghost"
+                size="sm"
                 className="text-[#456359]"
               >
                 <Settings className="h-5 w-5" />
@@ -557,7 +586,7 @@ export default function MorseConverter({
               </Button>
             </CollapsibleTrigger>
           </div>
-          
+
           <CollapsibleContent>
             <div className="p-4 border-t border-gray-100 grid gap-4">
               <div className="grid grid-cols-4 items-center gap-4">
@@ -579,7 +608,7 @@ export default function MorseConverter({
                 </div>
                 <span className="col-span-1 text-sm">{audioSettings.wpm}</span>
               </div>
-              
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <label className="text-sm text-right col-span-1">
                   Frequency:
@@ -600,7 +629,7 @@ export default function MorseConverter({
                 </div>
                 <span className="col-span-1 text-sm">{audioSettings.frequency} Hz</span>
               </div>
-              
+
               <div className="grid grid-cols-4 items-center gap-4">
                 <label className="text-sm text-right col-span-1">
                   Volume:
@@ -621,11 +650,49 @@ export default function MorseConverter({
                 </div>
                 <span className="col-span-1 text-sm">{Math.round(audioSettings.volume * 100)}%</span>
               </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <label className="text-sm text-right col-span-1">
+                  Sound Type:
+                </label>
+                <div className="col-span-3">
+                  <div className="flex gap-2">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="soundType"
+                        value="cw"
+                        checked={audioSettings.soundType === 'cw'}
+                        onChange={() => setAudioSettings({
+                          ...audioSettings,
+                          soundType: 'cw'
+                        })}
+                        className="mr-1 accent-[#456359]"
+                      />
+                      CW Radio Tone
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="soundType"
+                        value="telegraph"
+                        checked={audioSettings.soundType === 'telegraph'}
+                        onChange={() => setAudioSettings({
+                          ...audioSettings,
+                          soundType: 'telegraph'
+                        })}
+                        className="mr-1 accent-[#456359]"
+                      />
+                      Telegraph Sounder
+                    </label>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </CollapsibleContent>
         </Collapsible>
       </div>
-      
+
       {/* Add custom animation keyframes */}
       <style jsx global>{`
         @keyframes spin-slow {
