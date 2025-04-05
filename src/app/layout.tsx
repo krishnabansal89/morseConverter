@@ -1,7 +1,7 @@
 import { GoogleAnalytics } from '@next/third-parties/google'
 
 import type { Metadata } from "next";
-import { Geist, Geist_Mono , Poppins , Maitree } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 import { Navbar } from "./components/home/Navbar";
 import Footer from "./components/home/Footer";
 import "./globals.css";
@@ -16,16 +16,16 @@ const geistMono = Geist_Mono({
 });
 
 const poppins = Poppins({
-  weight: [ "600"],
+  weight: ["600"],
   style: "normal",
-  variable:"--font-poppins",
-  subsets:["latin"],
+  variable: "--font-poppins",
+  subsets: ["latin"],
   preload: true,
 
 });
 
 const maitree = Maitree({
-  weight: ["400" ,"700"],
+  weight: ["400", "700"],
   style: "normal",
   variable: "--font-maitree",
   subsets: ["latin"],
@@ -35,8 +35,8 @@ const maitree = Maitree({
 export const metadata: Metadata = {
   title: "Morse Code Translator - Convert & Decode English to Morse Code Instantly",
   description: "Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.",
-  alternates:{
-    canonical:'./'
+  alternates: {
+    canonical: './'
   }
 };
 
@@ -47,17 +47,21 @@ export default function RootLayout({
 }>) {
   return (
     <>
-    <Navbar />
-    <html lang="en">
-      
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased  `}
-      >
-        {children}
-      </body>
-      <GoogleAnalytics gaId="G-FVT0DZM79K" />
-    </html>
-    <Footer />
+      <Navbar />
+      <meta
+        name="google-site-verification"
+        content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
+      />
+      <html lang="en">
+
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased  `}
+        >
+          {children}
+        </body>
+        <GoogleAnalytics gaId="G-FVT0DZM79K" />
+      </html>
+      <Footer />
     </>
   );
 }
