@@ -3,6 +3,8 @@ import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
 import MorseCodeTranslator from "./MorseChartLetterRenderer";
 import Breadcrumb from "@/components/breadcrumb";
+import { FAQSchemaLD } from "@/components/FAQSchemaLD";
+
 export default function AlphabetOverview() {
 
     const overviewContent = `
@@ -104,8 +106,8 @@ It varies, but with regular practice, a person can learn Morse code letters in a
 
             </div> */}
             <div className="max-w-5xl mx-auto">
-            <Breadcrumb/>
-   {/* <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
+                <Breadcrumb />
+                {/* <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
                 <div className="flex  items-center  ">
                     <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">Morse Code Translator  <br></br> Instant<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Encoding & Decoding. </span></h1>
                 </div>
@@ -124,8 +126,8 @@ It varies, but with regular practice, a person can learn Morse code letters in a
                         className=" md:w-2/5  object-cover my-10 rounded-lg shadow-lg mx-auto"
                     />
                     ,
-                    h5:({children}) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h1>,
-                    h6:({children}) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
+                    h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h1>,
+                    h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
 
                     p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
@@ -139,6 +141,22 @@ It varies, but with regular practice, a person can learn Morse code letters in a
 
                 }} >{overviewContent}</Markdown>
             </div>
+            <FAQSchemaLD markup={`### **1\. What is the most common letter in Morse code?**
+
+The letter ‘E’ (.) is the most common letter, as it is the most frequently used in the English language.
+
+### **2\. Why are some letters in Morse code longer than others?**
+
+Morse code letters are based on their frequency of use, with shorter symbols assigned to common letters to make transmission more efficient.
+
+### **3\. Is Morse code still taught in schools?**
+
+While not a standard part of most curricula, Morse code is taught in military training, aviation schools, and some specialized courses for amateur radio enthusiasts.
+
+### **4\. How long does it take to learn Morse code alphabets?**
+
+It varies, but with regular practice, a person can learn Morse code letters in a few weeks and become proficient within a few months.
+`} />
         </div>
 
     );

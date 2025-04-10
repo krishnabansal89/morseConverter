@@ -39,6 +39,27 @@ export const metadata: Metadata = {
     canonical: './'
   }
 };
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Morse Code",
+  "alternateName": "Morse Code Translator",
+  "url": "https://www.morsecod.de/",
+  "logo": "https://www.morsecod.de/_next/image?url=%2Flogo.png&w=128&q=75",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "9702371374",
+    "contactType": "technical support",
+    "contactOption": "TollFree",
+    "areaServed": ["US","GB","CA"],
+    "availableLanguage": ["en","es","fr","Hindi"]
+  },
+  "sameAs": [
+    "http://www.youtube.com/@LearnMorseCode-l4u",
+    "https://www.pinterest.com/morsecodde/",
+    "https://www.reddit.com/user/Western_Hunter821/"
+  ]
+}
 
 export default function RootLayout({
   children,
@@ -47,6 +68,11 @@ export default function RootLayout({
 }>) {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+      />
+
       <Navbar />
       <meta
         name="google-site-verification"

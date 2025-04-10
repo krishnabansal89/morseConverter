@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from "next/link"
 
-
 const MorseCodeTranslator = () => {
   // Original Morse code mapping
   const morseCodeNumbers = [

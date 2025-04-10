@@ -4,7 +4,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, Home } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import Script from "next/script";
 
 interface BreadcrumbProps {
   homeElement?: React.ReactNode;
@@ -13,12 +14,10 @@ interface BreadcrumbProps {
   listClasses?: string;
   activeItemClasses?: string;
   inactiveItemClasses?: string;
-  // Custom labels for path segments (e.g., { "blog": "Our Blog", "contact": "Get in Touch" })
   customLabels?: Record<string, string>;
-  // Paths to be excluded from breadcrumbs (e.g., ["admin", "dashboard"])
   excludePaths?: string[];
-  // Flag to transform URL segments to title case
   transformLabel?: boolean;
+  domain?: string; // Add domain prop for absolute URLs
 }
 
 const defaultProps = {
@@ -31,6 +30,7 @@ const defaultProps = {
   customLabels: {},
   excludePaths: [],
   transformLabel: true,
+  domain: typeof window !== 'undefined' ? window.location.origin : '',
 };
 
 // Helper function to convert slug to title case
@@ -54,6 +54,7 @@ export default function Breadcrumb(props: BreadcrumbProps) {
     customLabels,
     excludePaths,
     transformLabel,
+    domain,
   } = { ...defaultProps, ...props };
 
   // Generate breadcrumb items based on the current path
@@ -95,6 +96,48 @@ export default function Breadcrumb(props: BreadcrumbProps) {
       }),
     ];
   }, [pathname, customLabels, excludePaths, transformLabel]);
+
+  // Generate JSON-LD schema
+  const jsonLdSchema = useMemo(() => {
+    const baseDomain = domain || '';
+    
+    const schemaData = {
+      "@context": "https://schema.org/",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbs.map((breadcrumb, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": index === 0 ? "Home" : breadcrumb.label,
+        "item": `${baseDomain}${breadcrumb.href}`
+      }))
+    };
+    
+    return JSON.stringify(schemaData);
+  }, [breadcrumbs, domain]);
+
+  // Add JSON-LD schema to the document head
+  useEffect(() => {
+    // Remove any existing breadcrumb schema
+    const existingSchema = document.querySelector('script[data-breadcrumb-schema]');
+    if (existingSchema) {
+      existingSchema.remove();
+    }
+    
+    // Create and append the new schema
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = jsonLdSchema;
+    script.setAttribute('data-breadcrumb-schema', '');
+    document.head.appendChild(script);
+    
+    // Cleanup on unmount
+    return () => {
+      const schemaToRemove = document.querySelector('script[data-breadcrumb-schema]');
+      if (schemaToRemove) {
+        schemaToRemove.remove();
+      }
+    };
+  }, [jsonLdSchema]);
 
   return (
     <nav aria-label="Breadcrumb" className={containerClasses}>

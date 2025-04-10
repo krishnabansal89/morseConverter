@@ -16,7 +16,8 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
             <div className="flex flex-col h-full">
                 <div className="mb-6">
                     <span className="inline-block px-3 py-1 text-sm font-medium bg-white rounded-full">{type}</span>
-                </div>
+                </div>  
+
 
                 <div className="flex justify-between items-start mb-4">
                     <h3 className="text-2xl font-bold text-[#f5f5f5]/90 ">{title}</h3>
@@ -24,6 +25,7 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
                         <ArrowUpRight className="h-5 w-5 text-white" />
                     </Link>
                 </div>
+                    
 
                 <p className="text-[#ffffff]/70 text-lg font-maitree">{description}</p>
             </div>
@@ -73,7 +75,7 @@ export default function Features() {
 
     return (
         <section id="features" className="bg-[rgb(236,232,228)] w-[98%]  md:px-20 mx-auto p-4 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col font-poppins">
-            <div className="container mx-auto px-4 mt-20">
+            <div className="container mx-auto px-4 md:mt-20 mt-10">
                 <div className=" mx-auto">
                     <div className="text-center mb-12">
                         <h2 className=" md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-bold  mb-4">

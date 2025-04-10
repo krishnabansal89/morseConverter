@@ -3,6 +3,8 @@ import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
 import MorseCodeTranslator from "./MorseNumberChartRenderer";
 import Breadcrumb from "@/components/breadcrumb";
+import { FAQSchemaLD } from '@/components/FAQSchemaLD';
+
 export default function NumberOverview() {
 
     const overviewContent = `##### **Introduction to Morse Code Numbers**
@@ -57,7 +59,7 @@ Aviation navigation aids, such as VOR stations, transmit their identifiers in Mo
                     alt="Alphabet Chart"
                     width={1000}
                     height={1000}
-                    className=" md:w-2/5  object-cover mt-20 rounded-lg shadow-lg mx-auto"
+                    className=" md:w-2/5  object-cover  my-10 rounded-lg shadow-lg mx-auto"
                 />,
                     h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
                     h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
@@ -77,6 +79,22 @@ Aviation navigation aids, such as VOR stations, transmit their identifiers in Mo
 
                 }} >{overviewContent}</Markdown>
             </div>
+            <FAQSchemaLD markup={`### **1\. What is the difference between Morse code letters and numbers?**
+
+Morse code letters and numbers follow distinct patterns. Letters have a varying mix of short and long signals, whereas numbers follow a structured progression from “.----” (1) to “-----” (0).
+
+### **2\. Is Morse code still used in military operations?**
+
+Yes, Morse code is still taught to certain military personnel as a backup communication method, especially for covert and emergency transmissions.
+
+### **3\. Can Morse code be used in cybersecurity?**
+
+Yes, hackers have used Morse code to encode malicious scripts, demonstrating how it can be employed to bypass security filters.
+
+### **4\. How are Morse code numbers used in aviation?**
+
+Aviation navigation aids, such as VOR stations, transmit their identifiers in Morse code, including numbers, to help pilots confirm their location.
+`} />
         </div>
 
     );

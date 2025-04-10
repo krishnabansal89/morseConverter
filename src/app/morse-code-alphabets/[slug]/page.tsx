@@ -3,6 +3,7 @@ import Breadcrumb from "@/components/breadcrumb";
 import Link from "next/link";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
+import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 
 function getPopularLetters(parentArray: Array<string>, currentLetter: string) {
     const currentIndex = parentArray.indexOf(currentLetter)
@@ -147,7 +148,7 @@ ${generateMorseMarkdown(letter, morseTraslation)}
 
 When transmitted through sound, a dot is a quick, short beep, while a dash is a slightly longer one. Visually, it can also be represented as a flashing light, where the dot is a short blink and the dash is a longer blink.
 
-### Understanding ${letter} in Morse Code in Context
+## Understanding ${letter} in Morse Code in Context
 
 The simplicity of **${letter}** in Morse code makes it one of the easiest letters to learn. In fact, it is often one of the first letters beginners memorize when learning Morse code. It serves as a foundation for understanding more complex letters and words in the system.
 
@@ -188,16 +189,51 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
 
 `
 
+let FaqMarkup = `
+### **1\. How do you say ${letter} in Morse code out loud?**  
+
+
+**${letter}** is pronounced as ${((morseTraslation.replaceAll(".", "di ")).replaceAll("-", "dah "))} ,  with "di" representing the dot and "dah" for the dash.
+
+### **2\. How do I remember ${letter} in Morse code easily?**  
+
+
+A simple trick is to think of the letter ${letter} as an  ${morseTraslation.split('').map((signal, i) => {
+        let data;
+        if (signal === '.') {
+            data = " A short signal (**dot** or **dit**) ";
+        } else if (signal === '-') {
+            data = " A longer signal (**dash** or **dah**) ";
+        }
+        if (i < morseTraslation.split('').length - 1) data += "followed by a"
+        return data;
+    })} 
+
+### **3\. Can Morse code for ${letter} be used in flashing lights?**  
+
+
+Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.split('').map((signal, i) => {
+        let data;
+        if (signal === '.') {
+            data = " A short blink";
+        } else if (signal === '-') {
+            data = " A long blink";
+        }
+        if (i < morseTraslation.split('').length - 1) data += " then "
+        return data;
+    })} 
+
+`
 
 
     return (
         <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg  rounded-b-none  h-fit flex flex-col ">
             <div className=" md:px-14 flex items-start "><Breadcrumb />            </div>
-            <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
+            <div className="w-full h-fit md:my-20 my-10  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
                 <div className="flex  items-center  ">
                     <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">What is {letter} in Morse Code ?   <br></br> <span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text xl:text-4xl/relaxed lg:text-3xl/relaxed  text-2xl/relaxed "> Meaning, Representation & Uses </span></h1>
                 </div>
-                <div className=" flex-col flex justify-center h-full px-2 mt-10 md:mt-0 ">
+                <div className=" flex-col flex justify-center h-full px-2  ">
                     <div className="my-4">
                         <p className="text-[#6c6860] tracking-tight w-[100%] font-medium   text-lg/relaxed font-maitree ">Discover what &apos;{letter}&apos; in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
 
@@ -213,16 +249,16 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
                     <MorseConverter initialText={letter} textToMorse={true} />
                 </div>
             </div>
-            <div className="mt-20">
-                <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r mx-auto from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center mb-12  tracking-tight md:px-10 font-poppins"> Explore popular letter</h2>
+            <div className="md:mt-20 mt-10">
+                <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r mx-auto from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center md:mb-12 mb-8 tracking-tight md:px-10 font-poppins"> Explore popular letter</h2>
                 <div className="grid grid-cols-3 w-[98%] p-4 md:px-10 mx-auto gap-y-4 ">
                     {popularLetters.map((letter) => (
-                        <Link key={letter} href={`/letters/${letter}-in-morse-code`} className="border-2 border-gray-300 px-4 py-2 font-semibold text-[#2d2d2d] font-maitree "> {letter} in Morse Code </Link>
+                        <Link key={letter} href={`/morse-code-alphabets/${letter}-in-morse-code`} className="border-2 border-gray-300 px-4 py-2 font-semibold text-[#2d2d2d] font-maitree "> {letter} in Morse Code </Link>
                     ))}
 
 
                 </div>
-                <div className=" w-full  mx-auto p-4 md:px-10 rounded-lg pt-20">
+                <div className=" w-full  mx-auto p-4 md:px-10 rounded-lg md:pt-20">
                     <Markdown remarkPlugins={[remarkGfm]} components={{
                         strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
                         h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h1>,
@@ -244,6 +280,8 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
                     }} >{content}</Markdown>
                 </div>
             </div>
+            <FAQSchemaLD markup={FaqMarkup} /> 
+
         </div>
     )
 }
