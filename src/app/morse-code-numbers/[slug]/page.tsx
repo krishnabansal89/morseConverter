@@ -192,7 +192,7 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
     })} 
 
 ` 
-    let FaqMarkup = `
+    const FaqMarkup = `
     ### **1\. How do you say ${letter} in Morse code out loud?**  
 
 

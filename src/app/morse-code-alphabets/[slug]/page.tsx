@@ -189,7 +189,7 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
 
 `
 
-let FaqMarkup = `
+const FaqMarkup = `
 ### **1\. How do you say ${letter} in Morse code out loud?**  
 
 

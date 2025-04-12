@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, Home } from "lucide-react";
 import { useMemo, useEffect } from "react";
-import Script from "next/script";
 
 interface BreadcrumbProps {
   homeElement?: React.ReactNode;
