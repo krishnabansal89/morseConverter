@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { PortableText } from '@portabletext/react';
+import { FAQSchemaLD } from '@/components/FAQSchemaLD';
 
 // Define the ptComponents directly in the client component
 const clientPtComponents = {
@@ -54,6 +55,14 @@ const FAQAccordion = ({ faqs }: { faqs: any[] }) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  let FaqMarkup:string;
+
+  faqs.map(faq=>{
+    FaqMarkup+= "### **1\. " + faq.question + "**  "+  "\n\n" + faq.answer[0].children[0].text + "\n\n"
+  })
+
+  
+
   return (
     <div className="mt-12 border-t pt-8">
       <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
@@ -88,6 +97,8 @@ const FAQAccordion = ({ faqs }: { faqs: any[] }) => {
           </div>
         ))}
       </div>
+      <FAQSchemaLD markup={FaqMarkup} /> 
+
     </div>
   );
 };

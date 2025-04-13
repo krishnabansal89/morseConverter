@@ -1,3 +1,5 @@
+export const revalidate = 86400; //24hrs
+
 import { blogBySlugQuery, blogSlugsQuery } from '@/sanity/queries';
 import { client, urlFor } from '@/sanity/client';
 import Link from 'next/link';
@@ -7,6 +9,8 @@ import { Metadata } from 'next';
 import { Clock, Calendar, Tag } from 'lucide-react'; // Assuming you use Lucide icons
 import FAQAccordion from '@/app/components/blogs/FAQaccordion';
 import Breadcrumb from '@/components/breadcrumb';
+
+
 
 // Define dynamic metadata
 export async function generateMetadata({
