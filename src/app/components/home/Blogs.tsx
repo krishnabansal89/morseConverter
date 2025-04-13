@@ -7,6 +7,10 @@ import { blogNamesWithLimitQuery } from "@/sanity/queries"
 import { Clock, Calendar } from "lucide-react" // Assuming you're using Lucide icons
 
 // Updated interface to match the GROQ query response
+
+export const revalidate = 86400; //24hrs
+
+
 interface Author {
   name: string
   slug: { current: string }

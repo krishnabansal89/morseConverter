@@ -26,6 +26,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.0.1",
+    "react-social-icons": "^6.24.0",
     "remark-gfm": "^4.0.1",
     "schema-dts": "^1.1.5",
     "styled-components": "^6.1.16",
