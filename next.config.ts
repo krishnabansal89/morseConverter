@@ -5,12 +5,21 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-          protocol: 'https',
-          hostname: '**',
-          port: '',
-          pathname: '**',
+        protocol: 'https',
+        hostname: '**',
+        port: '',
+        pathname: '**',
       },
-  ],
+    ],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/morse-code-chart',
+        destination: '/charts/morse-code.pdf',
+        permanent: true, // Set to true for permanent redirect, false for temporary
+      },
+    ];
   },
 };
 

@@ -4,17 +4,27 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
-function getPopularLetters(parentArray: Array<string>, currentLetter: string) {
-    const currentIndex = parentArray.indexOf(currentLetter)
-    const popularLetters = []
-    for (let i = currentIndex + 1; i <= 9; i++) {
-        popularLetters.push(parentArray[i]);
-        if (popularLetters.length === 6) break
-        if (i === 9) i = 0;
+function getPopularLetters(parentArray: Array<number>, currentNumber: number): number[] {
+    const currentIndex = parentArray.indexOf(currentNumber);
 
+    // Handle case where the number might not be found
+    if (currentIndex === -1) {
+        console.error(`Number ${currentNumber} not found in the array.`);
+        return [];
     }
-    return popularLetters
+
+    const popularLetters: number[] = [];
+    const n = parentArray.length;
+
+    // Loop 6 times to get the next 6 numbers, wrapping around using modulo
+    for (let i = 1; i <= 6; i++) {
+        const nextIndex = (currentIndex + i) % n;
+        popularLetters.push(parentArray[nextIndex]);
+    }
+
+    return popularLetters;
 }
+
 const characterToMorseMap: Record<string, string> = {
     '0': '-----',
     '1': '.----',
@@ -134,10 +144,10 @@ type tParams = Promise<{ slug: string }>;
 
 export default async function LetterInMorseCode({ params }: { params: tParams }) {
     const { slug } = await params;
-    console.log(slug)
     const letter = slug.split("-")[1]
-    const alphabetsUppercase = Array.from({ length: 10 }, (_, i) => i as unknown as string);
-    const popularLetters = getPopularLetters(alphabetsUppercase, letter)
+    const currentNumber = parseInt(letter, 10);
+    const alphabetsUppercase = Array.from({ length: 10 }, (_, i) => i );
+    const popularLetters = getPopularLetters(alphabetsUppercase, currentNumber)
     const morseTraslation = characterToMorseMap[letter]
 
     const content = `

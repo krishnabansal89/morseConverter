@@ -24,6 +24,9 @@ export async function generateMetadata({
         description: post?.seoDescription || post?.description || 'A blog post from our site.',
         authors: post?.author ? [{ name: post.author.name }] : undefined,
         keywords: post?.tags,
+        alternates: {
+            canonical: `${process.env.NEXT_PUBLIC_URL}/blog/${post?.slug.current}`,
+        },
     };
 }
 
