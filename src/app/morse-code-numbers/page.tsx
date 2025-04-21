@@ -11,7 +11,7 @@ export async function generateMetadata() {
       description: "Discover the history, development, and modern applications of Morse code numbers. Learn how this communication system remains relevant today, from emergency situations to aviation and cybersecurity.",
     },
     alternates: {
-      canonical: `${PUBLIC_URL}/morse-code-numbers/`,
+      canonical: `${PUBLIC_URL}/morse-code-numbers`,
     },
   };
 }

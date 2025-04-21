@@ -11,7 +11,7 @@ export async function generateMetadata() {
       description: "Explore the Morse code alphabets, their history, structure, and modern-day applications. Learn how Morse code letters are used in communication, technology, and beyond.",
     },
     alternates: {
-      canonical: `${PUBLIC_URL}/morse-code-alphabets/`,
+      canonical: `${PUBLIC_URL}/morse-code-alphabets`,
     },
   };
 }
