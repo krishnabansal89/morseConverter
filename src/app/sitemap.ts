@@ -8,7 +8,7 @@ const getBlogPosts = async ()=> {
   return slugs
 }
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "https://www.morsecod.de"
+const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "https://www.morsecodeholistic.com"
 export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
     const baseUrl = PUBLIC_URL;
     

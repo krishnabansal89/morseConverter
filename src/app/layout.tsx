@@ -32,11 +32,14 @@ const maitree = Maitree({
   preload: true,
 });
 
+const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+
+
 export const metadata: Metadata = {
   title: "Morse Code Translator - Convert & Decode English to Morse Code Instantly",
   description: "Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.",
   alternates: {
-    canonical: './'
+    canonical: `${PUBLIC_URL}/`,
   }
 };
 const schemaData = {
@@ -44,8 +47,8 @@ const schemaData = {
   "@type": "Organization",
   "name": "Morse Code",
   "alternateName": "Morse Code Translator",
-  "url": "https://www.morsecod.de/",
-  "logo": "https://www.morsecod.de/_next/image?url=%2Flogo.png&w=128&q=75",
+  "url": "https://www.morsecodeholistic.com/",
+  "logo": "https://www.morsecodeholistic.com/_next/image?url=%2Flogo.png&w=128&q=75",
   "contactPoint": {
     "@type": "ContactPoint",
     "telephone": "9702371374",
