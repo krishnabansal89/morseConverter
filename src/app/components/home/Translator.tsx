@@ -62,8 +62,6 @@ export default function MorseConverter({
   // New state for pause/resume and progress tracking
   const [isAudioPaused, setIsAudioPaused] = useState(false);
   const [isVisualPaused, setIsVisualPaused] = useState(false);
-  const [currentAudioSymbolIndex, setCurrentAudioSymbolIndex] = useState(0);
-  const [currentVisualSymbolIndex, setCurrentVisualSymbolIndex] = useState(0);
 
 
   const [typingPlaceholder, setTypingPlaceholder] = useState("")
@@ -270,7 +268,6 @@ export default function MorseConverter({
         setIsPlaying(false);
     }
     setIsAudioPaused(false);
-    setCurrentAudioSymbolIndex(0);
   }
 
   const stopVisual = (isInput = false) => {
@@ -290,7 +287,6 @@ export default function MorseConverter({
     }
     setIsVisualPaused(false);
     setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
-    setCurrentVisualSymbolIndex(0);
   }
 
 
@@ -341,7 +337,7 @@ export default function MorseConverter({
       const symbol = symbols[currentIndex];
       let symbolDuration = 0;
       let spaceDuration = symbolSpaceDuration; // Default space after symbol
-      let currentSymbolDelay = delayOffset; // Use the offset passed in
+      const currentSymbolDelay = delayOffset; // Use the offset passed in
 
       if (symbol === '.' || symbol === '•') {
         symbolDuration = dotDuration;
@@ -391,41 +387,40 @@ export default function MorseConverter({
     };
 
     // Start the scheduling process
-    setCurrentVisualSymbolIndex(startIndex); // Ensure index is correct at start/resume
     scheduleNextVisual(0); // Start with zero offset
   };
 
-  const pauseVisual = (isInput = false) => {
-    // Set paused state first
-    setIsVisualPaused(true);
-    setCurrentVisualSymbolIndex(currentVisualSymbolIndex); // Save current index (redundant but safe)
+  // const pauseVisual = (isInput = false) => {
+  //   // Set paused state first
+  //   setIsVisualPaused(true);
+  //   setCurrentVisualSymbolIndex(currentVisualSymbolIndex); // Save current index (redundant but safe)
 
-    // Clear the main timeout that schedules the *next* symbol
-    if (visualTimeoutRef.current) {
-      clearTimeout(visualTimeoutRef.current);
-      visualTimeoutRef.current = null;
-    }
+  //   // Clear the main timeout that schedules the *next* symbol
+  //   if (visualTimeoutRef.current) {
+  //     clearTimeout(visualTimeoutRef.current);
+  //     visualTimeoutRef.current = null;
+  //   }
 
-    // Clear any *pending* visual effect timeouts (start/end)
-    // This prevents effects for symbols *after* the pause point from showing.
-    // It does NOT stop an effect that has already started.
-    activeVisualTimeoutsRef.current.forEach(clearTimeout);
-    activeVisualTimeoutsRef.current = [];
+  //   // Clear any *pending* visual effect timeouts (start/end)
+  //   // This prevents effects for symbols *after* the pause point from showing.
+  //   // It does NOT stop an effect that has already started.
+  //   activeVisualTimeoutsRef.current.forEach(clearTimeout);
+  //   activeVisualTimeoutsRef.current = [];
 
-    // Optionally: Force visual effect off immediately on pause
-    // setVisualEffect({ active: false, isDash: false });
-  };
+  //   // Optionally: Force visual effect off immediately on pause
+  //   // setVisualEffect({ active: false, isDash: false });
+  // };
 
-  const resumeVisual = (isInput = false) => {
-    // Only resume if it was actually paused and playing
-    const currentlyPlaying = isInput ? isInputVisualPlaying : isVisualPlaying;
-    if (!currentlyPlaying || !isVisualPaused) return;
+  // const resumeVisual = (isInput = false) => {
+  //   // Only resume if it was actually paused and playing
+  //   const currentlyPlaying = isInput ? isInputVisualPlaying : isVisualPlaying;
+  //   if (!currentlyPlaying || !isVisualPaused) return;
 
-    setIsVisualPaused(false); // Unset paused state
-    const text = isInput ? inputText : (mode === 'text-to-morse' ? outputText : inputText);
-    // Resume from the stored index
-    playVisualMorse(text, isInput, currentVisualSymbolIndex);
-  };
+  //   setIsVisualPaused(false); // Unset paused state
+  //   const text = isInput ? inputText : (mode === 'text-to-morse' ? outputText : inputText);
+  //   // Resume from the stored index
+  //   playVisualMorse(text, isInput, currentVisualSymbolIndex);
+  // };
 
 
   // --- Refactored Audio Playback with Pause/Resume ---
@@ -533,42 +528,41 @@ export default function MorseConverter({
     };
 
     // Start scheduling
-    setCurrentAudioSymbolIndex(startIndex); // Ensure index is correct
     scheduleNextAudio();
   };
 
-  const pauseAudio = (isInput = false) => {
-    const ac = audioContextRef.current;
-    const gain = gainNodeRef.current;
-    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
-    if (!ac || !gain || !currentlyPlaying || isAudioPaused) return; // Only pause if playing and not already paused
+  // const pauseAudio = (isInput = false) => {
+  //   const ac = audioContextRef.current;
+  //   const gain = gainNodeRef.current;
+  //   const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
+  //   if (!ac || !gain || !currentlyPlaying || isAudioPaused) return; // Only pause if playing and not already paused
 
-    // Set paused state first
-    setIsAudioPaused(true);
-    setCurrentAudioSymbolIndex(currentAudioSymbolIndex); // Save current index
+  //   // Set paused state first
+  //   setIsAudioPaused(true);
+  //   setCurrentAudioSymbolIndex(currentAudioSymbolIndex); // Save current index
 
-    // Clear the recursive scheduling timeout
-    if (audioTimeoutRef.current) {
-        clearTimeout(audioTimeoutRef.current);
-        audioTimeoutRef.current = null;
-    }
+  //   // Clear the recursive scheduling timeout
+  //   if (audioTimeoutRef.current) {
+  //       clearTimeout(audioTimeoutRef.current);
+  //       audioTimeoutRef.current = null;
+  //   }
 
-    // Cancel future scheduled gain changes and force silence now
-    gain.gain.cancelScheduledValues(ac.currentTime);
-    gain.gain.setValueAtTime(0, ac.currentTime);
-  };
+  //   // Cancel future scheduled gain changes and force silence now
+  //   gain.gain.cancelScheduledValues(ac.currentTime);
+  //   gain.gain.setValueAtTime(0, ac.currentTime);
+  // };
 
-  const resumeAudio = (isInput = false) => {
-     const ac = audioContextRef.current;
-     const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
-     // Only resume if it was playing and is currently paused
-     if (!ac || !currentlyPlaying || !isAudioPaused) return;
+  // const resumeAudio = (isInput = false) => {
+  //    const ac = audioContextRef.current;
+  //    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
+  //    // Only resume if it was playing and is currently paused
+  //    if (!ac || !currentlyPlaying || !isAudioPaused) return;
 
-    setIsAudioPaused(false); // Unset paused state
-    const text = isInput ? inputText : outputText;
-    // Resume scheduling from the stored index
-    playMorseAudio(text, isInput, currentAudioSymbolIndex);
-  };
+  //   setIsAudioPaused(false); // Unset paused state
+  //   const text = isInput ? inputText : outputText;
+  //   // Resume scheduling from the stored index
+  //   playMorseAudio(text, isInput, currentAudioSymbolIndex);
+  // };
 
 
   // Text-to-speech for regular text (basic implementation - no pause/resume)
