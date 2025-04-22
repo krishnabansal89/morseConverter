@@ -20,7 +20,7 @@ export default function AboutUsPage() {
             Welcome to MorseCod.de — your go-to destination for quick and accurate Morse code translation.
           </p>
           <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            Whether you're a hobbyist, a student, a radio enthusiast, or simply curious about Morse code, our tool is designed to make the process of encoding and decoding as smooth as possible. With just a few clicks, you can convert English or other supported languages into Morse code, or decode Morse messages back into readable text.
+            Whether you&apos;re a hobbyist, a student, a radio enthusiast, or simply curious about Morse code, our tool is designed to make the process of encoding and decoding as smooth as possible. With just a few clicks, you can convert English or other supported languages into Morse code, or decode Morse messages back into readable text.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">Why We Built This Tool</h2>
@@ -28,7 +28,7 @@ export default function AboutUsPage() {
             Morse code is one of the oldest and most fascinating methods of communication. Even in the digital age, it still finds relevance in aviation, amateur radio, and survival training. However, translating Morse code by hand can be time-consuming and prone to error — that’s where we come in.
           </p>
           <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            We created MorseCod.de to simplify Morse code translation for everyone. Whether you're working on a school project, sending a secret message to a friend, or brushing up on communication methods, our intuitive tool makes it easy to:
+            We created MorseCod.de to simplify Morse code translation for everyone. Whether you&apos;re working on a school project, sending a secret message to a friend, or brushing up on communication methods, our intuitive tool makes it easy to:
           </p>
           <ul className="mb-4">
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Convert text to Morse code</li>
