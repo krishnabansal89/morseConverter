@@ -1,4 +1,3 @@
-
 import Link from "next/link"
 import { SocialIcon } from 'react-social-icons'
 
@@ -60,23 +59,39 @@ export default function Footer() {
               <h3 className="text-xl font-semibold mb-8 text-gray-50">Company</h3>
               <ul className="space-y-2 font-maitree">
                 <li>
-                  <Link href="/about" className="text-white hover:text-gray-900">
+                  {/* Corrected href */}
+                  <Link href="/about-us" className="text-white hover:text-gray-900">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy" className="text-white hover:text-gray-900">
+                  {/* Corrected href */}
+                  <Link href="/privacy-policy" className="text-white hover:text-gray-900">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/data-protection" className="text-white hover:text-gray-900">
+                  {/* Corrected href */}
+                  <Link href="/data-protection-policy" className="text-white hover:text-gray-900">
                     Data Protection Policy
                   </Link>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-white hover:text-gray-900">
+                  {/* Corrected href */}
+                  <Link href="/contact-us" className="text-white hover:text-gray-900">
                     Contact Us
+                  </Link>
+                </li>
+                {/* Added How It Works link */}
+                <li>
+                  <Link href="/how-it-works" className="text-white hover:text-gray-900">
+                    How It Works
+                  </Link>
+                </li>
+                {/* Added FAQ link */}
+                <li>
+                  <Link href="/faq" className="text-white hover:text-gray-900">
+                    FAQ
                   </Link>
                 </li>
               </ul>
