@@ -44,11 +44,11 @@ export default function MorseConverter({
   initialText?: string,
   textToMorse?: boolean
 }) {
+  const [isVisualPlaying, setIsVisualPlaying] = useState(false)
   const [inputText, setInputText] = useState(initialText || "")
   const [outputText, setOutputText] = useState("")
   const [mode, setMode] = useState<"morse-to-text" | "text-to-morse">(textToMorse ? "text-to-morse" : "morse-to-text")
   const [copied, setCopied] = useState(false)
-  const [isVisualPlaying, setIsVisualPlaying] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isInputPlaying, setIsInputPlaying] = useState(false)
   const [isInputVisualPlaying, setIsInputVisualPlaying] = useState(false);
@@ -58,6 +58,11 @@ export default function MorseConverter({
     volume: 0.5,
     soundType: 'cw' // Default to CW radio tone
   })
+
+  // New state for pause/resume and progress tracking
+  const [isAudioPaused, setIsAudioPaused] = useState(false);
+  const [isVisualPaused, setIsVisualPaused] = useState(false);
+
 
   const [typingPlaceholder, setTypingPlaceholder] = useState("")
   const [inputError, setInputError] = useState<string | null>(null)
@@ -71,6 +76,12 @@ export default function MorseConverter({
   const oscillatorRef = useRef<OscillatorNode | null>(null)
   const gainNodeRef = useRef<GainNode | null>(null)
   const converterRef = useRef<HTMLDivElement>(null)
+
+  // Refs for managing timeouts and playback timing
+  const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null); // For scheduling next audio chunk
+  const visualTimeoutRef = useRef<NodeJS.Timeout | null>(null); // For scheduling next visual chunk
+  const activeVisualTimeoutsRef = useRef<NodeJS.Timeout[]>([]); // For clearing all active visual timeouts
+
 
   // Check if it's a single letter display mode
   const isSingleLetterMode = initialText.length === 1
@@ -213,282 +224,410 @@ export default function MorseConverter({
 
   // Initialize Audio Context
   const setupAudio = () => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
-      oscillatorRef.current = audioContextRef.current.createOscillator()
-      gainNodeRef.current = audioContextRef.current.createGain()
+    if (!audioContextRef.current && typeof window !== 'undefined') {
+      try {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        oscillatorRef.current = audioContextRef.current.createOscillator();
+        gainNodeRef.current = audioContextRef.current.createGain();
 
-      oscillatorRef.current.frequency.value = audioSettings.frequency
-      gainNodeRef.current.gain.value = 0
+        oscillatorRef.current.frequency.value = audioSettings.frequency;
+        gainNodeRef.current.gain.value = 0; // Start silent
 
-      oscillatorRef.current.connect(gainNodeRef.current)
-      gainNodeRef.current.connect(audioContextRef.current.destination)
+        oscillatorRef.current.connect(gainNodeRef.current);
+        gainNodeRef.current.connect(audioContextRef.current.destination);
 
-      oscillatorRef.current.start()
+        oscillatorRef.current.start();
+      } catch (error) {
+        console.error("Failed to initialize AudioContext:", error);
+        // Handle the error appropriately, maybe disable audio features
+      }
     }
   }
 
-  // Refs for timeouts
-  const inputAudioTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
-  const outputAudioTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
-  const inputVisualTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
-  const outputVisualTimeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  // --- Playback Stop Functions ---
+  const stopAudio = (isInput = false) => {
+    const ac = audioContextRef.current;
+    const gain = gainNodeRef.current;
 
-  // --- Stop Functions ---
-  const stopAudioPlayback = (isInput = false) => {
-    const timeouts = isInput ? inputAudioTimeoutsRef.current : outputAudioTimeoutsRef.current;
-    timeouts.forEach(clearTimeout);
+    // Clear the recursive scheduling timeout
+    if (audioTimeoutRef.current) {
+        clearTimeout(audioTimeoutRef.current);
+        audioTimeoutRef.current = null;
+    }
+
+    // Stop audio context processing if it exists
+    if (ac && gain) {
+        gain.gain.cancelScheduledValues(ac.currentTime);
+        gain.gain.setValueAtTime(0, ac.currentTime); // Ensure silence immediately
+    }
+
+    // Reset state
     if (isInput) {
-      inputAudioTimeoutsRef.current = [];
-      setIsInputPlaying(false);
+        setIsInputPlaying(false);
     } else {
-      outputAudioTimeoutsRef.current = [];
-      setIsPlaying(false);
+        setIsPlaying(false);
+    }
+    setIsAudioPaused(false);
+  }
+
+  const stopVisual = (isInput = false) => {
+    // Clear all scheduled visual timeouts (start/end effects and next step)
+    activeVisualTimeoutsRef.current.forEach(clearTimeout);
+    activeVisualTimeoutsRef.current = [];
+    if (visualTimeoutRef.current) {
+      clearTimeout(visualTimeoutRef.current);
+      visualTimeoutRef.current = null;
     }
 
-    // Stop audio context gain immediately
-    if (audioContextRef.current && gainNodeRef.current) {
-      const ac = audioContextRef.current;
-      const gain = gainNodeRef.current;
-      gain.gain.cancelScheduledValues(ac.currentTime);
-      gain.gain.setValueAtTime(0, ac.currentTime);
-    }
-    // Also stop any text-to-speech
-    if (window.speechSynthesis && window.speechSynthesis.speaking) {
-      window.speechSynthesis.cancel();
-      // Need to reset state if text-to-speech was stopped
-      if (!isInput) setIsPlaying(false);
-      // Assuming text-to-speech only happens for output, but handle input if needed
-      // if (isInput) setIsInputPlaying(false);
-    }
-  };
-
-  const stopVisualPlayback = (isInput = false) => {
-    const timeouts = isInput ? inputVisualTimeoutsRef.current : outputVisualTimeoutsRef.current;
-    timeouts.forEach(clearTimeout);
-    if (isInput) {
-      inputVisualTimeoutsRef.current = [];
-      setIsInputVisualPlaying(false);
+    // Reset state
+     if (isInput) {
+        setIsInputVisualPlaying(false);
     } else {
-      outputVisualTimeoutsRef.current = [];
-      setIsVisualPlaying(false);
+        setIsVisualPlaying(false);
     }
-    // Reset visual effect immediately
-    setVisualEffect({ active: false, isDash: false });
-  };
+    setIsVisualPaused(false);
+    setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
+  }
 
-  // --- Modified Playback Functions ---
 
-  const playVisualMorse = (morseText: string, isInput = false) => {
-    if (!morseText) return
+  // --- Refactored Visual Playback with Pause/Resume ---
+  const playVisualMorse = (morseText: string, isInput = false, startIndex = 0) => {
+    if (!morseText) return;
 
-    // Stop any previous visual playback for this section
-    stopVisualPlayback(isInput);
+    stopVisual(!isInput); // Stop the *other* visual playback if running
 
-    const timeoutsRef = isInput ? inputVisualTimeoutsRef : outputVisualTimeoutsRef;
-    const setState = isInput ? setIsInputVisualPlaying : setIsVisualPlaying;
+    // Clear only the main scheduling timeout if it exists from a previous run
+    if (visualTimeoutRef.current) {
+        clearTimeout(visualTimeoutRef.current);
+        visualTimeoutRef.current = null;
+    }
+    // Clear effect timeouts from previous run for this type (input/output)
+    activeVisualTimeoutsRef.current.forEach(clearTimeout);
+    activeVisualTimeoutsRef.current = [];
 
-    setState(true);
+    if (isInput) setIsInputVisualPlaying(true); else setIsVisualPlaying(true);
+    // Don't set paused to false here, let resumeVisual handle it if resuming
+    // setIsVisualPaused(false); // Ensure not paused when starting/resuming
 
-    const dotDuration = 1.2 / audioSettings.wpm
-    const dashDuration = dotDuration * 3
-    const symbolSpaceDuration = dotDuration
-    const letterSpaceDuration = dotDuration * 3
-    const wordSpaceDuration = dotDuration * 7
+    const dotDuration = 1.2 / audioSettings.wpm * 1000; // ms
+    const dashDuration = dotDuration * 3;
+    const symbolSpaceDuration = dotDuration;
+    const letterSpaceDuration = dotDuration * 3;
+    const wordSpaceDuration = dotDuration * 7;
 
-    let t = 0 // Start time
-    const currentPlaybackTimeouts: NodeJS.Timeout[] = [];
+    const symbols = morseText.split('');
+    let currentIndex = startIndex;
 
-    const playSymbols = async () => {
-      const symbols = morseText.split('')
-
-      for (let i = 0; i < symbols.length; i++) {
-        const symbol = symbols[i]
-        let visualTimeoutId: NodeJS.Timeout;
-        let hideTimeoutId: NodeJS.Timeout;
-
-        if (symbol === '.' || symbol === '•') {
-          visualTimeoutId = setTimeout(() => {
-            setVisualEffect({ active: true, isDash: false })
-          }, t * 1000)
-          currentPlaybackTimeouts.push(visualTimeoutId);
-          t += dotDuration
-          hideTimeoutId = setTimeout(() => {
-            setVisualEffect({ active: false, isDash: false })
-          }, t * 1000)
-          currentPlaybackTimeouts.push(hideTimeoutId);
-          t += symbolSpaceDuration
-        }
-        else if (symbol === '-' || symbol === '–' || symbol === '—') {
-          visualTimeoutId = setTimeout(() => {
-            setVisualEffect({ active: true, isDash: true })
-          }, t * 1000)
-          currentPlaybackTimeouts.push(visualTimeoutId);
-          t += dashDuration
-          hideTimeoutId = setTimeout(() => {
-            setVisualEffect({ active: false, isDash: false })
-          }, t * 1000)
-          currentPlaybackTimeouts.push(hideTimeoutId);
-          t += symbolSpaceDuration
-        }
-        else if (symbol === ' ') {
-          if (i + 1 < symbols.length && symbols[i + 1] === ' ' && i + 2 < symbols.length && symbols[i + 2] === ' ') {
-            t += wordSpaceDuration
-            i += 2
-          } else {
-            t += letterSpaceDuration
-          }
-        }
+    const scheduleNextVisual = (delayOffset = 0) => {
+      // Base case: End of playback
+      if (currentIndex >= symbols.length) {
+        visualTimeoutRef.current = setTimeout(() => {
+          stopVisual(isInput); // Use stop function for cleanup
+        }, delayOffset);
+        // Don't add this final stop timeout to activeVisualTimeoutsRef
+        return;
       }
 
-      // Final timeout to reset state
-      const finalTimeoutId = setTimeout(() => {
-        setState(false);
-        timeoutsRef.current = []; // Clear timeouts on natural completion
-      }, t * 1000)
-      currentPlaybackTimeouts.push(finalTimeoutId);
+      // Pause check: If paused, just stop scheduling. Index is already saved.
+      if (isVisualPaused) {
+        // setCurrentVisualSymbolIndex(currentIndex); // Already set before pause
+        return;
+      }
 
-      // Store all timeouts for this playback instance
-      timeoutsRef.current = currentPlaybackTimeouts;
+      const symbol = symbols[currentIndex];
+      let symbolDuration = 0;
+      let spaceDuration = symbolSpaceDuration; // Default space after symbol
+      const currentSymbolDelay = delayOffset; // Use the offset passed in
+
+      if (symbol === '.' || symbol === '•') {
+        symbolDuration = dotDuration;
+        const startTimeout = setTimeout(() => {
+          setVisualEffect({ active: true, isDash: false });
+        }, currentSymbolDelay);
+        const endTimeout = setTimeout(() => {
+          setVisualEffect({ active: false, isDash: false });
+        }, currentSymbolDelay + symbolDuration);
+        activeVisualTimeoutsRef.current.push(startTimeout, endTimeout);
+      } else if (symbol === '-' || symbol === '–' || symbol === '—') {
+        symbolDuration = dashDuration;
+        const startTimeout = setTimeout(() => {
+          setVisualEffect({ active: true, isDash: true });
+        }, currentSymbolDelay);
+        const endTimeout = setTimeout(() => {
+          setVisualEffect({ active: false, isDash: false });
+        }, currentSymbolDelay + symbolDuration);
+        activeVisualTimeoutsRef.current.push(startTimeout, endTimeout);
+      } else if (symbol === ' ') {
+        // Check for word space (3 spaces) vs letter space (1 space)
+        if (currentIndex + 2 < symbols.length && symbols[currentIndex + 1] === ' ' && symbols[currentIndex + 2] === ' ') {
+          spaceDuration = wordSpaceDuration;
+          currentIndex += 2; // Skip the next two spaces
+        } else {
+          spaceDuration = letterSpaceDuration;
+        }
+        symbolDuration = 0; // No visual for space itself
+      } else {
+         // Ignore invalid characters
+         symbolDuration = 0;
+         spaceDuration = 0;
+      }
+
+      const totalTimeForThisStep = symbolDuration + spaceDuration;
+      currentIndex++;
+      // setCurrentVisualSymbolIndex(currentIndex); // Update progress *before* scheduling next
+
+      // Schedule the next recursive call
+      if (totalTimeForThisStep > 0) {
+          // Schedule the next call relative to the *start* of the current step
+          visualTimeoutRef.current = setTimeout(() => scheduleNextVisual(0), currentSymbolDelay + totalTimeForThisStep);
+      } else {
+          // If duration is 0, schedule immediately relative to current step start
+          visualTimeoutRef.current = setTimeout(() => scheduleNextVisual(0), currentSymbolDelay);
+      }
+    };
+
+    // Start the scheduling process
+    scheduleNextVisual(0); // Start with zero offset
+  };
+
+  // const pauseVisual = (isInput = false) => {
+  //   // Set paused state first
+  //   setIsVisualPaused(true);
+  //   setCurrentVisualSymbolIndex(currentVisualSymbolIndex); // Save current index (redundant but safe)
+
+  //   // Clear the main timeout that schedules the *next* symbol
+  //   if (visualTimeoutRef.current) {
+  //     clearTimeout(visualTimeoutRef.current);
+  //     visualTimeoutRef.current = null;
+  //   }
+
+  //   // Clear any *pending* visual effect timeouts (start/end)
+  //   // This prevents effects for symbols *after* the pause point from showing.
+  //   // It does NOT stop an effect that has already started.
+  //   activeVisualTimeoutsRef.current.forEach(clearTimeout);
+  //   activeVisualTimeoutsRef.current = [];
+
+  //   // Optionally: Force visual effect off immediately on pause
+  //   // setVisualEffect({ active: false, isDash: false });
+  // };
+
+  // const resumeVisual = (isInput = false) => {
+  //   // Only resume if it was actually paused and playing
+  //   const currentlyPlaying = isInput ? isInputVisualPlaying : isVisualPlaying;
+  //   if (!currentlyPlaying || !isVisualPaused) return;
+
+  //   setIsVisualPaused(false); // Unset paused state
+  //   const text = isInput ? inputText : (mode === 'text-to-morse' ? outputText : inputText);
+  //   // Resume from the stored index
+  //   playVisualMorse(text, isInput, currentVisualSymbolIndex);
+  // };
+
+
+  // --- Refactored Audio Playback with Pause/Resume ---
+  const playMorseAudio = (morseText: string, isInput = false, startIndex = 0) => {
+    if (!morseText) return;
+
+    setupAudio(); // Ensure context is ready
+    const ac = audioContextRef.current;
+    const gain = gainNodeRef.current;
+    const osc = oscillatorRef.current;
+    if (!ac || !gain || !osc) {
+        console.error("AudioContext not available or initialized.");
+        stopAudio(isInput); // Ensure state is reset
+        return;
     }
 
-    playSymbols()
-  }
+    stopAudio(!isInput); // Stop the *other* audio playback if running
 
-  const playMorseAudio = (morseText: string, isInput = false) => {
-    if (!morseText) return
+    // Clear any scheduled audio timeouts/events before starting/resuming
+    gain.gain.cancelScheduledValues(ac.currentTime);
+    gain.gain.setValueAtTime(0, ac.currentTime); // Ensure silence initially
+    if (audioTimeoutRef.current) {
+        clearTimeout(audioTimeoutRef.current);
+        audioTimeoutRef.current = null;
+    }
 
-    // Stop any previous audio playback for this section
-    stopAudioPlayback(isInput);
+    if (isInput) setIsInputPlaying(true); else setIsPlaying(true);
+    // Don't set paused to false here, let resumeAudio handle it if resuming
+    // setIsAudioPaused(false);
 
-    setupAudio()
-    if (!audioContextRef.current || !gainNodeRef.current || !oscillatorRef.current) return
+    const dotDuration = 1.2 / audioSettings.wpm;
+    const dashDuration = dotDuration * 3;
+    const symbolSpaceDuration = dotDuration;
+    const letterSpaceDuration = dotDuration * 3;
+    const wordSpaceDuration = dotDuration * 7;
 
-    const timeoutsRef = isInput ? inputAudioTimeoutsRef : outputAudioTimeoutsRef;
-    const setState = isInput ? setIsInputPlaying : setIsPlaying;
-
-    setState(true);
-
-    const dotDuration = 1.2 / audioSettings.wpm
-    const dashDuration = dotDuration * 3
-    const symbolSpaceDuration = dotDuration
-    const letterSpaceDuration = dotDuration * 3
-    const wordSpaceDuration = dotDuration * 7
-
-    const ac = audioContextRef.current
-    const gain = gainNodeRef.current
-    const osc = oscillatorRef.current;
-
-    let t = ac.currentTime + 0.1
-    const currentPlaybackTimeouts: NodeJS.Timeout[] = [];
-
-    osc.frequency.value = audioSettings.frequency
+    osc.frequency.setValueAtTime(audioSettings.frequency, ac.currentTime);
     osc.type = audioSettings.soundType === 'telegraph' ? 'square' : 'sine';
 
-    const playSymbols = async () => {
-      const symbols = morseText.split('')
+    const symbols = morseText.split('');
+    let currentIndex = startIndex;
+    let scheduleTime = ac.currentTime; // Start scheduling from now
 
-      for (let i = 0; i < symbols.length; i++) {
-        const symbol = symbols[i]
+    const scheduleNextAudio = () => {
+        // Base case: End of playback
+        if (currentIndex >= symbols.length) {
+            const delayUntilEnd = (scheduleTime - ac.currentTime) * 1000;
+            audioTimeoutRef.current = setTimeout(() => {
+                stopAudio(isInput);
+            }, Math.max(0, delayUntilEnd + 50));
+            return;
+        }
 
+        // Pause check: If paused, stop scheduling. Index is saved.
+        if (isAudioPaused) {
+            // setCurrentAudioSymbolIndex(currentIndex); // Already set before pause
+            return;
+        }
+
+        const symbol = symbols[currentIndex];
+        let symbolDuration = 0;
+        let spaceDuration = symbolSpaceDuration;
+
+        // Schedule gain changes for the current symbol
         if (symbol === '.' || symbol === '•') {
-          if (audioSettings.soundType === 'telegraph') {
-            gain.gain.setValueAtTime(0, t);
-            gain.gain.linearRampToValueAtTime(audioSettings.volume, t + 0.01);
-          } else {
-            gain.gain.setValueAtTime(audioSettings.volume, t);
-          }
-          t += dotDuration
-          gain.gain.setValueAtTime(0, t)
-          t += symbolSpaceDuration
+            symbolDuration = dotDuration;
+            gain.gain.setValueAtTime(audioSettings.volume, scheduleTime);
+            gain.gain.setValueAtTime(0, scheduleTime + symbolDuration);
+        } else if (symbol === '-' || symbol === '–' || symbol === '—') {
+            symbolDuration = dashDuration;
+            gain.gain.setValueAtTime(audioSettings.volume, scheduleTime);
+            gain.gain.setValueAtTime(0, scheduleTime + symbolDuration);
+        } else if (symbol === ' ') {
+            if (currentIndex + 2 < symbols.length && symbols[currentIndex + 1] === ' ' && symbols[currentIndex + 2] === ' ') {
+                spaceDuration = wordSpaceDuration;
+                currentIndex += 2;
+            } else {
+                spaceDuration = letterSpaceDuration;
+            }
+            symbolDuration = 0;
+        } else {
+            symbolDuration = 0;
+            spaceDuration = 0; // No sound, no extra space
         }
-        else if (symbol === '-' || symbol === '–' || symbol === '—') {
-          if (audioSettings.soundType === 'telegraph') {
-            gain.gain.setValueAtTime(0, t);
-            gain.gain.linearRampToValueAtTime(audioSettings.volume, t + 0.01);
-          } else {
-            gain.gain.setValueAtTime(audioSettings.volume, t);
-          }
-          t += dashDuration
-          gain.gain.setValueAtTime(0, t)
-          t += symbolSpaceDuration
+
+        // Advance the time for the next schedule
+        const timeForCurrentStep = symbolDuration + spaceDuration;
+        scheduleTime += timeForCurrentStep;
+        currentIndex++;
+        // setCurrentAudioSymbolIndex(currentIndex); // Update before scheduling next
+
+        // Schedule the call for the *next* symbol using setTimeout
+        // Calculate delay from *now* until the current step finishes
+        const delayUntilNextCall = (scheduleTime - ac.currentTime) * 1000;
+
+        if (timeForCurrentStep > 0) {
+             // Schedule the next check slightly *before* the current step ends
+             // to ensure smooth transition if possible, or right after.
+            audioTimeoutRef.current = setTimeout(scheduleNextAudio, Math.max(0, delayUntilNextCall - 10)); // Small buffer
+        } else {
+             // If duration is 0, schedule next check immediately
+             scheduleNextAudio(); // Direct call might be too fast, use timeout 0
+            // audioTimeoutRef.current = setTimeout(scheduleNextAudio, 0);
         }
-        else if (symbol === ' ') {
-          if (i + 1 < symbols.length && symbols[i + 1] === ' ' && i + 2 < symbols.length && symbols[i + 2] === ' ') {
-            t += wordSpaceDuration
-            i += 2
-          } else {
-            t += letterSpaceDuration
-          }
-        }
-      }
+    };
 
-      // Schedule state reset slightly after the last sound should end
-      const totalDuration = (t - ac.currentTime) * 1000;
-      const finalTimeoutId = setTimeout(() => {
-        setState(false);
-        timeoutsRef.current = []; // Clear timeouts on natural completion
-      }, totalDuration + 50); // Add a small buffer
-      currentPlaybackTimeouts.push(finalTimeoutId);
+    // Start scheduling
+    scheduleNextAudio();
+  };
 
-      // Store all timeouts (though only the last one matters for audio state)
-      timeoutsRef.current = currentPlaybackTimeouts;
-    }
+  // const pauseAudio = (isInput = false) => {
+  //   const ac = audioContextRef.current;
+  //   const gain = gainNodeRef.current;
+  //   const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
+  //   if (!ac || !gain || !currentlyPlaying || isAudioPaused) return; // Only pause if playing and not already paused
 
-    playSymbols()
-  }
+  //   // Set paused state first
+  //   setIsAudioPaused(true);
+  //   setCurrentAudioSymbolIndex(currentAudioSymbolIndex); // Save current index
 
-  const speakText = (text: string, isInput = false) => {
+  //   // Clear the recursive scheduling timeout
+  //   if (audioTimeoutRef.current) {
+  //       clearTimeout(audioTimeoutRef.current);
+  //       audioTimeoutRef.current = null;
+  //   }
+
+  //   // Cancel future scheduled gain changes and force silence now
+  //   gain.gain.cancelScheduledValues(ac.currentTime);
+  //   gain.gain.setValueAtTime(0, ac.currentTime);
+  // };
+
+  // const resumeAudio = (isInput = false) => {
+  //    const ac = audioContextRef.current;
+  //    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
+  //    // Only resume if it was playing and is currently paused
+  //    if (!ac || !currentlyPlaying || !isAudioPaused) return;
+
+  //   setIsAudioPaused(false); // Unset paused state
+  //   const text = isInput ? inputText : outputText;
+  //   // Resume scheduling from the stored index
+  //   playMorseAudio(text, isInput, currentAudioSymbolIndex);
+  // };
+
+
+  // Text-to-speech for regular text (basic implementation - no pause/resume)
+  const speakText = (text: string) => {
     if (text && window.speechSynthesis) {
-      // Stop any previous speech
-      stopAudioPlayback(isInput);
-
-      const setState = isInput ? setIsInputPlaying : setIsPlaying;
-      setState(true);
-
+      // Cancel any previous utterances
+      window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.lang = "en-US"
-      utterance.onend = () => {
-        setState(false);
-      };
-      utterance.onerror = () => {
-        console.error("Speech synthesis error");
-        setState(false); // Reset state on error too
-      };
+      // Add event listeners if needed (e.g., onend)
       window.speechSynthesis.speak(utterance)
     }
   }
 
-  // --- Modified Handler Functions ---
+  // --- Updated Event Handlers ---
+
+  // Handle audio playback trigger (Play/Stop)
   const handleAudioPlay = (text: string, isInput = false) => {
-    const isPlayingState = isInput ? isInputPlaying : isPlaying;
+    const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
+    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
 
-    if (isPlayingState) {
-      stopAudioPlayback(isInput);
-    } else {
-      const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
-      if (isMorse) {
-        playMorseAudio(text, isInput);
-      } else {
-        speakText(text, isInput);
-      }
+    if (!isMorse) {
+      // Handle TTS
+      stopAudio(isInput); // Stop any morse audio
+      stopVisual(isInput); // Stop any morse visual
+      speakText(text);
+      return;
     }
-  }
 
-  const handleVisualPlay = (text: string, isInput = false) => {
-    const isVisualPlayingState = isInput ? isInputVisualPlaying : isVisualPlaying;
+    // Stop TTS if it's running
+    window.speechSynthesis?.cancel();
 
-    if (isVisualPlayingState) {
-      stopVisualPlayback(isInput);
+    if (!currentlyPlaying) {
+      // --- Start playing ---
+      stopVisual(isInput); // Stop visual if it's running
+      playMorseAudio(text, isInput, 0); // Start from beginning
     } else {
-      const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
-      if (isMorse) {
-        playVisualMorse(text, isInput);
-      } else {
-        console.log("Visual effect not applicable for plain text.");
-      }
+      // --- Stop playing ---
+      stopAudio(isInput);
     }
   };
+
+  // Handle visual playback trigger (Play/Stop)
+  const handleVisualPlay = (text: string, isInput = false) => {
+    const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
+    const currentlyPlaying = isInput ? isInputVisualPlaying : isVisualPlaying;
+
+    if (!isMorse) {
+      console.log("Visual effect not applicable for plain text.");
+      return; // Do nothing for non-Morse
+    }
+
+    // Stop TTS if it's running
+    window.speechSynthesis?.cancel();
+
+    if (!currentlyPlaying) {
+      // --- Start playing ---
+      stopAudio(isInput); // Stop audio if it's running
+      playVisualMorse(text, isInput, 0); // Start from beginning
+    } else {
+      // --- Stop playing ---
+      stopVisual(isInput);
+    }
+  };
+
 
   // Handle copy to clipboard
   const handleCopy = () => {
@@ -514,6 +653,12 @@ export default function MorseConverter({
 
   // Handle clear input
   const handleClear = () => {
+    stopAudio(true); // Stop input audio
+    stopAudio(false); // Stop output audio
+    stopVisual(true); // Stop input visual
+    stopVisual(false); // Stop output visual
+    window.speechSynthesis?.cancel(); // Stop TTS
+
     setInputText("")
     setOutputText("")
     setInputError(null)
@@ -521,6 +666,10 @@ export default function MorseConverter({
       inputRef.current.focus()
     }
   }
+
+  // Determine Morse text for output visual button
+  const morseForOutputVisual = mode === 'text-to-morse' ? outputText : inputText;
+  const isOutputMorseValid = /^[.\- ]+$/.test(morseForOutputVisual.replace(/\s+/g, ' '));
 
   return (
     <div
@@ -556,27 +705,29 @@ export default function MorseConverter({
               </div>
 
               {/* Action buttons for input */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1"> {/* Reduced gap slightly */}
                 {/* Input Audio Button */}
                 <Button
                   onClick={() => handleAudioPlay(inputText, true)}
                   variant="ghost"
                   size="sm"
                   className={`text-[#456359] ${isInputPlaying ? 'animate-pulse' : ''}`}
-                  disabled={!inputText || isInputVisualPlaying} // Only disable if visual is playing
-                  title={isInputPlaying ? "Stop Audio" : "Play Audio"}
+                  // Disable if input empty OR visual is actively playing
+                  disabled={!inputText || isInputVisualPlaying}
+                  title={isInputPlaying ? "Stop Audio" : "Play Input Audio"}
                 >
                   {isInputPlaying ? <Pause size={18} /> : <Volume2 size={18} />}
                 </Button>
 
-                {/* Input Visual Effect Button */}
+                {/* Input Visual Button */}
                 <Button
                   onClick={() => handleVisualPlay(inputText, true)}
                   variant="ghost"
                   size="sm"
                   className={`text-[#456359] ${isInputVisualPlaying ? 'animate-pulse' : ''}`}
-                  disabled={!inputText || isInputPlaying} // Only disable if audio is playing
-                  title={isInputVisualPlaying ? "Stop Visual Effect" : "Play Visual Effect"}
+                   // Disable if input empty OR input not morse OR audio is actively playing
+                  disabled={!inputText || !/^[.\- ]+$/.test(inputText.replace(/\s+/g, ' ')) || isInputPlaying}
+                  title={isInputVisualPlaying ? "Stop Visual" : "Play Input Visual Effect"}
                 >
                   {isInputVisualPlaying ? <Pause size={18} /> : <Lightbulb size={18} />}
                 </Button>
@@ -607,7 +758,7 @@ export default function MorseConverter({
                     : "min-h-[100px] md:min-h-[200px]"}
                   ${isSingleLetterMode && inputText === initialText
                     ? "text-center text-4xl md:text-6xl"
-                    : "text-md/relaxed"}
+                    : "text-xl/relaxed"}
                 `}
               />
 
@@ -641,14 +792,15 @@ export default function MorseConverter({
                   {mode === "morse-to-text" ? "Text" : "Morse Code"}
                 </span>
               </div>
-              {/* Output Audio Button */}
+              {/* Output Audio Button - No change needed here unless you want separate visual too */}
               <Button
                 onClick={() => handleAudioPlay(outputText, false)} // isInput = false
                 variant="ghost"
                 size="sm"
                 className={`text-[#456359] ${isPlaying ? 'animate-pulse' : ''}`}
-                disabled={!outputText || isVisualPlaying} // Disable if output visual is playing
-                title={isPlaying ? "Stop Output Audio" : "Play Output Audio"}
+                // Disable if output empty OR visual is actively playing
+                disabled={!outputText || isVisualPlaying}
+                title={isPlaying ? "Stop Audio" : "Play Output Audio"}
               >
                 {isPlaying ? <Pause size={18} /> : <Volume2 size={18} />}
               </Button>
@@ -661,7 +813,7 @@ export default function MorseConverter({
                 : "min-h-[100px] md:min-h-[200px]"}
               ${isSingleLetterMode
                 ? "text-center text-4xl md:text-6xl"
-                : "text-md"}
+                : "text-xl"}
             `}>
               {outputText || (
                 <span className="text-gray-400 text-md">
@@ -671,6 +823,7 @@ export default function MorseConverter({
             </div>
 
             <div className="p-3 border-t border-gray-200 flex justify-end space-x-2">
+              {/* Copy Button */}
               <Button
                 onClick={handleCopy}
                 variant="ghost"
@@ -682,17 +835,21 @@ export default function MorseConverter({
                 <Copy className="h-5 w-5" />
                 {copied && <span className="sr-only">Copied!</span>}
               </Button>
+
               {/* Output Visual Button */}
               <Button
-                onClick={() => handleVisualPlay(mode === "morse-to-text" ? inputText : outputText, false)} // isInput = false
+                onClick={() => handleVisualPlay(morseForOutputVisual, false)} // Use handler
                 variant="ghost"
                 size="sm"
                 className={`text-[#456359] ${isVisualPlaying ? 'animate-pulse' : ''}`}
-                disabled={!(mode === "morse-to-text" ? inputText : outputText) || isPlaying} // Disable if output audio is playing
-                title={isVisualPlaying ? "Stop Output Visual Effect" : "Play Output Visual Effect"}
+                // Disable if no valid morse OR audio is actively playing
+                disabled={!isOutputMorseValid || isPlaying}
+                title={isVisualPlaying ? "Stop Visual" : "Play Output Visual Effect"}
               >
                 {isVisualPlaying ? <Pause size={18} /> : <Lightbulb size={18} />}
               </Button>
+
+              {/* Download Button */}
               <Button
                 onClick={handleDownload}
                 variant="ghost"
@@ -703,6 +860,7 @@ export default function MorseConverter({
               >
                 <Download className="h-5 w-5" />
               </Button>
+              {/* Help Button */}
               <Button
                 variant="ghost"
                 size="sm"
