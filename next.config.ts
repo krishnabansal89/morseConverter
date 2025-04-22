@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/morse-code-chart',
-        destination: '/charts/morse-code.pdf',
+        destination: '/charts/morse-code-chart.pdf',
         permanent: true, // Set to true for permanent redirect, false for temporary
       },
     ];
