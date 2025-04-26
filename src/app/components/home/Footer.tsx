@@ -18,8 +18,7 @@ export default function Footer() {
             {/* Column 2: Pages */}
             <div>
               <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
-              <ul className="space-y-2 font-maitree">
-                <li>
+              <ul className="space-y-2 font-maitree">                <li>
                   <Link href="/morse-code-alphabets" className="text-white hover:text-gray-900">
                     Morse Code Alphabets
                   </Link>
@@ -30,8 +29,18 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/international-morse-code" className="text-white hover:text-gray-900">
+                    International Morse Code
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/american-morse-code-translator" className="text-white hover:text-gray-900">
+                    American Morse Code
+                  </Link>
+                </li>
+                <li>
                   <Link href="/morse-code-chart" className="text-white hover:text-gray-900">
-                    International Morse Codes
+                    Morse Code Chart
                   </Link>
                 </li>
               </ul>
