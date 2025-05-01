@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import {
-  Copy, Download, Trash2, HelpCircle, Volume2, Pause, // Added Pause
+  Copy, Download, Trash2, HelpCircle, Volume2, Pause, Play, Square,
   Settings, ArrowLeftRight, Lightbulb
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -51,7 +51,7 @@ export default function MorseConverter({
   const [copied, setCopied] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isInputPlaying, setIsInputPlaying] = useState(false)
-  const [isInputVisualPlaying, setIsInputVisualPlaying] = useState(false);
+  const [isInputVisualPlaying, setIsInputVisualPlaying] = useState(false)
   const [audioSettings, setAudioSettings] = useState({
     wpm: 15,
     frequency: 700,
@@ -60,9 +60,19 @@ export default function MorseConverter({
   })
 
   // New state for pause/resume and progress tracking
-  const [isAudioPaused, setIsAudioPaused] = useState(false);
-  const [isVisualPaused, setIsVisualPaused] = useState(false);
+  const [isInputAudioPaused, setIsInputAudioPaused] = useState(false)
+const [isOutputAudioPaused, setIsOutputAudioPaused] = useState(false)
+const [isInputVisualPaused, setIsInputVisualPaused] = useState(false)
+const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
+  
+  // New state for effect selection
+  const [audioEffectSelected, setAudioEffectSelected] = useState(true)
+  const [visualEffectSelected, setVisualEffectSelected] = useState(false)
+  
+  // Track current position for pause/resume
+  const [currentAudioIndex, setCurrentAudioIndex] = useState(0)
+  const [currentVisualIndex, setCurrentVisualIndex] = useState(0)
 
   const [typingPlaceholder, setTypingPlaceholder] = useState("")
   const [inputError, setInputError] = useState<string | null>(null)
@@ -78,10 +88,9 @@ export default function MorseConverter({
   const converterRef = useRef<HTMLDivElement>(null)
 
   // Refs for managing timeouts and playback timing
-  const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null); // For scheduling next audio chunk
-  const visualTimeoutRef = useRef<NodeJS.Timeout | null>(null); // For scheduling next visual chunk
-  const activeVisualTimeoutsRef = useRef<NodeJS.Timeout[]>([]); // For clearing all active visual timeouts
-
+  const audioTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const visualTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const activeVisualTimeoutsRef = useRef<NodeJS.Timeout[]>([])
 
   // Check if it's a single letter display mode
   const isSingleLetterMode = initialText.length === 1
@@ -267,7 +276,14 @@ export default function MorseConverter({
     } else {
         setIsPlaying(false);
     }
-    setIsAudioPaused(false);
+    
+    if (isInput) {
+    setIsInputAudioPaused(false);
+  } else {
+    setIsOutputAudioPaused(false);
+  }
+
+    setCurrentAudioIndex(0); // Reset position
   }
 
   const stopVisual = (isInput = false) => {
@@ -285,12 +301,27 @@ export default function MorseConverter({
     } else {
         setIsVisualPlaying(false);
     }
-    setIsVisualPaused(false);
-    setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
+    if (isInput) {
+    setIsInputVisualPaused(false);
+  } else {
+    setIsOutputVisualPaused(false);
   }
 
+    setCurrentVisualIndex(0); // Reset position
+    setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
+  }
+  // Stop both audio and visual effects
+  const stopAllEffects = (isInput = false) => {
+    // Always call stopAudio and stopVisual regardless of state
+    // The functions themselves have guards to prevent errors
+    stopAudio(isInput);
+    stopVisual(isInput);
+    
+    // Also stop TTS if it's running
+    window.speechSynthesis?.cancel();
+  }
 
-  // --- Refactored Visual Playback with Pause/Resume ---
+  // --- Updated Visual Playback with Pause/Resume ---
   const playVisualMorse = (morseText: string, isInput = false, startIndex = 0) => {
     if (!morseText) return;
 
@@ -306,8 +337,11 @@ export default function MorseConverter({
     activeVisualTimeoutsRef.current = [];
 
     if (isInput) setIsInputVisualPlaying(true); else setIsVisualPlaying(true);
-    // Don't set paused to false here, let resumeVisual handle it if resuming
-    // setIsVisualPaused(false); // Ensure not paused when starting/resuming
+    if (isInput) {
+    setIsInputVisualPaused(false);
+  } else {
+    setIsOutputVisualPaused(false);
+  } // Ensure not paused when starting
 
     const dotDuration = 1.2 / audioSettings.wpm * 1000; // ms
     const dashDuration = dotDuration * 3;
@@ -317,6 +351,7 @@ export default function MorseConverter({
 
     const symbols = morseText.split('');
     let currentIndex = startIndex;
+    setCurrentVisualIndex(currentIndex); // Track current position
 
     const scheduleNextVisual = (delayOffset = 0) => {
       // Base case: End of playback
@@ -329,8 +364,7 @@ export default function MorseConverter({
       }
 
       // Pause check: If paused, just stop scheduling. Index is already saved.
-      if (isVisualPaused) {
-        // setCurrentVisualSymbolIndex(currentIndex); // Already set before pause
+        if ((isInput ? isInputAudioPaused : isOutputAudioPaused)){
         return;
       }
 
@@ -374,7 +408,7 @@ export default function MorseConverter({
 
       const totalTimeForThisStep = symbolDuration + spaceDuration;
       currentIndex++;
-      // setCurrentVisualSymbolIndex(currentIndex); // Update progress *before* scheduling next
+      setCurrentVisualIndex(currentIndex); // Update progress *before* scheduling next
 
       // Schedule the next recursive call
       if (totalTimeForThisStep > 0) {
@@ -390,43 +424,59 @@ export default function MorseConverter({
     scheduleNextVisual(0); // Start with zero offset
   };
 
-  // const pauseVisual = (isInput = false) => {
-  //   // Set paused state first
-  //   setIsVisualPaused(true);
-  //   setCurrentVisualSymbolIndex(currentVisualSymbolIndex); // Save current index (redundant but safe)
+  // Pause visual playback
+  const pauseVisual = (isInput = false) => {
+    // Set paused state first
+    if (isInput) {
+    setIsInputVisualPaused(true);
+  } else {
+    setIsOutputVisualPaused(true);
+  }
 
-  //   // Clear the main timeout that schedules the *next* symbol
-  //   if (visualTimeoutRef.current) {
-  //     clearTimeout(visualTimeoutRef.current);
-  //     visualTimeoutRef.current = null;
-  //   }
+    // Clear the main timeout that schedules the *next* symbol
+    if (visualTimeoutRef.current) {
+      clearTimeout(visualTimeoutRef.current);
+      visualTimeoutRef.current = null;
+    }
 
-  //   // Clear any *pending* visual effect timeouts (start/end)
-  //   // This prevents effects for symbols *after* the pause point from showing.
-  //   // It does NOT stop an effect that has already started.
-  //   activeVisualTimeoutsRef.current.forEach(clearTimeout);
-  //   activeVisualTimeoutsRef.current = [];
+    // Clear any *pending* visual effect timeouts (start/end)
+    activeVisualTimeoutsRef.current.forEach(clearTimeout);
+    activeVisualTimeoutsRef.current = [];
+  };
 
-  //   // Optionally: Force visual effect off immediately on pause
-  //   // setVisualEffect({ active: false, isDash: false });
-  // };
+  useEffect(() => {
+  if (!isInputVisualPaused && isInputVisualPlaying) {
+    // Resume visual playback from currentVisualIndex
+    const text = inputText;
+    playVisualMorse(text, true, currentVisualIndex);
+  }
+}, [isInputVisualPaused]);
 
-  // const resumeVisual = (isInput = false) => {
-  //   // Only resume if it was actually paused and playing
-  //   const currentlyPlaying = isInput ? isInputVisualPlaying : isVisualPlaying;
-  //   if (!currentlyPlaying || !isVisualPaused) return;
+useEffect(() => {
+  if (!isOutputVisualPaused && isVisualPlaying) {
+    // Resume visual playback from currentVisualIndex
+    const text = mode === 'text-to-morse' ? outputText : inputText;
+    playVisualMorse(text, false, currentVisualIndex);
+  }
+}, [isOutputVisualPaused]);
 
-  //   setIsVisualPaused(false); // Unset paused state
-  //   const text = isInput ? inputText : (mode === 'text-to-morse' ? outputText : inputText);
-  //   // Resume from the stored index
-  //   playVisualMorse(text, isInput, currentVisualSymbolIndex);
-  // };
+  // Resume visual playback
+  const resumeVisual = (isInput = false) => {
+  if (!(isInput ? isInputVisualPaused : isOutputVisualPaused)) return;
+  if (isInput) {
+    setIsInputVisualPlaying(true);
+    setIsInputVisualPaused(false);
+  } else {
+    setIsVisualPlaying(true);
+    setIsOutputVisualPaused(false);
+  }
+  // Do not call playVisualMorse here!
+};
 
-
-  // --- Refactored Audio Playback with Pause/Resume ---
+  // --- Updated Audio Playback with Pause/Resume ---
   const playMorseAudio = (morseText: string, isInput = false, startIndex = 0) => {
     if (!morseText) return;
-
+    console.log("Playing Morse audio:", isInput ? "Input" : "Output", "Start index:", startIndex);
     setupAudio(); // Ensure context is ready
     const ac = audioContextRef.current;
     const gain = gainNodeRef.current;
@@ -448,8 +498,11 @@ export default function MorseConverter({
     }
 
     if (isInput) setIsInputPlaying(true); else setIsPlaying(true);
-    // Don't set paused to false here, let resumeAudio handle it if resuming
-    // setIsAudioPaused(false);
+    if (isInput) {
+    setIsInputAudioPaused(false);
+  } else {
+    setIsOutputAudioPaused(false);
+  }
 
     const dotDuration = 1.2 / audioSettings.wpm;
     const dashDuration = dotDuration * 3;
@@ -462,6 +515,7 @@ export default function MorseConverter({
 
     const symbols = morseText.split('');
     let currentIndex = startIndex;
+    setCurrentAudioIndex(currentIndex); // Track current position
     let scheduleTime = ac.currentTime; // Start scheduling from now
 
     const scheduleNextAudio = () => {
@@ -475,8 +529,7 @@ export default function MorseConverter({
         }
 
         // Pause check: If paused, stop scheduling. Index is saved.
-        if (isAudioPaused) {
-            // setCurrentAudioSymbolIndex(currentIndex); // Already set before pause
+        if ((isInput ? isInputAudioPaused : isOutputAudioPaused)) {
             return;
         }
 
@@ -510,7 +563,7 @@ export default function MorseConverter({
         const timeForCurrentStep = symbolDuration + spaceDuration;
         scheduleTime += timeForCurrentStep;
         currentIndex++;
-        // setCurrentAudioSymbolIndex(currentIndex); // Update before scheduling next
+        setCurrentAudioIndex(currentIndex); // Update progress
 
         // Schedule the call for the *next* symbol using setTimeout
         // Calculate delay from *now* until the current step finishes
@@ -531,38 +584,75 @@ export default function MorseConverter({
     scheduleNextAudio();
   };
 
-  // const pauseAudio = (isInput = false) => {
-  //   const ac = audioContextRef.current;
-  //   const gain = gainNodeRef.current;
-  //   const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
-  //   if (!ac || !gain || !currentlyPlaying || isAudioPaused) return; // Only pause if playing and not already paused
+  // Pause audio playback
+  const pauseAudio = (isInput = false) => {
+    const ac = audioContextRef.current;
+    const gain = gainNodeRef.current;
+    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
+    // Only pause if playing and not already paused
+    if (!ac || !gain || !currentlyPlaying || (isInput ? isInputAudioPaused : isOutputAudioPaused)) return;
 
-  //   // Set paused state first
-  //   setIsAudioPaused(true);
-  //   setCurrentAudioSymbolIndex(currentAudioSymbolIndex); // Save current index
+    // Set paused state first
+    if (isInput) {
+    setIsInputAudioPaused(true);
+  } else {
+    setIsOutputAudioPaused(true);
+  }
 
-  //   // Clear the recursive scheduling timeout
-  //   if (audioTimeoutRef.current) {
-  //       clearTimeout(audioTimeoutRef.current);
-  //       audioTimeoutRef.current = null;
-  //   }
+    // Clear the recursive scheduling timeout
+    if (audioTimeoutRef.current) {
+        clearTimeout(audioTimeoutRef.current);
+        audioTimeoutRef.current = null;
+    }
 
-  //   // Cancel future scheduled gain changes and force silence now
-  //   gain.gain.cancelScheduledValues(ac.currentTime);
-  //   gain.gain.setValueAtTime(0, ac.currentTime);
-  // };
+    // Cancel future scheduled gain changes and force silence now
+    gain.gain.cancelScheduledValues(ac.currentTime);
+    gain.gain.setValueAtTime(0, ac.currentTime);
+  };
+  // Resume audio playback
 
-  // const resumeAudio = (isInput = false) => {
-  //    const ac = audioContextRef.current;
-  //    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
-  //    // Only resume if it was playing and is currently paused
-  //    if (!ac || !currentlyPlaying || !isAudioPaused) return;
+  useEffect(() => {
+  if (!isInputAudioPaused && isInputPlaying) {
+    // Resume playback from currentAudioIndex
+    const ac = audioContextRef.current;
+    if (ac) {
+      ac.resume().then(() => {
+        playMorseAudio(inputText, true, currentAudioIndex);
+      });
+    }
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isInputAudioPaused]);
+useEffect(() => {
+  if (!isOutputAudioPaused && isPlaying) {
+    // Resume output audio playback from currentAudioIndex
+    const ac = audioContextRef.current;
+    if (ac) {
+      ac.resume().then(() => {
+        playMorseAudio(outputText, false, currentAudioIndex);
+      });
+    }
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isOutputAudioPaused]);
 
-  //   setIsAudioPaused(false); // Unset paused state
-  //   const text = isInput ? inputText : outputText;
-  //   // Resume scheduling from the stored index
-  //   playMorseAudio(text, isInput, currentAudioSymbolIndex);
-  // };
+
+  const resumeAudio = (isInput = false) => {
+  if (audioTimeoutRef.current) {
+    clearTimeout(audioTimeoutRef.current);
+    audioTimeoutRef.current = null;
+  }
+
+  if (isInput) {
+    setIsInputPlaying(true);
+    setIsInputAudioPaused(false);
+  } else {
+    setIsPlaying(true);
+    setIsOutputAudioPaused(false);
+  }
+  // Do not call playMorseAudio here!
+};
+
 
 
   // Text-to-speech for regular text (basic implementation - no pause/resume)
@@ -577,57 +667,65 @@ export default function MorseConverter({
     }
   }
 
-  // --- Updated Event Handlers ---
+  // --- Updated Control Functions ---  // Play both audio and visual effects simultaneously based on selection
+  const playSelectedEffects = (text: string, isInput = false) => {
+    // Check whether the content is Morse code based on the current mode and which side we're playing
+    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+    
+    // Stop any currently playing effects
+    stopAllEffects(isInput);
+    
+    // Stop TTS if it's running
+    window.speechSynthesis?.cancel();
 
-  // Handle audio playback trigger (Play/Stop)
-  const handleAudioPlay = (text: string, isInput = false) => {
-    const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
-    const currentlyPlaying = isInput ? isInputPlaying : isPlaying;
-
-    if (!isMorse) {
-      // Handle TTS
-      stopAudio(isInput); // Stop any morse audio
-      stopVisual(isInput); // Stop any morse visual
-      speakText(text);
+    if (!isMorseContent) {
+      // For non-Morse text, use TTS if audio is selected
+      if (audioEffectSelected) {
+        speakText(text);
+      }
+      // Note: Visual effects are not supported for regular text
       return;
     }
-
-    // Stop TTS if it's running
-    window.speechSynthesis?.cancel();
-
-    if (!currentlyPlaying) {
-      // --- Start playing ---
-      stopVisual(isInput); // Stop visual if it's running
-      playMorseAudio(text, isInput, 0); // Start from beginning
-    } else {
-      // --- Stop playing ---
-      stopAudio(isInput);
+    
+    // Play selected effects for Morse code
+    if (audioEffectSelected) {
+      playMorseAudio(text, isInput, 0);
+    }
+    
+    if (visualEffectSelected) {
+      playVisualMorse(text, isInput, 0);
+    }
+  };  // Pause all active effects
+  const pauseSelectedEffects = (isInput = false) => {
+    // Check if the content is Morse code based on which side we're dealing with
+    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+    
+    // Pause audio if it's selected and playing (not already paused)
+    if (audioEffectSelected && (isInput ? isInputPlaying : isPlaying) && !(isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+      pauseAudio(isInput);
+    }
+    
+    // Pause visual if it's selected, playing, and content is Morse
+    if (visualEffectSelected && (isInput ? isInputVisualPlaying : isVisualPlaying) && !(isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
+      pauseVisual(isInput);
     }
   };
 
-  // Handle visual playback trigger (Play/Stop)
-  const handleVisualPlay = (text: string, isInput = false) => {
-    const isMorse = /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
-    const currentlyPlaying = isInput ? isInputVisualPlaying : isVisualPlaying;
-
-    if (!isMorse) {
-      console.log("Visual effect not applicable for plain text.");
-      return; // Do nothing for non-Morse
+  // Resume all paused effects
+  const resumeSelectedEffects = (isInput = false) => {
+    // Check if the content is Morse code based on which side we're dealing with
+    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+    
+    // Resume audio if it's selected and paused
+    if (audioEffectSelected && (isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+      resumeAudio(isInput);
     }
-
-    // Stop TTS if it's running
-    window.speechSynthesis?.cancel();
-
-    if (!currentlyPlaying) {
-      // --- Start playing ---
-      stopAudio(isInput); // Stop audio if it's running
-      playVisualMorse(text, isInput, 0); // Start from beginning
-    } else {
-      // --- Stop playing ---
-      stopVisual(isInput);
+    
+    // Resume visual if it's selected, paused, and content is Morse
+    if (visualEffectSelected && (isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
+      resumeVisual(isInput);
     }
   };
-
 
   // Handle copy to clipboard
   const handleCopy = () => {
@@ -653,12 +751,9 @@ export default function MorseConverter({
 
   // Handle clear input
   const handleClear = () => {
-    stopAudio(true); // Stop input audio
-    stopAudio(false); // Stop output audio
-    stopVisual(true); // Stop input visual
-    stopVisual(false); // Stop output visual
-    window.speechSynthesis?.cancel(); // Stop TTS
-
+    stopAllEffects(true);
+    stopAllEffects(false);
+    
     setInputText("")
     setOutputText("")
     setInputError(null)
@@ -666,10 +761,50 @@ export default function MorseConverter({
       inputRef.current.focus()
     }
   }
+  // Toggle audio effect selection - ensure at least one option is selected
+  const toggleAudioEffect = () => {
+    const newValue = !audioEffectSelected;
+    setAudioEffectSelected(newValue);
+    // If turning off audio and visual is already off, then turn on visual
+    if (!newValue && !visualEffectSelected) {
+      setVisualEffectSelected(true);
+    }
+  };  // Toggle visual effect selection - ensure at least one option is selected
+  // and only allow visual effect for valid Morse code
+  const toggleVisualEffect = () => {
+    // Check if either input or output has valid Morse content
+    const hasMorseContent = isInputMorse || isOutputMorse;
+    
+    // Only allow visual effect for Morse code
+    if (!hasMorseContent && !visualEffectSelected) {
+      return; // Don't enable visual if no Morse content is available
+    }
+    
+    const newValue = !visualEffectSelected;
+    setVisualEffectSelected(newValue);
+    
+    // If turning off visual and audio is already off, then turn on audio
+    if (!newValue && !audioEffectSelected) {
+      setAudioEffectSelected(true);
+    }
+  };
+  // Helper functions to determine whether input or output is valid Morse
+  const isMorseFormat = (text: string): boolean => {
+    return /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
+  };
+  
+  // Check if the input side has Morse content based on the current mode
+  const isInputMorse = mode === 'morse-to-text' ? isMorseFormat(inputText) : false;
+  
+  // Check if the output side has Morse content based on the current mode
+  const isOutputMorse = mode === 'text-to-morse' ? isMorseFormat(outputText) : false;
+  
+  // Determine if any playback is active for either input or output
+  const isAnyPlaying = isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying;
+  const isInputPaused = isInputAudioPaused || isInputVisualPaused;
+const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
 
-  // Determine Morse text for output visual button
-  const morseForOutputVisual = mode === 'text-to-morse' ? outputText : inputText;
-  const isOutputMorseValid = /^[.\- ]+$/.test(morseForOutputVisual.replace(/\s+/g, ' '));
+  const isAnyPaused = isInputPaused || isOutputPaused;
 
   return (
     <div
@@ -681,18 +816,20 @@ export default function MorseConverter({
     >
       <div className="w-full mx-auto rounded-lg overflow-hidden border border-gray-200">
         <div className="grid md:grid-cols-2 relative">
-          {/* Swap button in center */}
-          <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10 md:block hidden">
-            <Button
-              onClick={toggleMode}
-              variant="outline"
-              size="icon"
-              className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md overflow-hidden"
-            >
-              <div className="swap-arrow-container">
-                <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
-              </div>
-            </Button>
+          {/* Swap button in center */}          <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10 md:block hidden">
+            <div className="flex flex-col items-center">
+              <Button
+                onClick={toggleMode}
+                variant="outline"
+                size="icon"
+                className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md overflow-hidden"
+              >
+                <div className="swap-arrow-container">
+                  <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
+                </div>
+              </Button>
+              <span className="text-xs mt-1 text-[#456359]">Swap</span>
+            </div>
           </div>
 
           {/* Input section */}
@@ -705,42 +842,62 @@ export default function MorseConverter({
               </div>
 
               {/* Action buttons for input */}
-              <div className="flex items-center gap-1"> {/* Reduced gap slightly */}
-                {/* Input Audio Button */}
-                <Button
-                  onClick={() => handleAudioPlay(inputText, true)}
+              <div className="flex items-center gap-1">                {/* Playback control buttons */}                <Button
+                  onClick={() => playSelectedEffects(inputText, true)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[#456359] ${isInputPlaying ? 'animate-pulse' : ''}`}
-                  // Disable if input empty OR visual is actively playing
-                  disabled={!inputText || isInputVisualPlaying}
-                  title={isInputPlaying ? "Stop Audio" : "Play Input Audio"}
+                  className={`text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  disabled={
+                    !inputText || 
+                    (!audioEffectSelected && !visualEffectSelected) || 
+                    isAnyPlaying ||
+                    // Disable if only visual is selected but content is not Morse
+                    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
+                  }
+                  title="Play Input"
                 >
-                  {isInputPlaying ? <Pause size={18} /> : <Volume2 size={18} />}
-                </Button>
-
-                {/* Input Visual Button */}
-                <Button
-                  onClick={() => handleVisualPlay(inputText, true)}
+                  <Play size={18} />
+                  Play
+                </Button>                <Button
+                  onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[#456359] ${isInputVisualPlaying ? 'animate-pulse' : ''}`}
-                   // Disable if input empty OR input not morse OR audio is actively playing
-                  disabled={!inputText || !/^[.\- ]+$/.test(inputText.replace(/\s+/g, ' ')) || isInputPlaying}
-                  title={isInputVisualPlaying ? "Stop Visual" : "Play Input Visual Effect"}
+                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  disabled={
+                    // Enable if something is playing or if something is paused
+                    !(
+                      // Something is currently playing
+                      (isInputPlaying || isInputVisualPlaying) ||
+                      // Something is currently paused
+                      (isAnyPaused)
+                    ) ||
+                    // If only visual is selected but text is not Morse, disable
+                    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
+                  }
+                  title={isAnyPaused ? "Resume Input" : "Pause Input"}
                 >
-                  {isInputVisualPlaying ? <Pause size={18} /> : <Lightbulb size={18} />}
-                </Button>
-
-                {/* Show swap button on mobile */}
+                  <Pause size={18} />
+                  {isAnyPaused ? "Resume" : "Pause"}
+                </Button>                <Button
+                  onClick={() => stopAllEffects(true)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-[#456359] flex items-center gap-1"
+                  disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
+                  title="Stop Input"
+                >
+                  <Square size={18} />
+                  Stop
+                </Button>                {/* Show swap button on mobile */}
                 <Button
                   onClick={toggleMode}
                   variant="ghost"
                   size="sm"
-                  className="md:hidden text-[#456359]"
-                  title="Swap Modes" // Added title
+                  className="md:hidden text-[#456359] flex flex-col"
+                  title="Swap Modes"
                 >
-                  <ArrowLeftRight className="h-5 w-5" />
+                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
+                  Swap
                 </Button>
               </div>
             </div>
@@ -770,15 +927,15 @@ export default function MorseConverter({
               )}
             </div>
 
-            <div className="p-3 border-t flex justify-between border-gray-200">
-              <Button
+            <div className="p-3 border-t flex justify-between border-gray-200">              <Button
                 onClick={handleClear}
                 variant="ghost"
                 size="sm"
-                className="text-[#372824] hover:text-black"
-                title="Clear Input" // Added title
+                className="text-[#372824] hover:text-black flex flex-col"
+                title="Clear Input"
               >
-                <Trash2 className="h-5 w-5" />
+                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
+                Clear
               </Button>
 
             </div>
@@ -791,19 +948,55 @@ export default function MorseConverter({
                 <span className="text-lg text-[#456359] font-semibold">
                   {mode === "morse-to-text" ? "Text" : "Morse Code"}
                 </span>
+              </div>                {/* Playback control buttons */}
+              <div className="flex items-center gap-1">                <Button
+                  onClick={() => playSelectedEffects(outputText, false)}
+                  variant="ghost"
+                  size="sm"
+                  className={`text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  disabled={
+                    !outputText || 
+                    (!audioEffectSelected && !visualEffectSelected) || 
+                    (isInputPlaying || isInputVisualPlaying) ||
+                    // Disable if only visual is selected but content is not Morse
+                    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
+                  }
+                  title="Play Output"
+                >
+                  <Play size={18} />
+                  Play
+                </Button>                <Button
+                  onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
+                  variant="ghost"
+                  size="sm"
+                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  disabled={
+                    // Enable if something is playing or if something is paused
+                    !(
+                      // Something is currently playing
+                      (isPlaying || isVisualPlaying) ||
+                      // Something is currently paused
+                      isAnyPaused
+                    ) ||
+                    // If only visual is selected but text is not Morse, disable
+                    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
+                  }
+                  title={isAnyPaused ? "Resume Output" : "Pause Output"}
+                >
+                  <Pause size={18} />
+                  {isAnyPaused ? "Resume" : "Pause"}
+                </Button>                <Button
+                  onClick={() => stopAllEffects(false)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-[#456359] flex items-center gap-1"
+                  disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
+                  title="Stop Output"
+                >
+                  <Square size={18} />
+                  Stop
+                </Button>
               </div>
-              {/* Output Audio Button - No change needed here unless you want separate visual too */}
-              <Button
-                onClick={() => handleAudioPlay(outputText, false)} // isInput = false
-                variant="ghost"
-                size="sm"
-                className={`text-[#456359] ${isPlaying ? 'animate-pulse' : ''}`}
-                // Disable if output empty OR visual is actively playing
-                disabled={!outputText || isVisualPlaying}
-                title={isPlaying ? "Stop Audio" : "Play Output Audio"}
-              >
-                {isPlaying ? <Pause size={18} /> : <Volume2 size={18} />}
-              </Button>
             </div>
 
             <div className={`
@@ -822,53 +1015,73 @@ export default function MorseConverter({
               )}
             </div>
 
-            <div className="p-3 border-t border-gray-200 flex justify-end space-x-2">
-              {/* Copy Button */}
-              <Button
-                onClick={handleCopy}
-                variant="ghost"
-                size="sm"
-                className="text-gray-500 hover:text-gray-700"
-                disabled={!outputText}
-                title="Copy Output" // Added title
-              >
-                <Copy className="h-5 w-5" />
-                {copied && <span className="sr-only">Copied!</span>}
-              </Button>
+            <div className="p-3 border-t border-gray-200 flex justify-between space-x-2">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2">                <Button
+                  onClick={toggleAudioEffect}
+                  variant="ghost"
+                  size="sm"
+                  className={`${audioEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1`}
+                  title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
+                  disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
+                >
+                  <Volume2 className="h-5 w-5" />
+                  Audio
+                </Button>                <Button
+                  onClick={toggleVisualEffect}
+                  variant="ghost"
+                  size="sm"
+                  className={`${visualEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1`}
+                  title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
+                  disabled={
+                    isAnyPlaying || 
+                    isAnyPaused || 
+                    (!isInputMorse && !isOutputMorse) || // Disable visual if neither input nor output is Morse
+                    (!audioEffectSelected && visualEffectSelected) // Prevent deselecting when it's the only selection
+                  }
+                >
+                  <Lightbulb className="h-5 w-5" />
+                  Visual
+                </Button>
+              </div>
 
-              {/* Output Visual Button */}
-              <Button
-                onClick={() => handleVisualPlay(morseForOutputVisual, false)} // Use handler
-                variant="ghost"
-                size="sm"
-                className={`text-[#456359] ${isVisualPlaying ? 'animate-pulse' : ''}`}
-                // Disable if no valid morse OR audio is actively playing
-                disabled={!isOutputMorseValid || isPlaying}
-                title={isVisualPlaying ? "Stop Visual" : "Play Output Visual Effect"}
-              >
-                {isVisualPlaying ? <Pause size={18} /> : <Lightbulb size={18} />}
-              </Button>
-
-              {/* Download Button */}
-              <Button
-                onClick={handleDownload}
-                variant="ghost"
-                size="sm"
-                className="text-gray-500 hover:text-gray-700"
-                disabled={!outputText}
-                title="Download Output" // Added title
-              >
-                <Download className="h-5 w-5" />
-              </Button>
-              {/* Help Button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-gray-500 hover:text-gray-700"
-                title="Help" // Added title
-              >
-                <HelpCircle className="h-5 w-5" />
-              </Button>
+              {/* Utility buttons */}
+              <div className="flex items-center space-x-2">
+                {/* Copy Button */}
+                <Button
+                  onClick={handleCopy}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-700 flex flex-col"
+                  disabled={!outputText}
+                  title="Copy Output"
+                >
+                  
+                  <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
+                  Copy
+                  {copied && <span className="sr-only">Copied!</span>}
+                </Button>                {/* Download Button */}
+                <Button
+                  onClick={handleDownload}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-700 flex flex-col"
+                  disabled={!outputText}
+                  title="Download Output"
+                >
+                  <Download className="h-5 w-5 p-0 m-0 -mb-2" />
+                  Download
+                </Button>
+                
+                {/* Help Button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-700 flex flex-col"
+                  title="Help"
+                >
+                  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
+                  Help
+                </Button>
+              </div>
             </div>
           </div>
         </div>

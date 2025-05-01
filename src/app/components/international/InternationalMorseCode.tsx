@@ -4,13 +4,16 @@ import remarkGfm from 'remark-gfm'
 import MorseCodeTranslator from "../alphabets/MorseChartLetterRenderer";
 import Breadcrumb from "@/components/breadcrumb";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
-
+// import MorseConverter from "../home/Translator";
 export default function InternationalMorseCode() {
 
     const overviewContent = `
 ##### **International Morse Code Translator**
 
+
 Unlock seamless communication across time and space with our **International Morse Code translator**. Whether you're a hobbyist, a student, or a professional working in security, aviation, or maritime industries, our tool offers an accurate and fast way to convert text to Morse code and vice versa. With an intuitive interface and real-time translation, this tool is designed to simplify Morse code usage for all skill levels.
+
+#### 
 
 # charts
 
@@ -103,9 +106,8 @@ Absolutely. Our tool includes a play button that outputs Morse in authentic audi
                         className=" md:w-2/5  object-cover my-10 rounded-lg shadow-lg mx-auto"
                     />
                     ,
-                    h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h1>,
+                    h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children} </h1>,
                     h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
-
                     p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
                     li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,

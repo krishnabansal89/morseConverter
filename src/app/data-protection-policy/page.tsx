@@ -1,6 +1,25 @@
 
 import React from 'react';
 import Breadcrumb from '@/components/breadcrumb';
+import { Metadata } from 'next';
+
+//make pages self-canonical
+
+export const generateMetadata  = async (): Promise<Metadata> => {
+  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || '';
+
+  return {
+    title: 'Data Protection Policy | Morsecodeholistic.com',
+    description: 'Data Protection Policy for Morsecodeholistic.com',
+    openGraph: {
+      title: 'Data Protection Policy | Morsecodeholistic.com',
+      description: 'Data Protection Policy for Morsecodeholistic.com',
+    },
+    alternates: {
+      canonical: `${PUBLIC_URL}/data-protection-policy`,
+    },
+  };
+}
 
 export default function DataProtectionPolicyPage() {
   return (

@@ -1,6 +1,26 @@
 
 import React from 'react';
 import Breadcrumb from '@/components/breadcrumb';
+import { Metadata } from 'next';
+
+//make pages self-canonical
+
+export const generateMetadata = async (): Promise<Metadata> => {
+  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || '';
+
+  return {
+    title: 'How It Works | Morsecodeholistic.com',
+    description: 'How It Works | Morsecodeholistic.com',
+    openGraph: {
+      title: 'How It Works | Morsecodeholistic.com',
+      description: 'How It Works | Morsecodeholistic.com',
+    },
+    alternates: {
+      canonical: `${PUBLIC_URL}/how-it-works`,
+    },
+  };
+}
+
 
 export default function HowItWorksPage() {
   return (

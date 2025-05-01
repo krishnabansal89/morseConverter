@@ -3,6 +3,8 @@ import type { MetadataRoute , } from 'next'
 import { blogSlugsForSiteMap } from "@/sanity/queries";
 import { client } from "@/sanity/client"
 
+export const revalidate = 86400; // 24 hours
+
 const getBlogPosts = async ()=> {
   const slugs: Array<{slug:string , publishedAt:Date}> = await client.fetch(blogSlugsForSiteMap)
   return slugs

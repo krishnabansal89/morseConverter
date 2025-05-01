@@ -64,9 +64,9 @@ export function Navbar() {
             Numbers
           </Link>
           <Link href="/morse-code-chart" className="text-[#3D3939] text-sm hover:text-black transition-colors">
-            Charts
+            Morse Chart
           </Link>
-          <Link href="/#" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+          <Link href="/about-us" className="text-[#3D3939] text-sm hover:text-black transition-colors">
             About
           </Link>
         </nav>

@@ -5,6 +5,9 @@ import { client, urlFor, getDate } from "@/sanity/client"
 import { Clock, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import Breadcrumb from "@/components/breadcrumb"
 
+export const revalidate = 86400; //24hrs
+
+
 // Updated interface to match the GROQ query response
 interface Author {
     name: string
