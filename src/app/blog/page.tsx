@@ -5,6 +5,9 @@ import { client, urlFor, getDate } from "@/sanity/client"
 import { Clock, Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import Breadcrumb from "@/components/breadcrumb"
 
+export const revalidate = 86400; //24hrs
+
+
 // Updated interface to match the GROQ query response
 interface Author {
     name: string
@@ -87,7 +90,7 @@ export default async function BlogListingPage({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
                     {posts.map((post) => {
-                        const imageUrl = post.image ? urlFor(post.image)?.width(400)?.height(300)?.url() : "/placeholder-blog.jpg";
+                        const imageUrl = post.image ? urlFor(post.image)?.width(600)?.height(300)?.url() : "/placeholder-blog.jpg";
                         const authorImageUrl = post.author?.image ? urlFor(post.author.image)?.width(40)?.height(40)?.url() : "/placeholder-author.jpg";
 
                         return (

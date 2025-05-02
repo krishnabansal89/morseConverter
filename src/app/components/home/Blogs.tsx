@@ -45,13 +45,14 @@ export default async function BlogGrid() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {posts.map((post) => {
-            const imageUrl = post.image ? urlFor(post.image)?.width(400)?.height(300)?.url() : "/placeholder-blog.jpg";
+            const imageUrl = post.image ? urlFor(post.image)?.width(600)?.height(300)?.url() : "/placeholder-blog.jpg";
             const authorImageUrl = post.author?.image ? urlFor(post.author.image)?.width(40)?.height(40)?.url() : "/placeholder-author.jpg";
 
             return (
               <Card key={post._id} className="overflow-hidden bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col">
                 <Link href={`/blog/${post.slug.current}`}>
-                  <div className="relative h-56 w-full -mt-10">
+                
+                  <div className="relative h-56 w-full -mt-10 ">
                     <Image
                       src={imageUrl}
                       alt={post.title}
