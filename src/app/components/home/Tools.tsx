@@ -38,16 +38,16 @@ export default function Features() {
     const features = [
         {
             type: "Product",
-            title: "Morse Code Translator",
-            description: "Translate English to Morse Code and back with precision.",
-            href: "/morse-code-translator",
+            title: "International Code Translator",
+            description: "Translate English to International Morse Code and back with precision.",
+            href: "/international-morse-code",
             bgColor: "bg-[#31363F]"
         },
         {
             type: "Product",
-            title: "Morse Code Generator",
-            description: "Create Morse signals with adjustable playback speed.",
-            href: "/morse-code-generator",
+            title: "American Code Translator",
+            description: "Translate English to American Morse Code and back with precision.",
+            href: "/american-morse-code-translator",
             bgColor: "bg-[#41644A]"
         },
         {
