@@ -61,22 +61,22 @@ const AmericanMorseCodeTranslator = () => {
   };
 
   // Create pairs of numbers for display
-  const createNumberPairs = () => {
-    const numbers = americanMorseCodeAlphabet.filter(item => 
-      /^[0-9]$/.test(item.letter)
-    );
-    const pairs = [];
-    const half = Math.ceil(numbers.length / 2);
+//   const createNumberPairs = () => {
+//     const numbers = americanMorseCodeAlphabet.filter(item => 
+//       /^[0-9]$/.test(item.letter)
+//     );
+//     const pairs = [];
+//     const half = Math.ceil(numbers.length / 2);
     
-    for (let i = 0; i < half; i++) {
-      pairs.push([
-        numbers[i],
-        i + half < numbers.length ? numbers[i + half] : null
-      ]);
-    }
+//     for (let i = 0; i < half; i++) {
+//       pairs.push([
+//         numbers[i],
+//         i + half < numbers.length ? numbers[i + half] : null
+//       ]);
+//     }
     
-    return pairs;
-  };
+//     return pairs;
+//   };
 
   // Render individual Morse code symbol (dot, dash or space)
   const renderMorseSymbol = (symbol: string, index: number) => {
@@ -112,7 +112,7 @@ const AmericanMorseCodeTranslator = () => {
 
   // Create letter and number pairs
   const letterPairs = createPairs();
-  const numberPairs = createNumberPairs();
+//   const numberPairs = createNumberPairs();
 
   return (   
     <div className="w-full md:max-w-4xl mx-auto md:p-6 pt-6 rounded-lg">

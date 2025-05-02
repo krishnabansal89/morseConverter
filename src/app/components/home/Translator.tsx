@@ -94,7 +94,6 @@ const textToInternationalMorseMap = buildTextToMorseMap(internationalMorseCodeMa
 const textToAmericanMorseMap = buildTextToMorseMap(americanMorseCodeMap);
 
 // For backward compatibility
-const textToMorseMap = textToInternationalMorseMap;
 
 export default function MorseConverter({
   initialText = "",
