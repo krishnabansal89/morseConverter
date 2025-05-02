@@ -1,9 +1,11 @@
+import React from "react";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
 import MorseCodeTranslator from "../alphabets/MorseChartLetterRenderer";
 import Breadcrumb from "@/components/breadcrumb";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
+import MorseConverter from "../home/Translator";
 // import MorseConverter from "../home/Translator";
 export default function InternationalMorseCode() {
 
@@ -106,7 +108,12 @@ Absolutely. Our tool includes a play button that outputs Morse in authentic audi
                         className=" md:w-2/5  object-cover my-10 rounded-lg shadow-lg mx-auto"
                     />
                     ,
-                    h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children} </h1>,
+                    h5: ({ children }) => <div className="flex flex-col"> <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children} </h1>
+                        <div className="editor-window w-full overflow-x-clip h-full bg-white rounded-lg shadow-lg my-20">
+                            <MorseConverter />
+                        </div>
+
+                    </div>,
                     h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
                     p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,

@@ -13,7 +13,8 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 
-export const morseCodeMap: Record<string, string> = {
+// International Morse Code Map
+export const internationalMorseCodeMap: Record<string, string> = {
   ".-": "A", "-...": "B", "-.-.": "C", "-..": "D", ".": "E",
   "..-.": "F", "--.": "G", "....": "H", "..": "I", ".---": "J",
   "-.-": "K", ".-..": "L", "--": "M", "-.": "N", "---": "O",
@@ -27,22 +28,82 @@ export const morseCodeMap: Record<string, string> = {
   "..--.-": "_", ".-..-.": '"', "...-..-": "$", ".--.-.": "@", "": " ",
 }
 
-const textToMorseMap: Record<string, string> = Object.entries(morseCodeMap).reduce(
-  (acc, [morse, text]) => {
-    if (text !== " ") {
-      acc[text.toLowerCase()] = morse
-    }
-    return acc
-  },
-  {} as Record<string, string>,
-)
+// American Morse Code Map
+// American Morse code uses different patterns than International Morse
+export const americanMorseCodeMap: Record<string, string> = {
+  // Letters
+  ".-": "A",
+  "-...": "B",
+  ".. .": "C",
+  "-..": "D",
+  ".": "E",
+  ".-.": "F",
+  "--.": "G",
+  "....": "H",
+  "..": "I",
+  "-.-." : "J",
+  "-.-": "K",
+  "----": "L",
+  "--": "M",
+  "-.": "N",
+  ". .": "O",
+  ".....": "P",
+  "..-." : "Q",
+  ". ..": "R",
+  "...": "S",
+  "-": "T",
+  "..-": "U",
+  "...-": "V",
+  ".--": "W",
+  ".-..": "X",
+  ".. ..": "Y",
+  "... .": "Z",
+  // Numbers
+  ".---.": "1",
+  "..--..": "2",
+  "...-.": "3",
+  "....-": "4",
+  "---": "5",
+  "......": "6",
+  "--...": "7",
+  "-....": "8",
+  "--.-": "9",
+  "------": "0"
+};
+
+// For backward compatibility
+export const morseCodeMap = internationalMorseCodeMap;
+
+// Function to build text-to-morse map from a morse-to-text map
+const buildTextToMorseMap = (morseToTextMap: Record<string, string>): Record<string, string> => {
+  return Object.entries(morseToTextMap).reduce(
+    (acc, [morse, text]) => {
+      if (text !== " ") {
+        acc[text.toLowerCase()] = morse
+      }
+      return acc
+    },
+    {} as Record<string, string>
+  );
+}
+
+// Create the international text-to-morse map
+const textToInternationalMorseMap = buildTextToMorseMap(internationalMorseCodeMap);
+
+// Create the American text-to-morse map
+const textToAmericanMorseMap = buildTextToMorseMap(americanMorseCodeMap);
+
+// For backward compatibility
+const textToMorseMap = textToInternationalMorseMap;
 
 export default function MorseConverter({
   initialText = "",
-  textToMorse = false
+  textToMorse = false,
+  isAmericanMorseCode = false
 }: {
   initialText?: string,
-  textToMorse?: boolean
+  textToMorse?: boolean,
+  isAmericanMorseCode?: boolean
 }) {
   const [isVisualPlaying, setIsVisualPlaying] = useState(false)
   const [inputText, setInputText] = useState(initialText || "")
@@ -157,21 +218,78 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
       }
     }
   }, [])
-
   // Convert morse code to text
+    // Convert morse code to text
   const convertMorseToText = (morse: string) => {
     if (!morse.trim()) {
       setOutputText("")
       return
     }
 
-    const morseWords = morse.trim().split("   ")
+    // Select the correct map based on the mode
+    const morseToTextMap = isAmericanMorseCode ? americanMorseCodeMap : internationalMorseCodeMap
+
+    const morseWords = morse.trim().split("   ") // Split input into words based on 3 spaces
+
     const textWords = morseWords.map((word) => {
-      const morseChars = word.split(" ")
-      return morseChars.map((char) => morseCodeMap[char] || "").join("")
+      // --- Logic Branching ---
+      if (!isAmericanMorseCode) {
+        // --- International Morse Code Logic (Original) ---
+        // Standard split by single space works here
+        const morseChars = word.split(" ")
+        return morseChars.map((char) => morseToTextMap[char] || "").join("")
+
+      } else {
+        // --- American Morse Code Logic (NEW) ---
+        let decodedWord = ""
+        let currentIndex = 0
+        // Get map keys and sort them by length DESCENDING to prioritize longer matches (like ".. ." over "..")
+        const sortedKeys = Object.keys(morseToTextMap).sort((a, b) => b.length - a.length)
+
+        while (currentIndex < word.length) {
+          let matchedKey = null;
+          // Find the longest key from the map that matches the current position in the word
+          for (const key of sortedKeys) {
+            // Check if the word starts with the key at the current index
+            if (word.startsWith(key, currentIndex)) {
+              matchedKey = key;
+              break; // Found the longest possible match, stop searching
+            }
+          }
+
+          if (matchedKey) {
+            // Found a valid American Morse character
+            decodedWord += morseToTextMap[matchedKey]; // Append the corresponding text character
+            currentIndex += matchedKey.length; // Move the index past the matched Morse code
+
+            // IMPORTANT: After a character, check if the next character is a single space
+            // This space acts as the separator between characters. Consume it.
+            if (currentIndex < word.length && word[currentIndex] === ' ') {
+              currentIndex++; // Move index past the inter-character space
+            }
+          } else {
+            // No valid Morse character found at the current position.
+            // This could be an invalid sequence or potentially just an extra space.
+            // If it's a space we couldn't match (e.g., leading/trailing space within word), skip it.
+            if (word[currentIndex] === ' ') {
+                 currentIndex++;
+            } else {
+              // Handle potentially invalid non-space character if needed (e.g., add '?' or skip)
+              // For now, just advance past it to avoid an infinite loop
+              // You might want to add more robust error handling here.
+              // decodedWord += '?'; // Optional: Add placeholder for errors
+              currentIndex++;
+            }
+          }
+        }
+        return decodedWord; // Return the fully decoded word
+      }
+      // --- End Logic Branching ---
     })
-    setOutputText(textWords.join(" "))
+
+    setOutputText(textWords.join(" ")) // Join decoded words with spaces
   }
+
 
   // Convert text to morse code
   const convertTextToMorse = (text: string) => {
@@ -180,10 +298,15 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
       return
     }
 
+    // Use the appropriate map based on the current mode
+    const currentTextToMorseMap = isAmericanMorseCode 
+      ? textToAmericanMorseMap 
+      : textToInternationalMorseMap
+
     const words = text.toLowerCase().split(" ")
     const morseWords = words.map((word) => {
       return Array.from(word)
-        .map((char) => textToMorseMap[char] || "")
+        .map((char) => currentTextToMorseMap[char] || "")
         .filter((morse) => morse !== "")
         .join(" ")
     })
@@ -834,7 +957,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
 
           {/* Input section */}
           <div className="border-r border-gray-200">
-            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+            <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200">
               <div className="flex items-center">
                 <span className="text-lg font-semibold text-[#456359]">
                   {mode === "morse-to-text" ? "Morse Code" : "Text"}
@@ -842,11 +965,11 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
               </div>
 
               {/* Action buttons for input */}
-              <div className="flex items-center gap-1">                {/* Playback control buttons */}                <Button
+              <div className="flex items-center  gap-1">                {/* Playback control buttons */}                <Button
                   onClick={() => playSelectedEffects(inputText, true)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  className={`text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row flex-col gap-1`}
                   disabled={
                     !inputText || 
                     (!audioEffectSelected && !visualEffectSelected) || 
@@ -862,7 +985,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
                   disabled={
                     // Enable if something is playing or if something is paused
                     !(
@@ -882,7 +1005,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={() => stopAllEffects(true)}
                   variant="ghost"
                   size="sm"
-                  className="text-[#456359] flex items-center gap-1"
+                  className="text-[#456359] flex items-center gap-1 md:flex-row flex-col"
                   disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
                   title="Stop Input"
                 >
@@ -943,7 +1066,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
 
           {/* Output section */}
           <div>
-            <div className="flex justify-between items-center p-4 border-b border-gray-200 text-[#372824]">
+            <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824]">
               <div className="flex items-center">
                 <span className="text-lg text-[#456359] font-semibold">
                   {mode === "morse-to-text" ? "Text" : "Morse Code"}
@@ -953,7 +1076,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={() => playSelectedEffects(outputText, false)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  className={`text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
                   disabled={
                     !outputText || 
                     (!audioEffectSelected && !visualEffectSelected) || 
@@ -969,7 +1092,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
                   variant="ghost"
                   size="sm"
-                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1`}
+                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
                   disabled={
                     // Enable if something is playing or if something is paused
                     !(
@@ -989,7 +1112,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={() => stopAllEffects(false)}
                   variant="ghost"
                   size="sm"
-                  className="text-[#456359] flex items-center gap-1"
+                  className="text-[#456359] flex items-center gap-1 md:flex-row flex-col"
                   disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
                   title="Stop Output"
                 >
@@ -1019,7 +1142,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={toggleAudioEffect}
                   variant="ghost"
                   size="sm"
-                  className={`${audioEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1`}
+                  className={`${audioEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
                   title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
                 >
@@ -1029,7 +1152,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={toggleVisualEffect}
                   variant="ghost"
                   size="sm"
-                  className={`${visualEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1`}
+                  className={`${visualEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
                   title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
                   disabled={
                     isAnyPlaying || 
