@@ -260,7 +260,7 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
 
             </div>
             <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">
-                <div className="editor-window md:w-1/2 w-full h-[full] bg-white rounded-lg shadow-lg">
+                <div className="editor-window lg:w-4/5 w-full h-[full] bg-white rounded-lg shadow-lg">
                     <MorseConverter initialText={letter} textToMorse={true} />
                 </div>
             </div>

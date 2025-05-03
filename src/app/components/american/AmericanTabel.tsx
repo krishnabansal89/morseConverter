@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from "next/link";
 
 const AmericanMorseCodeTranslator = () => {
   // American Morse code mapping
@@ -121,10 +120,9 @@ const AmericanMorseCodeTranslator = () => {
           <div key={pairIndex} className="grid grid-cols-2 md:gap-10">
             {pair.map((item) => (
               item && (
-                <Link 
+                <div 
                   key={item.letter} 
-                  href={`/american-morse-code-alphabets/${item.letter}-in-morse-code`}
-                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors duration-200"
+                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg hover:bg-gray-200 transition-colors duration-200"
                 >
                   <span className="text-[#6c6860] text-xl mr-2 md:text-2xl font-semibold mb-2">
                     {item.letter}
@@ -132,7 +130,7 @@ const AmericanMorseCodeTranslator = () => {
                   <div className="flex flex-row items-center justify-start">
                     {item.code.split('').map((symbol, index) => renderMorseSymbol(symbol, index))}
                   </div>
-                </Link>
+                </div>
               )
             ))}
           </div>

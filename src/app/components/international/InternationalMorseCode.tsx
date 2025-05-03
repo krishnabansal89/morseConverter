@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm'
-import MorseCodeTranslator from "../alphabets/MorseChartLetterRenderer";
+import MorseCodeTranslator from "./InternationTable";
 import Breadcrumb from "@/components/breadcrumb";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 import MorseConverter from "../home/Translator";
