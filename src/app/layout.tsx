@@ -5,7 +5,6 @@ import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 import { Navbar } from "./components/home/Navbar";
 import Footer from "./components/home/Footer";
 import "./globals.css";
-import Link from 'next/link';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
