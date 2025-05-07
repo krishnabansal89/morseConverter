@@ -5,6 +5,7 @@ import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 import { Navbar } from "./components/home/Navbar";
 import Footer from "./components/home/Footer";
 import "./globals.css";
+import Link from 'next/link';
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -43,6 +44,16 @@ export const metadata: Metadata = {
   }
 };
 
+const languages = ['de', 'es', 'it', 'fr']
+const alternateLinks = languages.map((lang) => {
+  return {
+    href: `${PUBLIC_URL}/${lang}`,
+    hrefLang: lang,
+  };
+});
+
+
+
 
 const schemaData = {
   "@context": "https://schema.org",
@@ -56,8 +67,8 @@ const schemaData = {
     "telephone": "9702371374",
     "contactType": "technical support",
     "contactOption": "TollFree",
-    "areaServed": ["US","GB","CA"],
-    "availableLanguage": ["en","es","fr","Hindi"]
+    "areaServed": ["US", "GB", "CA"],
+    "availableLanguage": ["en", "es", "fr", "Hindi"]
   },
   "sameAs": [
     "http://www.youtube.com/@LearnMorseCode-l4u",
@@ -83,8 +94,19 @@ export default function RootLayout({
         name="google-site-verification"
         content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
       />
-      <html lang="en">
-
+      <Link
+        hrefLang="en"
+        href={`${process.env.NEXT_PUBLIC_URL}`}
+      />
+      {alternateLinks.map((link) => (
+        <Link
+          key={link.hrefLang}
+          href={link.href}
+          rel="alternate"
+          hrefLang={link.hrefLang}
+        />
+      ))}
+      <html>
         <body
           className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased  `}
         >
