@@ -24,9 +24,8 @@ export default function Hero() {
                 </div>
 
             </div>
-            <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">
-                <div className="editor-window w-full h-full bg-white rounded-lg shadow-lg">
-                    <MorseConverter />
+            <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">                <div className="editor-window w-full h-full bg-white rounded-lg shadow-lg">
+                    <MorseConverter language="en" />
                 </div>
             </div>
         </div>

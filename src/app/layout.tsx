@@ -42,6 +42,8 @@ export const metadata: Metadata = {
     canonical: `${PUBLIC_URL}/`,
   }
 };
+
+
 const schemaData = {
   "@context": "https://schema.org",
   "@type": "Organization",

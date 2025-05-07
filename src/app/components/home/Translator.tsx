@@ -13,6 +13,174 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 
+const translations = {
+  en: {
+    morseToTextPlaceholder: "Enter Morse code (use dots and dashes, space between characters, and three spaces between words)",
+    textToMorsePlaceholder: "Enter text to convert to Morse code",
+    onlyDotsAndDashesAllowed: "In Morse code mode, only dots (.), dashes (-), and spaces are allowed",
+    play: "Play",
+    pause: "Pause",
+    resume: "Resume",
+    stop: "Stop",
+    copy: "Copy",
+    copied: "Copied!",
+    download: "Download",
+    clear: "Clear",
+    settings: "Settings",
+    help: "Help",
+    audio: "Audio",
+    visual: "Visual",
+    swap: "Swap",
+    convertedTextWillAppearHere: "Converted text will appear here",
+    morseCodeWillAppearHere: "Morse code will appear here",
+    debugPlayingMorseAudio: "Playing Morse audio:",
+    debugInputLabel: "Input",
+    debugOutputLabel: "Output",
+    debugStartIndex: "Start index:",
+    errorFailedToInitAudio: "Failed to initialize AudioContext:",
+    headingMorseCode: "Morse Code",
+    headingText: "Text"
+  },
+  de: {
+    morseToTextPlaceholder: "Geben Sie den Morsecode ein (verwenden Sie Punkte und Striche, Leerzeichen zwischen Zeichen und drei Leerzeichen zwischen Wörtern)",
+    textToMorsePlaceholder: "Geben Sie Text ein, um ihn in Morsecode umzuwandeln",
+    onlyDotsAndDashesAllowed: "Im Morsecode-Modus sind nur Punkte (.), Striche (-) und Leerzeichen erlaubt",
+    play: "Abspielen",
+    pause: "Pause",
+    resume: "Fortsetzen",
+    stop: "Stopp",
+    copy: "Kopieren",
+    copied: "Kopiert!",
+    download: "Herunterladen",
+    clear: "Löschen",
+    settings: "Einstellungen",
+    help: "Hilfe",
+    audio: "Audio",
+    visual: "Visuell",
+    swap: "Tauschen",
+    convertedTextWillAppearHere: "Konvertierter Text erscheint hier",
+    morseCodeWillAppearHere: "Morsecode erscheint hier",
+    debugPlayingMorseAudio: "Playing Morse audio:", // Placeholder - Bitte übersetzen
+    debugInputLabel: "Input", // Placeholder - Bitte übersetzen
+    debugOutputLabel: "Output", // Placeholder - Bitte übersetzen
+    debugStartIndex: "Start index:", // Placeholder - Bitte übersetzen
+    errorFailedToInitAudio: "Failed to initialize AudioContext:", // Placeholder - Bitte übersetzen
+    headingMorseCode: "Morsecode", // Placeholder - Bitte übersetzen
+    headingText: "Text"            // Placeholder - Bitte übersetzen
+  },
+  it: {
+    morseToTextPlaceholder: "Inserisci il codice Morse qui (usa punti e linee, spazio tra i caratteri e tre spazi tra le parole)",
+    textToMorsePlaceholder: "Inserisci il testo da convertire in codice Morse",
+    onlyDotsAndDashesAllowed: "In modalità codice Morse sono ammessi solo punti (.), linee (-) e spazi",
+    play: "Riproduci",
+    pause: "Pausa",
+    resume: "Riprendi",
+    stop: "Stop",
+    copy: "Copia",
+    copied: "Copiato!",
+    download: "Scarica",
+    clear: "Cancella",
+    settings: "Impostazioni",
+    help: "Aiuto",
+    audio: "Audio",
+    visual: "Visivo",
+    swap: "Scambia",
+    convertedTextWillAppearHere: "Il testo convertito apparirà qui",
+    morseCodeWillAppearHere: "Il codice Morse apparirà qui",
+    debugPlayingMorseAudio: "Playing Morse audio:", // Placeholder - Si prega di tradurre
+    debugInputLabel: "Input", // Placeholder - Si prega di tradurre
+    debugOutputLabel: "Output", // Placeholder - Si prega di tradurre
+    debugStartIndex: "Start index:", // Placeholder - Si prega di tradurre
+    errorFailedToInitAudio: "Failed to initialize AudioContext:", // Placeholder - Si prega di tradurre
+    headingMorseCode: "Codice Morse", // Placeholder - Si prega di tradurre
+    headingText: "Testo"            // Placeholder - Si prega di tradurre
+  },
+  tr: {
+    morseToTextPlaceholder: "Morse kodunu buraya girin (nokta ve çizgileri kullanın, karakterler arasında boşluk ve kelimeler arasında üç boşluk bırakın)",
+    textToMorsePlaceholder: "Morse koduna dönüştürmek için metin girin",
+    onlyDotsAndDashesAllowed: "Morse kodu modunda yalnızca nokta (.), çizgi (-) ve boşluklara izin verilir",
+    play: "Çal",
+    pause: "Duraklat",
+    resume: "Devam et",
+    stop: "Durdur",
+    copy: "Kopyala",
+    copied: "Kopyalandı!",
+    download: "İndir",
+    clear: "Temizle",
+    settings: "Ayarlar",
+    help: "Yardım",
+    audio: "Ses",
+    visual: "Görsel",
+    swap: "Değiştir",
+    convertedTextWillAppearHere: "Dönüştürülmüş metin burada görünecek",
+    morseCodeWillAppearHere: "Morse kodu burada görünecek",
+    debugPlayingMorseAudio: "Playing Morse audio:", // Placeholder - Lütfen çevirin
+    debugInputLabel: "Input", // Placeholder - Lütfen çevirin
+    debugOutputLabel: "Output", // Placeholder - Lütfen çevirin
+    debugStartIndex: "Start index:", // Placeholder - Lütfen çevirin
+    errorFailedToInitAudio: "Failed to initialize AudioContext:", // Placeholder - Lütfen çevirin
+    headingMorseCode: "Mors Kodu", // Placeholder - Lütfen çevirin
+    headingText: "Metin"            // Placeholder - Lütfen çevirin
+  },
+  es: {
+    morseToTextPlaceholder: "Ingrese el código Morse aquí (use puntos y rayas, espacio entre caracteres y tres espacios entre palabras)",
+    textToMorsePlaceholder: "Ingrese el texto para convertirlo a código Morse",
+    onlyDotsAndDashesAllowed: "En el modo de código Morse, solo se permiten puntos (.), rayas (-) y espacios",
+    play: "Reproducir",
+    pause: "Pausa",
+    resume: "Reanudar",
+    stop: "Detener",
+    copy: "Copiar",
+    copied: "¡Copiado!",
+    download: "Descargar",
+    clear: "Borrar",
+    settings: "Ajustes",
+    help: "Ayuda",
+    audio: "Audio",
+    visual: "Visual",
+    swap: "Intercambiar",
+    convertedTextWillAppearHere: "El texto convertido aparecerá aquí",
+    morseCodeWillAppearHere: "El código Morse aparecerá aquí",
+    debugPlayingMorseAudio: "Playing Morse audio:", // Placeholder - Por favor, traducir
+    debugInputLabel: "Input", // Placeholder - Por favor, traducir
+    debugOutputLabel: "Output", // Placeholder - Por favor, traducir
+    debugStartIndex: "Start index:", // Placeholder - Por favor, traducir
+    errorFailedToInitAudio: "Failed to initialize AudioContext:", // Placeholder - Por favor, traducir
+    headingMorseCode: "Código morse", // Placeholder - Por favor, traducir
+    headingText: "Texto"            // Placeholder - Por favor, traducir
+  },
+  fr: {
+    morseToTextPlaceholder: "Entrez le code Morse ici (utilisez des points et des traits, un espace entre les caractères et trois espaces entre les mots)",
+    textToMorsePlaceholder: "Entrez le texte à convertir en code Morse",
+    onlyDotsAndDashesAllowed: "En mode code Morse, seuls les points (.), les traits (-) et les espaces sont autorisés",
+    play: "Lire",
+    pause: "Pause",
+    resume: "Reprendre",
+    stop: "Arrêter",
+    copy: "Copier",
+    copied: "Copié !",
+    download: "Télécharger",
+    clear: "Effacer",
+    settings: "Paramètres",
+    help: "Aide",
+    audio: "Audio",
+    visual: "Visuel",
+    swap: "Échanger",
+    convertedTextWillAppearHere: "Le texte converti apparaîtra ici",
+    morseCodeWillAppearHere: "Le code Morse apparaîtra ici",
+    debugPlayingMorseAudio: "Playing Morse audio:", // Placeholder - Veuillez traduire
+    debugInputLabel: "Input", // Placeholder - Veuillez traduire
+    debugOutputLabel: "Output", // Placeholder - Veuillez traduire
+    debugStartIndex: "Start index:", // Placeholder - Veuillez traduire
+    errorFailedToInitAudio: "Failed to initialize AudioContext:", // Placeholder - Veuillez traduire
+    headingMorseCode: "Texte", // Placeholder - Veuillez traduire
+    headingText: "Code Morse"            // Placeholder - Veuillez traduire
+  }
+  // Add more languages as needed
+}
+
+
+
 // International Morse Code Map
 export const internationalMorseCodeMap: Record<string, string> = {
   ".-": "A", "-...": "B", "-.-.": "C", "-..": "D", ".": "E",
@@ -98,12 +266,16 @@ const textToAmericanMorseMap = buildTextToMorseMap(americanMorseCodeMap);
 export default function MorseConverter({
   initialText = "",
   textToMorse = false,
-  isAmericanMorseCode = false
+  isAmericanMorseCode = false,
+  language = "en"
 }: {
   initialText?: string,
   textToMorse?: boolean,
-  isAmericanMorseCode?: boolean
+  isAmericanMorseCode?: boolean,
+  language?: "en" | "de" | "it" | "tr" | "es" | "fr"
 }) {
+  // Get the language strings, default to English if the specified language is not available
+  const strings = translations[language] || translations.en;
   const [isVisualPlaying, setIsVisualPlaying] = useState(false)
   const [inputText, setInputText] = useState(initialText || "")
   const [outputText, setOutputText] = useState("")
@@ -154,12 +326,11 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
   // Check if it's a single letter display mode
   const isSingleLetterMode = initialText.length === 1
-
   // Handle typing effect for placeholders
   useEffect(() => {
     const placeholder = mode === "morse-to-text"
-      ? "Enter Morse code (use dots and dashes, spaces between characters and three spaces between words)"
-      : "Type text to convert to Morse code"
+      ? strings.morseToTextPlaceholder
+      : strings.textToMorsePlaceholder
 
     let currentIndex = 0
     let typingInterval: NodeJS.Timeout
@@ -181,7 +352,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     typingInterval = setInterval(typeChar, 70)
 
     return () => clearInterval(typingInterval)
-  }, [mode])
+  }, [mode, language, strings])
 
   // Set initial text and conversion
   useEffect(() => {
@@ -330,7 +501,6 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
       setOutputText(currentInput)
     }
   }
-
   // Handle input change with validation for Morse code mode
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -341,7 +511,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
       if (sanitizedValue !== value) {
         // Show error message if invalid characters were removed
-        setInputError("Only dots (.), dashes (-) and spaces are allowed in Morse code mode");
+        setInputError(strings.onlyDotsAndDashesAllowed);
         // Clear error after 3 seconds
         setTimeout(() => setInputError(null), 3000);
       }
@@ -369,7 +539,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
         oscillatorRef.current.start();
       } catch (error) {
-        console.error("Failed to initialize AudioContext:", error);
+        console.error(strings.errorFailedToInitAudio, error);
         // Handle the error appropriately, maybe disable audio features
       }
     }
@@ -597,10 +767,9 @@ useEffect(() => {
 
   // --- Updated Audio Playback with Pause/Resume ---
   const playMorseAudio = (morseText: string, isInput = false, startIndex = 0) => {
-    if (!morseText) return;
-    console.log("Playing Morse audio:", isInput ? "Input" : "Output", "Start index:", startIndex);
-    setupAudio(); // Ensure context is ready
-    const ac = audioContextRef.current;
+    if (!morseText) 
+    console.log(strings.debugPlayingMorseAudio, isInput ? strings.debugInputLabel : strings.debugOutputLabel, strings.debugStartIndex, startIndex);
+    setupAudio();    const ac = audioContextRef.current;
     const gain = gainNodeRef.current;
     const osc = oscillatorRef.current;
     if (!ac || !gain || !osc) {
@@ -950,7 +1119,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
                 </div>
               </Button>
-              <span className="text-xs mt-1 text-[#456359]">Swap</span>
+              <span className="text-xs mt-1 text-[#456359]">{strings.swap}</span>
             </div>
           </div>
 
@@ -959,7 +1128,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
             <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200">
               <div className="flex items-center">
                 <span className="text-lg font-semibold text-[#456359]">
-                  {mode === "morse-to-text" ? "Morse Code" : "Text"}
+                  {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
                 </span>
               </div>
 
@@ -979,7 +1148,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   title="Play Input"
                 >
                   <Play size={18} />
-                  Play
+                  {strings.play}
                 </Button>                <Button
                   onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
                   variant="ghost"
@@ -996,10 +1165,10 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                     // If only visual is selected but text is not Morse, disable
                     (visualEffectSelected && !audioEffectSelected && !isInputMorse)
                   }
-                  title={isAnyPaused ? "Resume Input" : "Pause Input"}
+                  title={isAnyPaused ? `${strings.resume}` :  `${strings.pause}`}
                 >
                   <Pause size={18} />
-                  {isAnyPaused ? "Resume" : "Pause"}
+                  {isAnyPaused ?  `${strings.resume}` : `${strings.pause}`}
                 </Button>                <Button
                   onClick={() => stopAllEffects(true)}
                   variant="ghost"
@@ -1009,7 +1178,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   title="Stop Input"
                 >
                   <Square size={18} />
-                  Stop
+                  {strings.stop}
                 </Button>                {/* Show swap button on mobile */}
                 <Button
                   onClick={toggleMode}
@@ -1017,9 +1186,8 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   size="sm"
                   className="md:hidden text-[#456359] flex flex-col"
                   title="Swap Modes"
-                >
-                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
-                  Swap
+                >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
+                  {strings.swap}
                 </Button>
               </div>
             </div>
@@ -1055,9 +1223,8 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                 size="sm"
                 className="text-[#372824] hover:text-black flex flex-col"
                 title="Clear Input"
-              >
-                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
-                Clear
+              >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
+                {strings.clear}
               </Button>
 
             </div>
@@ -1068,7 +1235,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
             <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824]">
               <div className="flex items-center">
                 <span className="text-lg text-[#456359] font-semibold">
-                  {mode === "morse-to-text" ? "Text" : "Morse Code"}
+                  {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
                 </span>
               </div>                {/* Playback control buttons */}
               <div className="flex items-center gap-1">                <Button
@@ -1086,7 +1253,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   title="Play Output"
                 >
                   <Play size={18} />
-                  Play
+                  {strings.play}
                 </Button>                <Button
                   onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
                   variant="ghost"
@@ -1102,11 +1269,10 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                     ) ||
                     // If only visual is selected but text is not Morse, disable
                     (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
-                  }
-                  title={isAnyPaused ? "Resume Output" : "Pause Output"}
+                  }                  title={isAnyPaused ? `${strings.resume} Output` : `${strings.pause} Output`}
                 >
                   <Pause size={18} />
-                  {isAnyPaused ? "Resume" : "Pause"}
+                  {isAnyPaused ? strings.resume : strings.pause}
                 </Button>                <Button
                   onClick={() => stopAllEffects(false)}
                   variant="ghost"
@@ -1116,7 +1282,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   title="Stop Output"
                 >
                   <Square size={18} />
-                  Stop
+                  {strings.stop}
                 </Button>
               </div>
             </div>
@@ -1130,9 +1296,11 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                 ? "text-center text-4xl md:text-6xl"
                 : "text-xl"}
             `}>
-              {outputText || (
-                <span className="text-gray-400 text-md">
-                  {mode === "morse-to-text" ? "Converted text will appear here" : "Morse code will appear here"}
+              {outputText || (                <span className="text-gray-400 text-md">
+                  {mode === "morse-to-text" 
+                    ? strings.convertedTextWillAppearHere
+                    : strings.morseCodeWillAppearHere
+                  }
                 </span>
               )}
             </div>
@@ -1144,9 +1312,8 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   className={`${audioEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
                   title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
-                >
-                  <Volume2 className="h-5 w-5" />
-                  Audio
+                >                  <Volume2 className="h-5 w-5" />
+                  {strings.audio}
                 </Button>                <Button
                   onClick={toggleVisualEffect}
                   variant="ghost"
@@ -1159,9 +1326,8 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                     (!isInputMorse && !isOutputMorse) || // Disable visual if neither input nor output is Morse
                     (!audioEffectSelected && visualEffectSelected) // Prevent deselecting when it's the only selection
                   }
-                >
-                  <Lightbulb className="h-5 w-5" />
-                  Visual
+                >                  <Lightbulb className="h-5 w-5" />
+                  {strings.visual}
                 </Button>
               </div>
 
@@ -1174,12 +1340,11 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   size="sm"
                   className="text-gray-500 hover:text-gray-700 flex flex-col"
                   disabled={!outputText}
-                  title="Copy Output"
+                  title={`${strings.copy} Output`}
                 >
-                  
-                  <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
-                  Copy
-                  {copied && <span className="sr-only">Copied!</span>}
+                    <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
+                  {strings.copy}
+                  {copied && <span className="sr-only">{strings.copied}</span>}
                 </Button>                {/* Download Button */}
                 <Button
                   onClick={handleDownload}
@@ -1188,9 +1353,8 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   className="text-gray-500 hover:text-gray-700 flex flex-col"
                   disabled={!outputText}
                   title="Download Output"
-                >
-                  <Download className="h-5 w-5 p-0 m-0 -mb-2" />
-                  Download
+                >                  <Download className="h-5 w-5 p-0 m-0 -mb-2" />
+                  {strings.download}
                 </Button>
                 
                 {/* Help Button */}
@@ -1199,9 +1363,8 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   size="sm"
                   className="text-gray-500 hover:text-gray-700 flex flex-col"
                   title="Help"
-                >
-                  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
-                  Help
+                >                  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
+                  {strings.help}
                 </Button>
               </div>
             </div>
@@ -1211,7 +1374,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
         {/* Audio Settings at the bottom */}
         <Collapsible className="border-t border-gray-200">
           <div className="flex justify-between items-center px-4 py-2">
-            <span className="text-sm font-medium text-[#456359]">Audio Settings</span>
+            <span className="text-sm font-medium text-[#456359]">{strings.settings}</span>
             <CollapsibleTrigger asChild>
               <Button
                 variant="ghost"
@@ -1219,7 +1382,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                 className="text-[#456359]"
               >
                 <Settings className="h-5 w-5" />
-                <span className="sr-only">Toggle settings</span>
+                <span className="sr-only">Toggle {strings.settings.toLowerCase()}</span>
               </Button>
             </CollapsibleTrigger>
           </div>
