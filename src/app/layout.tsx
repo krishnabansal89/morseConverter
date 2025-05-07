@@ -94,12 +94,12 @@ export default function RootLayout({
         name="google-site-verification"
         content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
       />
-      <Link
+      <link
         hrefLang="en"
         href={`${process.env.NEXT_PUBLIC_URL}`}
       />
       {alternateLinks.map((link) => (
-        <Link
+        <link
           key={link.hrefLang}
           href={link.href}
           rel="alternate"
