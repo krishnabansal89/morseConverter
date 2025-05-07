@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 
 
-function Hero({ language = 'de' }: { language?: 'en' | 'de' }) {
+function Hero() {
     return (
         <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
             <div className="w-full h-fit md:my-20 my-10 grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">

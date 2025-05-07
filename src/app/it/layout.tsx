@@ -3,9 +3,6 @@ import { Metadata } from "next";
 
 import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 
-import { Navbar } from "../components/home/Navbar";
-
-import Footer from "../components/home/Footer";
 
 import "../globals.css";
 
@@ -45,26 +42,6 @@ export const metadata: Metadata = {
     canonical: `${PUBLIC_URL}/it`,
   }
 };
-
-
-const schemaData = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Morse Code",
-  "alternateName": "Morse Code Translator",
-  "url": "https://www.morsecodeholistic.com/",
-  "logo": "https://www.morsecodeholistic.com/_next/image?url=%2Flogo.png&w=128&q=75",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "9702371374",
-    "contactType": "technical support",
-    "contactOption": "TollFree",
-    "areaServed": ["US","GB","CA"],
-    "availableLanguage": ["en","es","fr","Hindi"]
-  },
-};
-
-
 
 export default function RootLayout({
   children,

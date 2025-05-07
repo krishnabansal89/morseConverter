@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react"
 import Link from "next/link"
 import Breadcrumb from "@/components/breadcrumb";
 
-function Hero({ language = 'it' }: { language?: 'en' | 'it' }) {
+function Hero() {
     return (
         <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
             <div className="w-full h-fit md:my-20 my-10 grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
@@ -14,7 +14,7 @@ function Hero({ language = 'it' }: { language?: 'en' | 'it' }) {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Traduci istantaneamente dall'inglese al codice Morse e viceversa con il nostro Codice Morse Traduttor gratuito. Converti, decodifica e genera segnali Morse facilmente, con riproduzione audio e opzioni di condivisione.
+                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Traduci istantaneamente dall&apos;inglese al codice Morse e viceversa con il nostro Codice Morse Traduttor gratuito. Converti, decodifica e genera segnali Morse facilmente, con riproduzione audio e opzioni di condivisione.
                         </p>
                     </div>
 
