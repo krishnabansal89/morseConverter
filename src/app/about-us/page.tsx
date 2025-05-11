@@ -35,18 +35,18 @@ export default function AboutUsPage() {
           About Us
         </h1>
         <div className="text-[#372824]">
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Welcome to MorseCod.de — your go-to destination for quick and accurate Morse code translation.
           </p>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Whether you&apos;re a hobbyist, a student, a radio enthusiast, or simply curious about Morse code, our tool is designed to make the process of encoding and decoding as smooth as possible. With just a few clicks, you can convert English or other supported languages into Morse code, or decode Morse messages back into readable text.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">Why We Built This Tool</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Morse code is one of the oldest and most fascinating methods of communication. Even in the digital age, it still finds relevance in aviation, amateur radio, and survival training. However, translating Morse code by hand can be time-consuming and prone to error — that’s where we come in.
           </p>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             We created MorseCod.de to simplify Morse code translation for everyone. Whether you&apos;re working on a school project, sending a secret message to a friend, or brushing up on communication methods, our intuitive tool makes it easy to:
           </p>
           <ul className="mb-4">
@@ -65,7 +65,7 @@ export default function AboutUsPage() {
           </ul>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">Our Mission</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             To make Morse code accessible and understandable to everyone. Whether for learning, emergency preparedness, or just fun, MorseCod.de is here to help you connect with the past in a modern way.
           </p>
         </div>

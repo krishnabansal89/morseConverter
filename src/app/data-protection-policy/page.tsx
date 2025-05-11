@@ -35,14 +35,14 @@ export default function DataProtectionPolicyPage() {
           🛡️ Data Protection Policy
         </h1>
         <div className="text-[#372824]">
-          <p className="mb-4 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">Effective Date: April 16, 2025</p>
+          <p className="mb-4 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">Effective Date: April 16, 2025</p>
 
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             At MorseCod.de, we are committed to protecting the privacy, integrity, and security of your data. This Data Protection Policy explains how we handle, store, and safeguard any information related to your use of our website and services.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">1. Our Commitment to Data Protection</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             We value your trust and aim to:
           </p>
           <ul className="mb-4">
@@ -52,7 +52,7 @@ export default function DataProtectionPolicyPage() {
           </ul>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">2. Minimal Data Collection</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             MorseCod.de is designed with privacy by default. We do not:
           </p>
           <ul className="mb-4">
@@ -60,32 +60,32 @@ export default function DataProtectionPolicyPage() {
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Track users across websites</li>
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Require account creation</li>
           </ul>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             The only information collected is non-identifiable technical data (such as browser type or device) to improve website performance and user experience.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">3. Legal Basis for Processing Data</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             In line with GDPR and other global data protection laws, we process any technical data on the basis of:
           </p>
           <ul className="mb-4">
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Legitimate interest – to ensure our site functions properly</li>
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Consent – when optional cookies or analytics are enabled (where applicable)</li>
           </ul>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             We never use your data for profiling, advertising, or any unrelated purpose.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">4. Data Storage and Retention</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             We do not store user-submitted content (e.g., Morse code inputs or translations). All translations are processed in real time and are not saved or logged.
           </p>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Technical logs (like server errors or analytics data) may be stored temporarily to improve stability and detect issues. These are automatically deleted after a limited time.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">5. Data Security Measures</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             We use up-to-date security practices to protect any technical or system-related data, including:
           </p>
           <ul className="mb-4">
@@ -95,7 +95,7 @@ export default function DataProtectionPolicyPage() {
           </ul>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">6. User Rights Under GDPR</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             If you are located in the EU/EEA, you have the right to:
           </p>
           <ul className="mb-4">
@@ -104,18 +104,18 @@ export default function DataProtectionPolicyPage() {
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Object to or restrict processing (right to object)</li>
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Withdraw consent (if applicable)</li>
           </ul>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             To exercise any of these rights, contact us at <a href="mailto:hello@morsecod.de" className="text-[#456359] hover:underline">hello@morsecod.de</a>.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">7. Contact Us</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             For questions, concerns, or data access requests, please reach out to:
           </p>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             📧 Email: <a href="mailto:hello@morsecod.de" className="text-[#456359] hover:underline">hello@morsecod.de</a>
           </p>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">
             We will respond to all inquiries within 30 days, as required by applicable data protection laws.
           </p>
         </div>

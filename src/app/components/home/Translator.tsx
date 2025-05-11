@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import {
   Copy, Download, Trash2, HelpCircle, Volume2, Pause, Play, Square,
-  Settings, ArrowLeftRight, Lightbulb
+  Settings, ArrowLeftRight, Lightbulb , Check
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -1309,16 +1309,17 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={toggleAudioEffect}
                   variant="ghost"
                   size="sm"
-                  className={`${audioEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
+                  className={`${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
                   title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
                 >                  <Volume2 className="h-5 w-5" />
                   {strings.audio}
+                  <Check className={`h-5 w-5 ${audioEffectSelected ? 'text-white' : 'hidden'}`} />
                 </Button>                <Button
                   onClick={toggleVisualEffect}
                   variant="ghost"
                   size="sm"
-                  className={`${visualEffectSelected ? 'bg-[#456359] text-white' : 'text-[#456359]'} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
+                  className={`${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
                   title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
                   disabled={
                     isAnyPlaying || 
@@ -1328,6 +1329,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   }
                 >                  <Lightbulb className="h-5 w-5" />
                   {strings.visual}
+                  <Check className={`h-5 w-5 ${visualEffectSelected ? 'text-white' : 'hidden'}`} />
                 </Button>
               </div>
 

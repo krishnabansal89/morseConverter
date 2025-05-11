@@ -51,7 +51,7 @@ Here are some quick Morse code conversions for commonly used words:
       <Markdown components={{
         h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
         h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] ml-4 text-lg/relaxed font-extralight">{children}</p>,
+        p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] ml-4 text-lg/relaxed font-extralight">{children}</p>,
         br: () => <br />,
         li: ({ children }) => <li className="text-[#2d2d2d] list-disc ml-10 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
       }} >{content}</Markdown>

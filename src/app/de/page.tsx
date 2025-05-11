@@ -13,7 +13,7 @@ function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Übersetzen Sie Englisch in Morsecode und umgekehrt sofort mit unserem kostenlosen Morsecode-Übersetzer. Konvertieren, dekodieren und generieren Sie Morsecodesignale einfach mit Audiowiedergabe und Freigabeoptionen.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Übersetzen Sie Englisch in Morsecode und umgekehrt sofort mit unserem kostenlosen Morsecode-Übersetzer. Konvertieren, dekodieren und generieren Sie Morsecodesignale einfach mit Audiowiedergabe und Freigabeoptionen.
                         </p>
                     </div>
 
@@ -268,7 +268,7 @@ Hier sind einige schnelle Morsecode-Umwandlungen für häufig verwendete Wörter
       <Markdown components={{
         h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
         h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] ml-4 text-lg/relaxed font-extralight">{children}</p>,
+        p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] ml-4 text-lg/relaxed font-extralight">{children}</p>,
         br: () => <br />,
         li: ({ children }) => <li className="text-[#2d2d2d] list-disc ml-10 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
       }} >{content}</Markdown>
@@ -305,7 +305,7 @@ Ja, aber es erfordert das Auswendiglernen der Morsecode-Symbole für jeden Buchs
       <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center mb-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 ">Häufig gestellte Fragen</h2>
       <Markdown components={{
         h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        p: ({ children }) => <p className="mt-2 text-[#6c6860]  font-maitree">{children}</p>,
+        p: ({ children }) => <p className="mt-2 text-[#2d2d2d]  font-maitree">{children}</p>,
         br: () => <br />,
       }} >{content}</Markdown>
     </div>

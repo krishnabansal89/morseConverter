@@ -9,7 +9,7 @@ export default function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.
                         </p>
                     </div>
 

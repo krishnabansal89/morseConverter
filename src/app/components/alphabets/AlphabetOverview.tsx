@@ -129,7 +129,7 @@ It varies, but with regular practice, a person can learn Morse code letters in a
                     h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h1>,
                     h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
 
-                    p: ({ children }) => <p className="mt-2 font-maitree  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                    p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
                     li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                     table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,

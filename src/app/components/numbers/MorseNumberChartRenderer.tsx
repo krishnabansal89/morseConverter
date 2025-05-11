@@ -25,7 +25,7 @@ const MorseCodeTranslator = () => {
     return (
       <div 
         key={index} 
-        className={`${isShort ? 'h-6 w-6' : 'h-6 md:w-10 w-6'} flex items-center  text-[#6c6860] justify-center text-lg md:text-2xl  mb-1`}
+        className={`${isShort ? 'h-6 w-6' : 'h-6 md:w-10 w-6'} flex items-center  text-[#2d2d2d] justify-center text-lg md:text-2xl  mb-1`}
       >
         {symbol}
       </div>
@@ -45,7 +45,7 @@ const MorseCodeTranslator = () => {
                   href={`/morse-code-numbers/number-${item.number}-in-morse-code`}
                   className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors duration-200"
                 >
-                  <span className="text-[#6c6860] text-xl mr-2 md:text-2xl font-semibold mb-2">
+                  <span className="text-[#2d2d2d] text-xl mr-2 md:text-2xl font-semibold mb-2">
                     {item.number}
                   </span>
                   <div className="flex flex-row items-center justify-start">
