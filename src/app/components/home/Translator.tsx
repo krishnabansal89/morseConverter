@@ -290,6 +290,11 @@ export default function MorseConverter({
     volume: 0.5,
     soundType: 'cw' // Default to CW radio tone
   })
+  
+  // Alert message state
+  const [alertMessage, setAlertMessage] = useState<{text: string, type: 'info' | 'success' | 'error' | 'warning'} | null>(
+    initialText ? null : {text: "Enter text or morse code to enable audio/visual", type: 'info'}
+  )
 
   // New state for pause/resume and progress tracking
   const [isInputAudioPaused, setIsInputAudioPaused] = useState(false)
@@ -388,6 +393,35 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
       }
     }
   }, [])
+  // Function to show alert message and auto-hide after a duration with smooth transition
+  const showAlert = (text: string, type: 'info' | 'success' | 'error' | 'warning' = 'info', duration: number = 3000) => {
+    // Set the new alert message
+    setAlertMessage({ text, type });
+    
+    // If duration is provided, auto-hide after that duration
+    if (duration > 0) {
+      const timer = setTimeout(() => {
+        // Add fadeOut class and then remove the alert after animation completes
+        const alertElement = document.querySelector('[role="alert"]');
+        if (alertElement) {
+          alertElement.classList.add('animate-fadeOut');
+          alertElement.classList.remove('animate-fadeIn');
+          
+          // Wait for animation to complete before removing the alert
+          setTimeout(() => {
+            setAlertMessage(null);
+          }, 300); // Match the animation duration
+        } else {
+          // Fallback if element not found
+          setAlertMessage(null);
+        }
+      }, duration - 300); // Adjust timing to account for animation
+      
+      // Cleanup timer on component unmount
+      return () => clearTimeout(timer);
+    }
+  };
+  
   // Convert morse code to text
     // Convert morse code to text
   const convertMorseToText = (morse: string) => {
@@ -441,15 +475,9 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
             // No valid Morse character found at the current position.
             // This could be an invalid sequence or potentially just an extra space.
             // If it's a space we couldn't match (e.g., leading/trailing space within word), skip it.
-            if (word[currentIndex] === ' ') {
-                 currentIndex++;
-            } else {
-              // Handle potentially invalid non-space character if needed (e.g., add '?' or skip)
-              // For now, just advance past it to avoid an infinite loop
-              // You might want to add more robust error handling here.
-              // decodedWord += '?'; // Optional: Add placeholder for errors
-              currentIndex++;
-            }
+            // You might want to add more robust error handling here.
+            // decodedWord += '?'; // Optional: Add placeholder for errors
+            currentIndex++;
           }
         }
         return decodedWord; // Return the fully decoded word
@@ -482,7 +510,6 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     })
     setOutputText(morseWords.join("   "))
   }
-
   // Toggle conversion mode
   const toggleMode = () => {
     // Save current values before changing
@@ -493,17 +520,29 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     setInputError(null)
 
     // Update mode
-    setMode((prev) => (prev === "morse-to-text" ? "text-to-morse" : "morse-to-text"))
+    const newMode = mode === "morse-to-text" ? "text-to-morse" : "morse-to-text"
+    setMode(newMode)
+    
+    // Show appropriate message based on the new mode
+    if (newMode === "morse-to-text") {
+      showAlert("Now translating from Morse code to text", 'info', 2000)
+    } else {
+      showAlert("Now translating from text to Morse code", 'info', 2000)
+    }
 
     // Swap input and output (only if there is actual output to swap)
     if (currentOutput) {
       setInputText(currentOutput)
       setOutputText(currentInput)
     }
-  }
-  // Handle input change with validation for Morse code mode
+  }// Handle input change with validation for Morse code mode
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
+
+    // Clear the initial alert message when user starts typing
+    if (alertMessage && alertMessage.text === "Enter text or morse code to enable audio/visual") {
+      setAlertMessage(null);
+    }
 
     if (mode === "morse-to-text") {
       // Only allow valid Morse code characters (dots, dashes, spaces)
@@ -511,9 +550,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
       if (sanitizedValue !== value) {
         // Show error message if invalid characters were removed
-        setInputError(strings.onlyDotsAndDashesAllowed);
-        // Clear error after 3 seconds
-        setTimeout(() => setInputError(null), 3000);
+        showAlert(strings.onlyDotsAndDashesAllowed, 'error', 3000);
       }
 
       setInputText(sanitizedValue);
@@ -601,9 +638,12 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
     setCurrentVisualIndex(0); // Reset position
     setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
-  }
-  // Stop both audio and visual effects
+  }  // Stop both audio and visual effects
   const stopAllEffects = (isInput = false) => {
+    const wasPlaying = isInput 
+      ? (isInputPlaying || isInputVisualPlaying || isInputAudioPaused || isInputVisualPaused)
+      : (isPlaying || isVisualPlaying || isOutputAudioPaused || isOutputVisualPaused);
+    
     // Always call stopAudio and stopVisual regardless of state
     // The functions themselves have guards to prevent errors
     stopAudio(isInput);
@@ -611,6 +651,12 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     
     // Also stop TTS if it's running
     window.speechSynthesis?.cancel();
+    
+    // Only show alert if something was actually playing or paused
+    if (wasPlaying) {
+      const sourceText = isInput ? "input" : "output";
+      showAlert(`Stopped ${sourceText} playback`, 'info', 2000);
+    }
   }
 
   // --- Updated Visual Playback with Pause/Resume ---
@@ -972,10 +1018,20 @@ useEffect(() => {
     if (!isMorseContent) {
       // For non-Morse text, use TTS if audio is selected
       if (audioEffectSelected) {
+        showAlert("Playing text-to-speech audio", 'info', 2000);
         speakText(text);
       }
       // Note: Visual effects are not supported for regular text
       return;
+    }
+    
+    // Show playback alerts based on selected effects and content type
+    if (audioEffectSelected && visualEffectSelected) {
+      showAlert(`Playing ${isInput ? "input" : "output"} with audio and visual effects`, 'info', 2000);
+    } else if (audioEffectSelected) {
+      showAlert(`Playing ${isInput ? "input" : "output"} with audio effect`, 'info', 2000);
+    } else if (visualEffectSelected) {
+      showAlert(`Playing ${isInput ? "input" : "output"} with visual effect`, 'info', 2000);
     }
     
     // Play selected effects for Morse code
@@ -991,14 +1047,24 @@ useEffect(() => {
     // Check if the content is Morse code based on which side we're dealing with
     const isMorseContent = isInput ? isInputMorse : isOutputMorse;
     
+    let isPausing = false;
+    
     // Pause audio if it's selected and playing (not already paused)
     if (audioEffectSelected && (isInput ? isInputPlaying : isPlaying) && !(isInput ? isInputAudioPaused : isOutputAudioPaused)) {
       pauseAudio(isInput);
+      isPausing = true;
     }
     
     // Pause visual if it's selected, playing, and content is Morse
     if (visualEffectSelected && (isInput ? isInputVisualPlaying : isVisualPlaying) && !(isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
       pauseVisual(isInput);
+      isPausing = true;
+    }
+    
+    // Show alert if any effect was paused
+    if (isPausing) {
+      const sourceText = isInput ? "input" : "output";
+      showAlert(`Paused ${sourceText} playback`, 'info', 2000);
     }
   };
 
@@ -1007,26 +1073,37 @@ useEffect(() => {
     // Check if the content is Morse code based on which side we're dealing with
     const isMorseContent = isInput ? isInputMorse : isOutputMorse;
     
+    let isResuming = false;
+    
     // Resume audio if it's selected and paused
     if (audioEffectSelected && (isInput ? isInputAudioPaused : isOutputAudioPaused)) {
       resumeAudio(isInput);
+      isResuming = true;
     }
     
     // Resume visual if it's selected, paused, and content is Morse
     if (visualEffectSelected && (isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
       resumeVisual(isInput);
+      isResuming = true;
+    }
+    
+    // Show alert if any effect was resumed
+    if (isResuming) {
+      const sourceText = isInput ? "input" : "output";
+      showAlert(`Resumed ${sourceText} playback`, 'info', 2000);
     }
   };
-
   // Handle copy to clipboard
   const handleCopy = () => {
     if (outputText) {
       navigator.clipboard.writeText(outputText)
       setCopied(true)
+      showAlert(strings.copied, 'success', 2000)
       setTimeout(() => setCopied(false), 2000)
+    } else {
+      showAlert("Nothing to copy", 'warning', 2000)
     }
   }
-
   // Handle download as text file
   const handleDownload = () => {
     if (outputText) {
@@ -1037,6 +1114,9 @@ useEffect(() => {
       document.body.appendChild(element)
       element.click()
       document.body.removeChild(element)
+      showAlert("File downloaded successfully", 'success', 2000)
+    } else {
+      showAlert("Nothing to download", 'warning', 2000)
     }
   }
 
@@ -1051,14 +1131,60 @@ useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus()
     }
+    showAlert("Cleared all text", 'info', 2000)
   }
-  // Toggle audio effect selection - ensure at least one option is selected
+  // Handle help button click
+  const handleHelp = () => {
+    // Show different help messages based on context
+    if (isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying) {
+      // If something is playing, show playback help
+      showAlert(
+        "Use the pause button to pause playback, or stop to end playback completely. You can resume paused playback later.",
+        'info',
+        6000
+      );
+    } else if (isAnyPaused) {
+      // If something is paused, show resume help
+      showAlert(
+        "Click resume to continue playback from where you paused, or stop to end playback completely.",
+        'info',
+        6000
+      );
+    } else if (!inputText && !outputText) {
+      // If both input and output are empty
+      showAlert(
+        "Enter text or Morse code to begin translation. Use the swap button to change translation direction.",
+        'info',
+        6000
+      );
+    } else if (mode === "morse-to-text") {
+      // Morse to text mode help
+      showAlert(
+        "Enter Morse code using dots (.), dashes (-), and spaces. Use one space between characters and three spaces between words. Use the play buttons to hear or see the Morse code.",
+        'info',
+        7000
+      );
+    } else {
+      // Text to Morse mode help
+      showAlert(
+        "Enter text to convert to Morse code. The translated Morse code will use dots (.), dashes (-), and spaces. Use the play buttons to hear or see the Morse code.",
+        'info',
+        7000
+      );
+    }
+  }
+    // Toggle audio effect selection - ensure at least one option is selected
   const toggleAudioEffect = () => {
     const newValue = !audioEffectSelected;
     setAudioEffectSelected(newValue);
     // If turning off audio and visual is already off, then turn on visual
     if (!newValue && !visualEffectSelected) {
       setVisualEffectSelected(true);
+      showAlert("Visual effect enabled", 'info', 1500)
+    } else if (newValue) {
+      showAlert("Audio effect enabled", 'info', 1500)
+    } else {
+      showAlert("Audio effect disabled", 'info', 1500)
     }
   };  // Toggle visual effect selection - ensure at least one option is selected
   // and only allow visual effect for valid Morse code
@@ -1068,6 +1194,7 @@ useEffect(() => {
     
     // Only allow visual effect for Morse code
     if (!hasMorseContent && !visualEffectSelected) {
+      showAlert("Visual effect requires Morse code content", 'warning', 2500)
       return; // Don't enable visual if no Morse content is available
     }
     
@@ -1077,6 +1204,11 @@ useEffect(() => {
     // If turning off visual and audio is already off, then turn on audio
     if (!newValue && !audioEffectSelected) {
       setAudioEffectSelected(true);
+      showAlert("Audio effect enabled", 'info', 1500)
+    } else if (newValue) {
+      showAlert("Visual effect enabled", 'info', 1500)
+    } else {
+      showAlert("Visual effect disabled", 'info', 1500)
     }
   };
   // Helper functions to determine whether input or output is valid Morse
@@ -1097,14 +1229,57 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
 
   const isAnyPaused = isInputPaused || isOutputPaused;
 
-  return (
-    <div
-      ref={converterRef}
-      className={`
-        flex flex-col font-lexend rounded-lg text-[#372824] transition-all duration-300
-        ${visualEffect.active ? (visualEffect.isDash ? 'bg-[#456359] text-white pulse-dash' : 'bg-[#456359] text-white pulse-dot') : ''}
-      `}
-    >
+  return (      <div
+        ref={converterRef}
+        className={`
+          flex flex-col font-lexend rounded-lg text-[#372824] transition-colors duration-500 ease-in-out
+          ${visualEffect.active ? (visualEffect.isDash ? 'bg-[#456359] text-white pulse-dash' : 'bg-[#456359] text-white pulse-dot') : ''}
+        `}
+      >{/* Alert Message Component */}
+        {alertMessage && (
+          <div
+            className={`
+              mx-4 mt-4 p-3 rounded-md shadow-sm border text-sm flex items-center justify-between 
+              animate-fadeIn transition-all duration-300 ease-in-out
+              ${alertMessage.type === 'info' ? 'bg-green-50 border-green-200 text-green-700' : ''}
+              ${alertMessage.type === 'success' ? 'bg-green-50 border-green-200 text-green-700' : ''}
+              ${alertMessage.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : ''}
+              ${alertMessage.type === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-700' : ''}
+            `}
+            role="alert"
+          >            <div className="flex items-center">
+              <span className="mr-2">
+                {alertMessage.type === 'info' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>}
+                {alertMessage.type === 'success' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>}
+                {alertMessage.type === 'error' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>}
+                {alertMessage.type === 'warning' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>}
+              </span>
+              <span className="text-sm font-medium">{alertMessage.text}</span>
+            </div><button 
+              onClick={() => {
+                // Add fadeOut class and then remove the alert after animation completes
+                const alertElement = document.querySelector('[role="alert"]');
+                if (alertElement) {
+                  alertElement.classList.add('animate-fadeOut');
+                  alertElement.classList.remove('animate-fadeIn');
+                  
+                  // Wait for animation to complete before removing the alert
+                  setTimeout(() => {
+                    setAlertMessage(null);
+                  }, 300); // Match the animation duration
+                } else {
+                  // Fallback if element not found
+                  setAlertMessage(null);
+                }
+              }}
+              className="ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              aria-label="Dismiss notification"
+            >
+              ×
+            </button>
+          </div>
+        )}
+
       <div className="w-full mx-auto rounded-lg overflow-hidden border border-gray-200">
         <div className="grid md:grid-cols-2 relative">
           {/* Swap button in center */}          <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10 md:block hidden">
@@ -1365,6 +1540,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   size="sm"
                   className="text-gray-500 hover:text-gray-700 flex flex-col"
                   title="Help"
+                  onClick={handleHelp}
                 >                  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
                   {strings.help}
                 </Button>
@@ -1401,10 +1577,14 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                     min="5"
                     max="30"
                     value={audioSettings.wpm}
-                    onChange={(e) => setAudioSettings({
-                      ...audioSettings,
-                      wpm: Number(e.target.value)
-                    })}
+                    onChange={(e) => {
+                      const newValue = Number(e.target.value);
+                      setAudioSettings({
+                        ...audioSettings,
+                        wpm: newValue
+                      });
+                      showAlert(`Playback speed set to ${newValue} WPM`, 'info', 1500);
+                    }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -1415,17 +1595,20 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                 <label className="text-sm text-right col-span-1">
                   Frequency:
                 </label>
-                <div className="col-span-2">
-                  <input
+                <div className="col-span-2">                  <input
                     type="range"
                     min="400"
                     max="1000"
                     step="50"
                     value={audioSettings.frequency}
-                    onChange={(e) => setAudioSettings({
-                      ...audioSettings,
-                      frequency: Number(e.target.value)
-                    })}
+                    onChange={(e) => {
+                      const newValue = Number(e.target.value);
+                      setAudioSettings({
+                        ...audioSettings,
+                        frequency: newValue
+                      });
+                      showAlert(`Tone frequency set to ${newValue} Hz`, 'info', 1500);
+                    }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -1436,17 +1619,20 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                 <label className="text-sm text-right col-span-1">
                   Volume:
                 </label>
-                <div className="col-span-2">
-                  <input
+                <div className="col-span-2">                  <input
                     type="range"
                     min="0"
                     max="1"
                     step="0.1"
                     value={audioSettings.volume}
-                    onChange={(e) => setAudioSettings({
-                      ...audioSettings,
-                      volume: Number(e.target.value)
-                    })}
+                    onChange={(e) => {
+                      const newValue = Number(e.target.value);
+                      setAudioSettings({
+                        ...audioSettings,
+                        volume: newValue
+                      });
+                      showAlert(`Volume set to ${Math.round(newValue * 100)}%`, 'info', 1500);
+                    }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -1458,30 +1644,34 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                 </label>
                 <div className="col-span-3">
                   <div className="flex gap-2">
-                    <label className="flex items-center">
-                      <input
+                    <label className="flex items-center">                      <input
                         type="radio"
                         name="soundType"
                         value="cw"
                         checked={audioSettings.soundType === 'cw'}
-                        onChange={() => setAudioSettings({
-                          ...audioSettings,
-                          soundType: 'cw'
-                        })}
+                        onChange={() => {
+                          setAudioSettings({
+                            ...audioSettings,
+                            soundType: 'cw'
+                          });
+                          showAlert('Sound type set to CW Radio Tone', 'info', 2000);
+                        }}
                         className="mr-1 accent-[#456359]"
                       />
                       CW Radio Tone
                     </label>
-                    <label className="flex items-center">
-                      <input
+                    <label className="flex items-center">                      <input
                         type="radio"
                         name="soundType"
                         value="telegraph"
                         checked={audioSettings.soundType === 'telegraph'}
-                        onChange={() => setAudioSettings({
-                          ...audioSettings,
-                          soundType: 'telegraph'
-                        })}
+                        onChange={() => {
+                          setAudioSettings({
+                            ...audioSettings,
+                            soundType: 'telegraph'
+                          });
+                          showAlert('Sound type set to Telegraph Sounder', 'info', 2000);
+                        }}
                         className="mr-1 accent-[#456359]"
                       />
                       Telegraph Sounder
@@ -1495,8 +1685,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
         </Collapsible>
       </div>
 
-      {/* Add custom animation keyframes */}
-      <style jsx global>{`
+      {/* Add custom animation keyframes */}      <style jsx global>{`
         @keyframes spin-slow {
           from {
             transform: rotate(0deg);
@@ -1518,13 +1707,44 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
           0%, 100% { background-color: #456359; }
           50% { background-color: #3a534a; }
         }
-        
-        .pulse-dot {
+          .pulse-dot {
           animation: pulse-dot 0.15s ease-in-out;
+          transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
         
         .pulse-dash {
           animation: pulse-dash 0.5s ease-in-out;
+          transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeOut {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .animate-fadeOut {
+          animation: fadeOut 0.3s ease-in-out forwards;
         }
       `}</style>
     </div>

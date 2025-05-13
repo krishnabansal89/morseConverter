@@ -186,12 +186,8 @@ function HowToUse() {
           <p className="text-neutral-600 font-maitree">
             Guarda il video per esplorare lo strumento del codice Morse
           </p>
-          <div className="md:w-[64vw] w-[80vw]   rounded-2xl overflow-hidden bg-amber-300 md:h-[36vw] h-[45vw] mx-auto mt-10 relative" >
-            <iframe src="https://www.youtube.com/embed/lgsD_wSZ0hI" style={{
-              width: '100%',
-              height: '100%',
-            }}
-            ></iframe>
+          <div style={{ position: 'relative', boxSizing: 'content-box', maxHeight: '80vh', width: '100%', aspectRatio: '2.1052631578947367', padding: '40px 0' }}>
+            <iframe src="https://app.supademo.com/embed/cmabd69i500pzzn0i3vzr85qo?embed_v=2" loading="lazy" title="Traduttore di Codice Morse - Converti e Decodifica Istantaneamente Inglese in Codice Morse" allow="clipboard-write" style={{ border: 'none', position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} ></iframe>
           </div>
         </div>
       </div>
