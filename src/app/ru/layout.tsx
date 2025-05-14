@@ -1,8 +1,6 @@
-
 import { Metadata } from "next";
 
 import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
-
 
 import "../globals.css";
 
@@ -36,12 +34,15 @@ const maitree = Maitree({
 const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 
 export const metadata: Metadata = {
-  title: "Codice Morse Traduttor - Converti e Decodifica Inglese in Codice Morse Istantaneamente",
-  description: "Traduci istantaneamente dall’inglese al codice Morse e viceversa con il nostro Codice Morse Traduttor gratuito. Converti, decodifica e genera segnali Morse facilmente, con riproduzione audio e opzioni di condivisione.",
+  title: "Переводчик Азбуки Морзе — Мгновенное Преобразование и Расшифровка Текста",
+  description: "Мгновенно переводите английский текст в азбуку Морзе и обратно с помощью бесплатного онлайн-переводчика. Генерируйте сигналы Морзе с озвучкой и функцией обмена.",
   alternates: {
-    canonical: `${PUBLIC_URL}/it`,
+    canonical: `${PUBLIC_URL}/ru`,
   }
 };
+
+
+
 
 export default function RootLayout({
   children,
@@ -49,11 +50,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="it" className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable}`}>
-      <body className="bg-white">
+    <html lang="ru">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} font-sans`}
+      >
         {children}
       </body>
     </html>
   );
 }
-

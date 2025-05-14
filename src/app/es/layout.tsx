@@ -49,7 +49,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable}`}>
-      <body className="bg-[rgb(236,232,228)]">
+      <body className="bg-white">
         {children}
       </body>
     </html>

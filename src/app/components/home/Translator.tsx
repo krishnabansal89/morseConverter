@@ -173,8 +173,88 @@ const translations = {
     debugOutputLabel: "Output", // Placeholder - Veuillez traduire
     debugStartIndex: "Start index:", // Placeholder - Veuillez traduire
     errorFailedToInitAudio: "Failed to initialize AudioContext:", // Placeholder - Veuillez traduire
-    headingMorseCode: "Texte", // Placeholder - Veuillez traduire
-    headingText: "Code Morse"            // Placeholder - Veuillez traduire
+    headingMorseCode: "Code Morse", // Fixed from "Texte"
+    headingText: "Texte"            // Fixed from "Code Morse"
+  },
+  pt: {
+    morseToTextPlaceholder: "Insira o código Morse aqui (use pontos e traços, espaço entre caracteres e três espaços entre palavras)",
+    textToMorsePlaceholder: "Insira o texto para converter em código Morse",
+    onlyDotsAndDashesAllowed: "No modo código Morse, apenas pontos (.), traços (-) e espaços são permitidos",
+    play: "Reproduzir",
+    pause: "Pausar",
+    resume: "Continuar",
+    stop: "Parar",
+    copy: "Copiar",
+    copied: "Copiado!",
+    download: "Baixar",
+    clear: "Limpar",
+    settings: "Configurações",
+    help: "Ajuda",
+    audio: "Áudio",
+    visual: "Visual",
+    swap: "Alternar",
+    convertedTextWillAppearHere: "O texto convertido aparecerá aqui",
+    morseCodeWillAppearHere: "O código Morse aparecerá aqui",
+    debugPlayingMorseAudio: "Reproduzindo áudio Morse:",
+    debugInputLabel: "Entrada",
+    debugOutputLabel: "Saída",
+    debugStartIndex: "Índice inicial:",
+    errorFailedToInitAudio: "Falha ao inicializar AudioContext:",
+    headingMorseCode: "Código Morse", 
+    headingText: "Texto"  },
+  vi: {
+    morseToTextPlaceholder: "Nhập mã Morse ở đây (sử dụng dấu chấm và gạch ngang, khoảng trắng giữa các ký tự và ba khoảng trắng giữa các từ)",
+    textToMorsePlaceholder: "Nhập văn bản để chuyển đổi thành mã Morse",
+    onlyDotsAndDashesAllowed: "Trong chế độ mã Morse, chỉ cho phép dấu chấm (.), gạch ngang (-) và khoảng trắng",
+    play: "Phát",
+    pause: "Tạm dừng",
+    resume: "Tiếp tục",
+    stop: "Dừng",
+    copy: "Sao chép",
+    copied: "Đã sao chép!",
+    download: "Tải xuống",
+    clear: "Xóa",
+    settings: "Cài đặt",
+    help: "Trợ giúp",
+    audio: "Âm thanh",
+    visual: "Hình ảnh",
+    swap: "Hoán đổi",
+    convertedTextWillAppearHere: "Văn bản đã chuyển đổi sẽ xuất hiện ở đây",
+    morseCodeWillAppearHere: "Mã Morse sẽ xuất hiện ở đây",
+    debugPlayingMorseAudio: "Đang phát âm thanh Morse:",
+    debugInputLabel: "Đầu vào",
+    debugOutputLabel: "Đầu ra",
+    debugStartIndex: "Chỉ số bắt đầu:",
+    errorFailedToInitAudio: "Không thể khởi tạo AudioContext:",
+    headingMorseCode: "Mã Morse",
+    headingText: "Văn bản"
+  },
+  ru: {
+    morseToTextPlaceholder: "Введите азбуку Морзе (используйте точки и тире, пробел между символами и три пробела между словами)",
+    textToMorsePlaceholder: "Введите текст для перевода в азбуку Морзе",
+    onlyDotsAndDashesAllowed: "В режиме азбуки Морзе разрешены только точки (.), тире (-) и пробелы",
+    play: "Воспроизвести",
+    pause: "Пауза",
+    resume: "Продолжить",
+    stop: "Стоп",
+    copy: "Копировать",
+    copied: "Скопировано!",
+    download: "Скачать",
+    clear: "Очистить",
+    settings: "Настройки",
+    help: "Помощь",
+    audio: "Аудио",
+    visual: "Визуально",
+    swap: "Поменять",
+    convertedTextWillAppearHere: "Переведенный текст появится здесь",
+    morseCodeWillAppearHere: "Азбука Морзе появится здесь",
+    debugPlayingMorseAudio: "Воспроизведение аудио Морзе:",
+    debugInputLabel: "Ввод",
+    debugOutputLabel: "Вывод",
+    debugStartIndex: "Начальный индекс:",
+    errorFailedToInitAudio: "Не удалось инициализировать AudioContext:",
+    headingMorseCode: "Азбука Морзе",
+    headingText: "Текст"
   }
   // Add more languages as needed
 }
@@ -268,11 +348,10 @@ export default function MorseConverter({
   textToMorse = false,
   isAmericanMorseCode = false,
   language = "en"
-}: {
-  initialText?: string,
+}: {  initialText?: string,
   textToMorse?: boolean,
   isAmericanMorseCode?: boolean,
-  language?: "en" | "de" | "it" | "tr" | "es" | "fr"
+  language?: "en" | "de" | "it" | "tr" | "es" | "fr" | "pt" | "vi" | "ru"
 }) {
   // Get the language strings, default to English if the specified language is not available
   const strings = translations[language] || translations.en;
