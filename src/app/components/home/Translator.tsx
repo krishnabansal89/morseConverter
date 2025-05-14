@@ -369,11 +369,8 @@ export default function MorseConverter({
     volume: 0.5,
     soundType: 'cw' // Default to CW radio tone
   })
-  
-  // Alert message state
-  const [alertMessage, setAlertMessage] = useState<{text: string, type: 'info' | 'success' | 'error' | 'warning'} | null>(
-    initialText ? null : {text: "Enter text or morse code to enable audio/visual", type: 'info'}
-  )
+    // Alert message state
+  const [alertMessage, setAlertMessage] = useState<{text: string, type: 'info' | 'success' | 'error' | 'warning'} | null>(null)
 
   // New state for pause/resume and progress tracking
   const [isInputAudioPaused, setIsInputAudioPaused] = useState(false)
@@ -1444,13 +1441,16 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   {strings.swap}
                 </Button>
               </div>
-            </div>
-
-            <div className="relative">
+            </div>            <div className="relative">
               <Textarea
                 ref={inputRef}
                 value={inputText}
                 onChange={handleInputChange}
+                onClick={() => {
+                  if (!inputText) {
+                    showAlert("Enter text or morse code to enable audio/visual", 'warning', 3000);
+                  }
+                }}
                 placeholder={typingPlaceholder}
                 className={`
                   p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
@@ -1563,7 +1563,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={toggleAudioEffect}
                   variant="ghost"
                   size="sm"
-                  className={`${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
+                  className={`${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
                   title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
                 >                  <Volume2 className="h-5 w-5" />
@@ -1573,7 +1573,7 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
                   onClick={toggleVisualEffect}
                   variant="ghost"
                   size="sm"
-                  className={`${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-6 md:py-0`}
+                  className={`${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
                   title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
                   disabled={
                     isAnyPlaying || 
