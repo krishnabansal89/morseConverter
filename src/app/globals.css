@@ -94,3 +94,50 @@
 .swapping svg {
   animation: swap-arrows 0.8s forwards !important;
 }
+
+  @keyframes flashText {
+    0% { opacity: 0; transform: translateY(-5px); }
+    20% { opacity: 1; transform: translateY(0); }
+    80% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(5px); }
+  }
+  
+  .flash-text {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(69, 99, 89, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    animation: flashText 1.5s ease-in-out forwards;
+    white-space: nowrap;
+    z-index: 50;
+    pointer-events: none;
+  }
+   .flash-text-secondary {
+    position: absolute;
+    top: 25px;
+    left: 25%;
+    transform: translateX(-50%);
+    background-color: rgba(69, 99, 89, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    animation: flashText 1.5s ease-in-out forwards;
+    white-space: nowrap;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+.help-flash-text {
+    max-width: 180px;
+    white-space: normal;
+    text-align: center;
+    top: -45px;
+    left: -15px;
+    line-height: 1.2;
+  }

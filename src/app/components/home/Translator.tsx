@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import {
   Copy, Download, Trash2, HelpCircle, Volume2, Pause, Play, Square,
-  Settings, ArrowLeftRight, Lightbulb , Check
+  Settings, ArrowLeftRight, Lightbulb, Check
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -200,8 +200,9 @@ const translations = {
     debugOutputLabel: "Saída",
     debugStartIndex: "Índice inicial:",
     errorFailedToInitAudio: "Falha ao inicializar AudioContext:",
-    headingMorseCode: "Código Morse", 
-    headingText: "Texto"  },
+    headingMorseCode: "Código Morse",
+    headingText: "Texto"
+  },
   vi: {
     morseToTextPlaceholder: "Nhập mã Morse ở đây (sử dụng dấu chấm và gạch ngang, khoảng trắng giữa các ký tự và ba khoảng trắng giữa các từ)",
     textToMorsePlaceholder: "Nhập văn bản để chuyển đổi thành mã Morse",
@@ -289,14 +290,14 @@ export const americanMorseCodeMap: Record<string, string> = {
   "--.": "G",
   "....": "H",
   "..": "I",
-  "-.-." : "J",
+  "-.-.": "J",
   "-.-": "K",
   "----": "L",
   "--": "M",
   "-.": "N",
   ". .": "O",
   ".....": "P",
-  "..-." : "Q",
+  "..-.": "Q",
   ". ..": "R",
   "...": "S",
   "-": "T",
@@ -348,7 +349,8 @@ export default function MorseConverter({
   textToMorse = false,
   isAmericanMorseCode = false,
   language = "en"
-}: {  initialText?: string,
+}: {
+  initialText?: string,
   textToMorse?: boolean,
   isAmericanMorseCode?: boolean,
   language?: "en" | "de" | "it" | "tr" | "es" | "fr" | "pt" | "vi" | "ru"
@@ -359,7 +361,6 @@ export default function MorseConverter({
   const [inputText, setInputText] = useState(initialText || "")
   const [outputText, setOutputText] = useState("")
   const [mode, setMode] = useState<"morse-to-text" | "text-to-morse">(textToMorse ? "text-to-morse" : "morse-to-text")
-  const [copied, setCopied] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isInputPlaying, setIsInputPlaying] = useState(false)
   const [isInputVisualPlaying, setIsInputVisualPlaying] = useState(false)
@@ -369,20 +370,44 @@ export default function MorseConverter({
     volume: 0.5,
     soundType: 'cw' // Default to CW radio tone
   })
-    // Alert message state
-  const [alertMessage, setAlertMessage] = useState<{text: string, type: 'info' | 'success' | 'error' | 'warning'} | null>(null)
+  const [flashText, setFlashText] = useState<{
+    button: string;
+    text: string;
+    active: boolean;
+  }>({
+    button: "",
+    text: "",
+    active: false
+  });
+  const showFlashText = (button: string, text: string, duration: number = 1500) => {
+    setFlashText({
+      button,
+      text,
+      active: true
+    });
+
+    setTimeout(() => {
+      setFlashText(prev => ({
+        ...prev,
+        active: false
+      }));
+    }, duration);
+  };
+
+  // Alert message state
+  const [alertMessage, setAlertMessage] = useState<{ text: string, type: 'info' | 'success' | 'error' | 'warning' } | null>(null)
 
   // New state for pause/resume and progress tracking
   const [isInputAudioPaused, setIsInputAudioPaused] = useState(false)
-const [isOutputAudioPaused, setIsOutputAudioPaused] = useState(false)
-const [isInputVisualPaused, setIsInputVisualPaused] = useState(false)
-const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
+  const [isOutputAudioPaused, setIsOutputAudioPaused] = useState(false)
+  const [isInputVisualPaused, setIsInputVisualPaused] = useState(false)
+  const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
-  
+
   // New state for effect selection
   const [audioEffectSelected, setAudioEffectSelected] = useState(true)
   const [visualEffectSelected, setVisualEffectSelected] = useState(false)
-  
+
   // Track current position for pause/resume
   const [currentAudioIndex, setCurrentAudioIndex] = useState(0)
   const [currentVisualIndex, setCurrentVisualIndex] = useState(0)
@@ -473,7 +498,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
   const showAlert = (text: string, type: 'info' | 'success' | 'error' | 'warning' = 'info', duration: number = 3000) => {
     // Set the new alert message
     setAlertMessage({ text, type });
-    
+
     // If duration is provided, auto-hide after that duration
     if (duration > 0) {
       const timer = setTimeout(() => {
@@ -482,7 +507,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
         if (alertElement) {
           alertElement.classList.add('animate-fadeOut');
           alertElement.classList.remove('animate-fadeIn');
-          
+
           // Wait for animation to complete before removing the alert
           setTimeout(() => {
             setAlertMessage(null);
@@ -492,14 +517,14 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
           setAlertMessage(null);
         }
       }, duration - 300); // Adjust timing to account for animation
-      
+
       // Cleanup timer on component unmount
       return () => clearTimeout(timer);
     }
   };
-  
+
   // Convert morse code to text
-    // Convert morse code to text
+  // Convert morse code to text
   const convertMorseToText = (morse: string) => {
     if (!morse.trim()) {
       setOutputText("")
@@ -573,8 +598,8 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     }
 
     // Use the appropriate map based on the current mode
-    const currentTextToMorseMap = isAmericanMorseCode 
-      ? textToAmericanMorseMap 
+    const currentTextToMorseMap = isAmericanMorseCode
+      ? textToAmericanMorseMap
       : textToInternationalMorseMap
 
     const words = text.toLowerCase().split(" ")
@@ -598,13 +623,9 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     // Update mode
     const newMode = mode === "morse-to-text" ? "text-to-morse" : "morse-to-text"
     setMode(newMode)
-    
+
     // Show appropriate message based on the new mode
-    if (newMode === "morse-to-text") {
-      showAlert("Now translating from Morse code to text", 'info', 2000)
-    } else {
-      showAlert("Now translating from text to Morse code", 'info', 2000)
-    }
+    
 
     // Swap input and output (only if there is actual output to swap)
     if (currentOutput) {
@@ -665,28 +686,28 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
     // Clear the recursive scheduling timeout
     if (audioTimeoutRef.current) {
-        clearTimeout(audioTimeoutRef.current);
-        audioTimeoutRef.current = null;
+      clearTimeout(audioTimeoutRef.current);
+      audioTimeoutRef.current = null;
     }
 
     // Stop audio context processing if it exists
     if (ac && gain) {
-        gain.gain.cancelScheduledValues(ac.currentTime);
-        gain.gain.setValueAtTime(0, ac.currentTime); // Ensure silence immediately
+      gain.gain.cancelScheduledValues(ac.currentTime);
+      gain.gain.setValueAtTime(0, ac.currentTime); // Ensure silence immediately
     }
 
     // Reset state
     if (isInput) {
-        setIsInputPlaying(false);
+      setIsInputPlaying(false);
     } else {
-        setIsPlaying(false);
+      setIsPlaying(false);
     }
-    
+
     if (isInput) {
-    setIsInputAudioPaused(false);
-  } else {
-    setIsOutputAudioPaused(false);
-  }
+      setIsInputAudioPaused(false);
+    } else {
+      setIsOutputAudioPaused(false);
+    }
 
     setCurrentAudioIndex(0); // Reset position
   }
@@ -701,39 +722,21 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
     }
 
     // Reset state
-     if (isInput) {
-        setIsInputVisualPlaying(false);
+    if (isInput) {
+      setIsInputVisualPlaying(false);
     } else {
-        setIsVisualPlaying(false);
+      setIsVisualPlaying(false);
     }
     if (isInput) {
-    setIsInputVisualPaused(false);
-  } else {
-    setIsOutputVisualPaused(false);
-  }
+      setIsInputVisualPaused(false);
+    } else {
+      setIsOutputVisualPaused(false);
+    }
 
     setCurrentVisualIndex(0); // Reset position
     setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
   }  // Stop both audio and visual effects
-  const stopAllEffects = (isInput = false) => {
-    const wasPlaying = isInput 
-      ? (isInputPlaying || isInputVisualPlaying || isInputAudioPaused || isInputVisualPaused)
-      : (isPlaying || isVisualPlaying || isOutputAudioPaused || isOutputVisualPaused);
-    
-    // Always call stopAudio and stopVisual regardless of state
-    // The functions themselves have guards to prevent errors
-    stopAudio(isInput);
-    stopVisual(isInput);
-    
-    // Also stop TTS if it's running
-    window.speechSynthesis?.cancel();
-    
-    // Only show alert if something was actually playing or paused
-    if (wasPlaying) {
-      const sourceText = isInput ? "input" : "output";
-      showAlert(`Stopped ${sourceText} playback`, 'info', 2000);
-    }
-  }
+  
 
   // --- Updated Visual Playback with Pause/Resume ---
   const playVisualMorse = (morseText: string, isInput = false, startIndex = 0) => {
@@ -743,8 +746,8 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
     // Clear only the main scheduling timeout if it exists from a previous run
     if (visualTimeoutRef.current) {
-        clearTimeout(visualTimeoutRef.current);
-        visualTimeoutRef.current = null;
+      clearTimeout(visualTimeoutRef.current);
+      visualTimeoutRef.current = null;
     }
     // Clear effect timeouts from previous run for this type (input/output)
     activeVisualTimeoutsRef.current.forEach(clearTimeout);
@@ -752,10 +755,10 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
     if (isInput) setIsInputVisualPlaying(true); else setIsVisualPlaying(true);
     if (isInput) {
-    setIsInputVisualPaused(false);
-  } else {
-    setIsOutputVisualPaused(false);
-  } // Ensure not paused when starting
+      setIsInputVisualPaused(false);
+    } else {
+      setIsOutputVisualPaused(false);
+    } // Ensure not paused when starting
 
     const dotDuration = 1.2 / audioSettings.wpm * 1000; // ms
     const dashDuration = dotDuration * 3;
@@ -778,7 +781,7 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
       }
 
       // Pause check: If paused, just stop scheduling. Index is already saved.
-        if ((isInput ? isInputAudioPaused : isOutputAudioPaused)){
+      if ((isInput ? isInputAudioPaused : isOutputAudioPaused)) {
         return;
       }
 
@@ -815,9 +818,9 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
         }
         symbolDuration = 0; // No visual for space itself
       } else {
-         // Ignore invalid characters
-         symbolDuration = 0;
-         spaceDuration = 0;
+        // Ignore invalid characters
+        symbolDuration = 0;
+        spaceDuration = 0;
       }
 
       const totalTimeForThisStep = symbolDuration + spaceDuration;
@@ -826,11 +829,11 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
 
       // Schedule the next recursive call
       if (totalTimeForThisStep > 0) {
-          // Schedule the next call relative to the *start* of the current step
-          visualTimeoutRef.current = setTimeout(() => scheduleNextVisual(0), currentSymbolDelay + totalTimeForThisStep);
+        // Schedule the next call relative to the *start* of the current step
+        visualTimeoutRef.current = setTimeout(() => scheduleNextVisual(0), currentSymbolDelay + totalTimeForThisStep);
       } else {
-          // If duration is 0, schedule immediately relative to current step start
-          visualTimeoutRef.current = setTimeout(() => scheduleNextVisual(0), currentSymbolDelay);
+        // If duration is 0, schedule immediately relative to current step start
+        visualTimeoutRef.current = setTimeout(() => scheduleNextVisual(0), currentSymbolDelay);
       }
     };
 
@@ -842,10 +845,10 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
   const pauseVisual = (isInput = false) => {
     // Set paused state first
     if (isInput) {
-    setIsInputVisualPaused(true);
-  } else {
-    setIsOutputVisualPaused(true);
-  }
+      setIsInputVisualPaused(true);
+    } else {
+      setIsOutputVisualPaused(true);
+    }
 
     // Clear the main timeout that schedules the *next* symbol
     if (visualTimeoutRef.current) {
@@ -859,45 +862,45 @@ const [isOutputVisualPaused, setIsOutputVisualPaused] = useState(false)
   };
 
   useEffect(() => {
-  if (!isInputVisualPaused && isInputVisualPlaying) {
-    // Resume visual playback from currentVisualIndex
-    const text = inputText;
-    playVisualMorse(text, true, currentVisualIndex);
-  }
-}, [isInputVisualPaused]);
+    if (!isInputVisualPaused && isInputVisualPlaying) {
+      // Resume visual playback from currentVisualIndex
+      const text = inputText;
+      playVisualMorse(text, true, currentVisualIndex);
+    }
+  }, [isInputVisualPaused]);
 
-useEffect(() => {
-  if (!isOutputVisualPaused && isVisualPlaying) {
-    // Resume visual playback from currentVisualIndex
-    const text = mode === 'text-to-morse' ? outputText : inputText;
-    playVisualMorse(text, false, currentVisualIndex);
-  }
-}, [isOutputVisualPaused]);
+  useEffect(() => {
+    if (!isOutputVisualPaused && isVisualPlaying) {
+      // Resume visual playback from currentVisualIndex
+      const text = mode === 'text-to-morse' ? outputText : inputText;
+      playVisualMorse(text, false, currentVisualIndex);
+    }
+  }, [isOutputVisualPaused]);
 
   // Resume visual playback
   const resumeVisual = (isInput = false) => {
-  if (!(isInput ? isInputVisualPaused : isOutputVisualPaused)) return;
-  if (isInput) {
-    setIsInputVisualPlaying(true);
-    setIsInputVisualPaused(false);
-  } else {
-    setIsVisualPlaying(true);
-    setIsOutputVisualPaused(false);
-  }
-  // Do not call playVisualMorse here!
-};
+    if (!(isInput ? isInputVisualPaused : isOutputVisualPaused)) return;
+    if (isInput) {
+      setIsInputVisualPlaying(true);
+      setIsInputVisualPaused(false);
+    } else {
+      setIsVisualPlaying(true);
+      setIsOutputVisualPaused(false);
+    }
+    // Do not call playVisualMorse here!
+  };
 
   // --- Updated Audio Playback with Pause/Resume ---
   const playMorseAudio = (morseText: string, isInput = false, startIndex = 0) => {
-    if (!morseText) 
-    console.log(strings.debugPlayingMorseAudio, isInput ? strings.debugInputLabel : strings.debugOutputLabel, strings.debugStartIndex, startIndex);
-    setupAudio();    const ac = audioContextRef.current;
+    if (!morseText)
+      console.log(strings.debugPlayingMorseAudio, isInput ? strings.debugInputLabel : strings.debugOutputLabel, strings.debugStartIndex, startIndex);
+    setupAudio(); const ac = audioContextRef.current;
     const gain = gainNodeRef.current;
     const osc = oscillatorRef.current;
     if (!ac || !gain || !osc) {
-        console.error("AudioContext not available or initialized.");
-        stopAudio(isInput); // Ensure state is reset
-        return;
+      console.error("AudioContext not available or initialized.");
+      stopAudio(isInput); // Ensure state is reset
+      return;
     }
 
     stopAudio(!isInput); // Stop the *other* audio playback if running
@@ -906,16 +909,16 @@ useEffect(() => {
     gain.gain.cancelScheduledValues(ac.currentTime);
     gain.gain.setValueAtTime(0, ac.currentTime); // Ensure silence initially
     if (audioTimeoutRef.current) {
-        clearTimeout(audioTimeoutRef.current);
-        audioTimeoutRef.current = null;
+      clearTimeout(audioTimeoutRef.current);
+      audioTimeoutRef.current = null;
     }
 
     if (isInput) setIsInputPlaying(true); else setIsPlaying(true);
     if (isInput) {
-    setIsInputAudioPaused(false);
-  } else {
-    setIsOutputAudioPaused(false);
-  }
+      setIsInputAudioPaused(false);
+    } else {
+      setIsOutputAudioPaused(false);
+    }
 
     const dotDuration = 1.2 / audioSettings.wpm;
     const dashDuration = dotDuration * 3;
@@ -932,65 +935,65 @@ useEffect(() => {
     let scheduleTime = ac.currentTime; // Start scheduling from now
 
     const scheduleNextAudio = () => {
-        // Base case: End of playback
-        if (currentIndex >= symbols.length) {
-            const delayUntilEnd = (scheduleTime - ac.currentTime) * 1000;
-            audioTimeoutRef.current = setTimeout(() => {
-                stopAudio(isInput);
-            }, Math.max(0, delayUntilEnd + 50));
-            return;
-        }
+      // Base case: End of playback
+      if (currentIndex >= symbols.length) {
+        const delayUntilEnd = (scheduleTime - ac.currentTime) * 1000;
+        audioTimeoutRef.current = setTimeout(() => {
+          stopAudio(isInput);
+        }, Math.max(0, delayUntilEnd + 50));
+        return;
+      }
 
-        // Pause check: If paused, stop scheduling. Index is saved.
-        if ((isInput ? isInputAudioPaused : isOutputAudioPaused)) {
-            return;
-        }
+      // Pause check: If paused, stop scheduling. Index is saved.
+      if ((isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+        return;
+      }
 
-        const symbol = symbols[currentIndex];
-        let symbolDuration = 0;
-        let spaceDuration = symbolSpaceDuration;
+      const symbol = symbols[currentIndex];
+      let symbolDuration = 0;
+      let spaceDuration = symbolSpaceDuration;
 
-        // Schedule gain changes for the current symbol
-        if (symbol === '.' || symbol === '•') {
-            symbolDuration = dotDuration;
-            gain.gain.setValueAtTime(audioSettings.volume, scheduleTime);
-            gain.gain.setValueAtTime(0, scheduleTime + symbolDuration);
-        } else if (symbol === '-' || symbol === '–' || symbol === '—') {
-            symbolDuration = dashDuration;
-            gain.gain.setValueAtTime(audioSettings.volume, scheduleTime);
-            gain.gain.setValueAtTime(0, scheduleTime + symbolDuration);
-        } else if (symbol === ' ') {
-            if (currentIndex + 2 < symbols.length && symbols[currentIndex + 1] === ' ' && symbols[currentIndex + 2] === ' ') {
-                spaceDuration = wordSpaceDuration;
-                currentIndex += 2;
-            } else {
-                spaceDuration = letterSpaceDuration;
-            }
-            symbolDuration = 0;
+      // Schedule gain changes for the current symbol
+      if (symbol === '.' || symbol === '•') {
+        symbolDuration = dotDuration;
+        gain.gain.setValueAtTime(audioSettings.volume, scheduleTime);
+        gain.gain.setValueAtTime(0, scheduleTime + symbolDuration);
+      } else if (symbol === '-' || symbol === '–' || symbol === '—') {
+        symbolDuration = dashDuration;
+        gain.gain.setValueAtTime(audioSettings.volume, scheduleTime);
+        gain.gain.setValueAtTime(0, scheduleTime + symbolDuration);
+      } else if (symbol === ' ') {
+        if (currentIndex + 2 < symbols.length && symbols[currentIndex + 1] === ' ' && symbols[currentIndex + 2] === ' ') {
+          spaceDuration = wordSpaceDuration;
+          currentIndex += 2;
         } else {
-            symbolDuration = 0;
-            spaceDuration = 0; // No sound, no extra space
+          spaceDuration = letterSpaceDuration;
         }
+        symbolDuration = 0;
+      } else {
+        symbolDuration = 0;
+        spaceDuration = 0; // No sound, no extra space
+      }
 
-        // Advance the time for the next schedule
-        const timeForCurrentStep = symbolDuration + spaceDuration;
-        scheduleTime += timeForCurrentStep;
-        currentIndex++;
-        setCurrentAudioIndex(currentIndex); // Update progress
+      // Advance the time for the next schedule
+      const timeForCurrentStep = symbolDuration + spaceDuration;
+      scheduleTime += timeForCurrentStep;
+      currentIndex++;
+      setCurrentAudioIndex(currentIndex); // Update progress
 
-        // Schedule the call for the *next* symbol using setTimeout
-        // Calculate delay from *now* until the current step finishes
-        const delayUntilNextCall = (scheduleTime - ac.currentTime) * 1000;
+      // Schedule the call for the *next* symbol using setTimeout
+      // Calculate delay from *now* until the current step finishes
+      const delayUntilNextCall = (scheduleTime - ac.currentTime) * 1000;
 
-        if (timeForCurrentStep > 0) {
-             // Schedule the next check slightly *before* the current step ends
-             // to ensure smooth transition if possible, or right after.
-            audioTimeoutRef.current = setTimeout(scheduleNextAudio, Math.max(0, delayUntilNextCall - 10)); // Small buffer
-        } else {
-             // If duration is 0, schedule next check immediately
-             scheduleNextAudio(); // Direct call might be too fast, use timeout 0
-            // audioTimeoutRef.current = setTimeout(scheduleNextAudio, 0);
-        }
+      if (timeForCurrentStep > 0) {
+        // Schedule the next check slightly *before* the current step ends
+        // to ensure smooth transition if possible, or right after.
+        audioTimeoutRef.current = setTimeout(scheduleNextAudio, Math.max(0, delayUntilNextCall - 10)); // Small buffer
+      } else {
+        // If duration is 0, schedule next check immediately
+        scheduleNextAudio(); // Direct call might be too fast, use timeout 0
+        // audioTimeoutRef.current = setTimeout(scheduleNextAudio, 0);
+      }
     };
 
     // Start scheduling
@@ -1007,15 +1010,15 @@ useEffect(() => {
 
     // Set paused state first
     if (isInput) {
-    setIsInputAudioPaused(true);
-  } else {
-    setIsOutputAudioPaused(true);
-  }
+      setIsInputAudioPaused(true);
+    } else {
+      setIsOutputAudioPaused(true);
+    }
 
     // Clear the recursive scheduling timeout
     if (audioTimeoutRef.current) {
-        clearTimeout(audioTimeoutRef.current);
-        audioTimeoutRef.current = null;
+      clearTimeout(audioTimeoutRef.current);
+      audioTimeoutRef.current = null;
     }
 
     // Cancel future scheduled gain changes and force silence now
@@ -1025,46 +1028,46 @@ useEffect(() => {
   // Resume audio playback
 
   useEffect(() => {
-  if (!isInputAudioPaused && isInputPlaying) {
-    // Resume playback from currentAudioIndex
-    const ac = audioContextRef.current;
-    if (ac) {
-      ac.resume().then(() => {
-        playMorseAudio(inputText, true, currentAudioIndex);
-      });
+    if (!isInputAudioPaused && isInputPlaying) {
+      // Resume playback from currentAudioIndex
+      const ac = audioContextRef.current;
+      if (ac) {
+        ac.resume().then(() => {
+          playMorseAudio(inputText, true, currentAudioIndex);
+        });
+      }
     }
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [isInputAudioPaused]);
-useEffect(() => {
-  if (!isOutputAudioPaused && isPlaying) {
-    // Resume output audio playback from currentAudioIndex
-    const ac = audioContextRef.current;
-    if (ac) {
-      ac.resume().then(() => {
-        playMorseAudio(outputText, false, currentAudioIndex);
-      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInputAudioPaused]);
+  useEffect(() => {
+    if (!isOutputAudioPaused && isPlaying) {
+      // Resume output audio playback from currentAudioIndex
+      const ac = audioContextRef.current;
+      if (ac) {
+        ac.resume().then(() => {
+          playMorseAudio(outputText, false, currentAudioIndex);
+        });
+      }
     }
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [isOutputAudioPaused]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOutputAudioPaused]);
 
 
   const resumeAudio = (isInput = false) => {
-  if (audioTimeoutRef.current) {
-    clearTimeout(audioTimeoutRef.current);
-    audioTimeoutRef.current = null;
-  }
+    if (audioTimeoutRef.current) {
+      clearTimeout(audioTimeoutRef.current);
+      audioTimeoutRef.current = null;
+    }
 
-  if (isInput) {
-    setIsInputPlaying(true);
-    setIsInputAudioPaused(false);
-  } else {
-    setIsPlaying(true);
-    setIsOutputAudioPaused(false);
-  }
-  // Do not call playMorseAudio here!
-};
+    if (isInput) {
+      setIsInputPlaying(true);
+      setIsInputAudioPaused(false);
+    } else {
+      setIsPlaying(true);
+      setIsOutputAudioPaused(false);
+    }
+    // Do not call playMorseAudio here!
+  };
 
 
 
@@ -1081,106 +1084,111 @@ useEffect(() => {
   }
 
   // --- Updated Control Functions ---  // Play both audio and visual effects simultaneously based on selection
-  const playSelectedEffects = (text: string, isInput = false) => {
-    // Check whether the content is Morse code based on the current mode and which side we're playing
-    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
-    
-    // Stop any currently playing effects
-    stopAllEffects(isInput);
-    
-    // Stop TTS if it's running
-    window.speechSynthesis?.cancel();
+// Update playSelectedEffects function to use flash text
+const playSelectedEffects = (text: string, isInput = false) => {
+  // Check whether the content is Morse code based on the current mode and which side we're playing
+  const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+  
+  // Stop any currently playing effects
+  stopAllEffects(isInput);
+  
+  // Stop TTS if it's running
+  window.speechSynthesis?.cancel();
 
-    if (!isMorseContent) {
-      // For non-Morse text, use TTS if audio is selected
-      if (audioEffectSelected) {
-        showAlert("Playing text-to-speech audio", 'info', 2000);
-        speakText(text);
-      }
-      // Note: Visual effects are not supported for regular text
-      return;
-    }
-    
-    // Show playback alerts based on selected effects and content type
-    if (audioEffectSelected && visualEffectSelected) {
-      showAlert(`Playing ${isInput ? "input" : "output"} with audio and visual effects`, 'info', 2000);
-    } else if (audioEffectSelected) {
-      showAlert(`Playing ${isInput ? "input" : "output"} with audio effect`, 'info', 2000);
-    } else if (visualEffectSelected) {
-      showAlert(`Playing ${isInput ? "input" : "output"} with visual effect`, 'info', 2000);
-    }
-    
-    // Play selected effects for Morse code
+  if (!isMorseContent) {
+    // For non-Morse text, use TTS if audio is selected
     if (audioEffectSelected) {
-      playMorseAudio(text, isInput, 0);
+      showFlashText(`play-${isInput ? "input" : "output"}`, "Playing speech", 1500);
+      speakText(text);
     }
-    
-    if (visualEffectSelected) {
-      playVisualMorse(text, isInput, 0);
-    }
-  };  // Pause all active effects
-  const pauseSelectedEffects = (isInput = false) => {
-    // Check if the content is Morse code based on which side we're dealing with
-    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
-    
-    let isPausing = false;
-    
-    // Pause audio if it's selected and playing (not already paused)
-    if (audioEffectSelected && (isInput ? isInputPlaying : isPlaying) && !(isInput ? isInputAudioPaused : isOutputAudioPaused)) {
-      pauseAudio(isInput);
-      isPausing = true;
-    }
-    
-    // Pause visual if it's selected, playing, and content is Morse
-    if (visualEffectSelected && (isInput ? isInputVisualPlaying : isVisualPlaying) && !(isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
-      pauseVisual(isInput);
-      isPausing = true;
-    }
-    
-    // Show alert if any effect was paused
-    if (isPausing) {
-      const sourceText = isInput ? "input" : "output";
-      showAlert(`Paused ${sourceText} playback`, 'info', 2000);
-    }
-  };
+    return;
+  }
+  
+  // Show flash text on the play button
+  if (audioEffectSelected && visualEffectSelected) {
+    showFlashText(`play-${isInput ? "input" : "output"}`, "Playing audio + visual", 1500);
+  } else if (audioEffectSelected) {
+    showFlashText(`play-${isInput ? "input" : "output"}`, "Playing audio", 1500);
+  } else if (visualEffectSelected) {
+    showFlashText(`play-${isInput ? "input" : "output"}`, "Playing visual", 1500);
+  }
+  
+  // Play selected effects for Morse code
+  if (audioEffectSelected) {
+    playMorseAudio(text, isInput, 0);
+  }
+  if (visualEffectSelected) {
+    playVisualMorse(text, isInput, 0);
+  }
+};
 
-  // Resume all paused effects
-  const resumeSelectedEffects = (isInput = false) => {
-    // Check if the content is Morse code based on which side we're dealing with
-    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
-    
-    let isResuming = false;
-    
-    // Resume audio if it's selected and paused
-    if (audioEffectSelected && (isInput ? isInputAudioPaused : isOutputAudioPaused)) {
-      resumeAudio(isInput);
-      isResuming = true;
-    }
-    
-    // Resume visual if it's selected, paused, and content is Morse
-    if (visualEffectSelected && (isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
-      resumeVisual(isInput);
-      isResuming = true;
-    }
-    
-    // Show alert if any effect was resumed
-    if (isResuming) {
-      const sourceText = isInput ? "input" : "output";
-      showAlert(`Resumed ${sourceText} playback`, 'info', 2000);
-    }
-  };
+// Update pauseSelectedEffects function
+const pauseSelectedEffects = (isInput = false) => {
+  const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+  let isPausing = false;
+  
+  if (audioEffectSelected && (isInput ? isInputPlaying : isPlaying) && !(isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+    pauseAudio(isInput);
+    isPausing = true;
+  }
+  
+  if (visualEffectSelected && (isInput ? isInputVisualPlaying : isVisualPlaying) && !(isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
+    pauseVisual(isInput);
+    isPausing = true;
+  }
+  
+  if (isPausing) {
+    showFlashText(`pause-${isInput ? "input" : "output"}`, "Paused", 1500);
+  }
+};
+
+// Update resumeSelectedEffects function
+const resumeSelectedEffects = (isInput = false) => {
+  const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+  let isResuming = false;
+  
+  if (audioEffectSelected && (isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+    resumeAudio(isInput);
+    isResuming = true;
+  }
+  
+  if (visualEffectSelected && (isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
+    resumeVisual(isInput);
+    isResuming = true;
+  }
+  
+  if (isResuming) {
+    showFlashText(`pause-${isInput ? "input" : "output"}`, "Resuming", 1500);
+  }
+};
+
+// Update stopAllEffects function
+const stopAllEffects = (isInput = false) => {
+  const wasPlaying = isInput 
+    ? (isInputPlaying || isInputVisualPlaying || isInputAudioPaused || isInputVisualPaused)
+    : (isPlaying || isVisualPlaying || isOutputAudioPaused || isOutputVisualPaused);
+  
+  stopAudio(isInput);
+  stopVisual(isInput);
+  
+  window.speechSynthesis?.cancel();
+  
+  if (wasPlaying) {
+    showFlashText(`stop-${isInput ? "input" : "output"}`, "Stopped", 1500);
+  }
+};
+
   // Handle copy to clipboard
   const handleCopy = () => {
     if (outputText) {
       navigator.clipboard.writeText(outputText)
-      setCopied(true)
-      showAlert(strings.copied, 'success', 2000)
-      setTimeout(() => setCopied(false), 2000)
+      showFlashText("copy", strings.copied)
     } else {
       showAlert("Nothing to copy", 'warning', 2000)
     }
   }
-  // Handle download as text file
+
+  // Update handleDownload function
   const handleDownload = () => {
     if (outputText) {
       const element = document.createElement("a")
@@ -1190,17 +1198,19 @@ useEffect(() => {
       document.body.appendChild(element)
       element.click()
       document.body.removeChild(element)
-      showAlert("File downloaded successfully", 'success', 2000)
+      showFlashText("download", "Downloaded!")
     } else {
       showAlert("Nothing to download", 'warning', 2000)
     }
   }
 
+
+
   // Handle clear input
   const handleClear = () => {
     stopAllEffects(true);
     stopAllEffects(false);
-    
+
     setInputText("")
     setOutputText("")
     setInputError(null)
@@ -1210,111 +1220,92 @@ useEffect(() => {
     showAlert("Cleared all text", 'info', 2000)
   }
   // Handle help button click
-  const handleHelp = () => {
-    // Show different help messages based on context
-    if (isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying) {
-      // If something is playing, show playback help
-      showAlert(
-        "Use the pause button to pause playback, or stop to end playback completely. You can resume paused playback later.",
-        'info',
-        6000
-      );
-    } else if (isAnyPaused) {
-      // If something is paused, show resume help
-      showAlert(
-        "Click resume to continue playback from where you paused, or stop to end playback completely.",
-        'info',
-        6000
-      );
-    } else if (!inputText && !outputText) {
-      // If both input and output are empty
-      showAlert(
-        "Enter text or Morse code to begin translation. Use the swap button to change translation direction.",
-        'info',
-        6000
-      );
-    } else if (mode === "morse-to-text") {
-      // Morse to text mode help
-      showAlert(
-        "Enter Morse code using dots (.), dashes (-), and spaces. Use one space between characters and three spaces between words. Use the play buttons to hear or see the Morse code.",
-        'info',
-        7000
-      );
-    } else {
-      // Text to Morse mode help
-      showAlert(
-        "Enter text to convert to Morse code. The translated Morse code will use dots (.), dashes (-), and spaces. Use the play buttons to hear or see the Morse code.",
-        'info',
-        7000
-      );
-    }
+  // Update handleHelp function
+// Update handleHelp function
+const handleHelp = () => {
+  let helpMessage = "";
+  
+  // Keep the context-sensitive logic but create shorter messages for flash text
+  if (isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying) {
+    helpMessage = "Use pause or stop to control playback";
+  } else if (isAnyPaused) {
+    helpMessage = "Resume or stop paused playback";
+  } else if (!inputText && !outputText) {
+    helpMessage = "Enter text/morse to begin";
+  } else if (mode === "morse-to-text") {
+    helpMessage = "Use dots, dashes & spaces for Morse";
+  } else {
+    helpMessage = "Enter text to convert to Morse";
   }
-    // Toggle audio effect selection - ensure at least one option is selected
+  
+  // Show flash text instead of alert
+  showFlashText("help", helpMessage, 2500);
+}
+
+
   const toggleAudioEffect = () => {
     const newValue = !audioEffectSelected;
     setAudioEffectSelected(newValue);
-    // If turning off audio and visual is already off, then turn on visual
+
     if (!newValue && !visualEffectSelected) {
       setVisualEffectSelected(true);
-      showAlert("Visual effect enabled", 'info', 1500)
+      showFlashText("visualeffect", "Visual effect enabled");
     } else if (newValue) {
-      showAlert("Audio effect enabled", 'info', 1500)
+      showFlashText("audioeffect", "Audio effect enabled");
     } else {
-      showAlert("Audio effect disabled", 'info', 1500)
-    }
-  };  // Toggle visual effect selection - ensure at least one option is selected
-  // and only allow visual effect for valid Morse code
-  const toggleVisualEffect = () => {
-    // Check if either input or output has valid Morse content
-    const hasMorseContent = isInputMorse || isOutputMorse;
-    
-    // Only allow visual effect for Morse code
-    if (!hasMorseContent && !visualEffectSelected) {
-      showAlert("Visual effect requires Morse code content", 'warning', 2500)
-      return; // Don't enable visual if no Morse content is available
-    }
-    
-    const newValue = !visualEffectSelected;
-    setVisualEffectSelected(newValue);
-    
-    // If turning off visual and audio is already off, then turn on audio
-    if (!newValue && !audioEffectSelected) {
-      setAudioEffectSelected(true);
-      showAlert("Audio effect enabled", 'info', 1500)
-    } else if (newValue) {
-      showAlert("Visual effect enabled", 'info', 1500)
-    } else {
-      showAlert("Visual effect disabled", 'info', 1500)
+      showFlashText("audioeffect", "Audio effect disabled");
     }
   };
+
+  const toggleVisualEffect = () => {
+    const hasMorseContent = isInputMorse || isOutputMorse;
+
+    if (!hasMorseContent && !visualEffectSelected) {
+      showAlert("Visual effect requires Morse code content", 'warning', 2500)
+      return;
+    }
+
+    const newValue = !visualEffectSelected;
+    setVisualEffectSelected(newValue);
+
+    if (!newValue && !audioEffectSelected) {
+      setAudioEffectSelected(true);
+      showFlashText("audioeffect", "Audio effect enabled");
+    } else if (newValue) {
+      showFlashText("visualeffect", "Visual effect enabled");
+    } else {
+      showFlashText("visualeffect", "Visual effect disabled");
+    }
+  };
+
   // Helper functions to determine whether input or output is valid Morse
   const isMorseFormat = (text: string): boolean => {
     return /^[.\- ]+$/.test(text.replace(/\s+/g, ' '));
   };
-  
+
   // Check if the input side has Morse content based on the current mode
   const isInputMorse = mode === 'morse-to-text' ? isMorseFormat(inputText) : false;
-  
+
   // Check if the output side has Morse content based on the current mode
   const isOutputMorse = mode === 'text-to-morse' ? isMorseFormat(outputText) : false;
-  
+
   // Determine if any playback is active for either input or output
   const isAnyPlaying = isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying;
   const isInputPaused = isInputAudioPaused || isInputVisualPaused;
-const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
+  const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
 
   const isAnyPaused = isInputPaused || isOutputPaused;
 
-  return (      <div
-        ref={converterRef}
-        className={`
+  return (<div
+    ref={converterRef}
+    className={`
           flex flex-col font-lexend rounded-lg text-[#372824] transition-colors duration-500 ease-in-out
           ${visualEffect.active ? (visualEffect.isDash ? 'bg-[#456359] text-white pulse-dash' : 'bg-[#456359] text-white pulse-dot') : ''}
         `}
-      >{/* Alert Message Component */}
-        {alertMessage && (
-          <div
-            className={`
+  >{/* Alert Message Component */}
+    {alertMessage && (
+      <div
+        className={`
               mx-4 mt-4 p-3 rounded-md shadow-sm border text-sm flex items-center justify-between 
               animate-fadeIn transition-all duration-300 ease-in-out
               ${alertMessage.type === 'info' ? 'bg-green-50 border-green-200 text-green-700' : ''}
@@ -1322,449 +1313,489 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
               ${alertMessage.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : ''}
               ${alertMessage.type === 'warning' ? 'bg-amber-50 border-amber-200 text-amber-700' : ''}
             `}
-            role="alert"
-          >            <div className="flex items-center">
-              <span className="mr-2">
-                {alertMessage.type === 'info' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>}
-                {alertMessage.type === 'success' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>}
-                {alertMessage.type === 'error' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>}
-                {alertMessage.type === 'warning' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>}
-              </span>
-              <span className="text-sm font-medium">{alertMessage.text}</span>
-            </div><button 
-              onClick={() => {
-                // Add fadeOut class and then remove the alert after animation completes
-                const alertElement = document.querySelector('[role="alert"]');
-                if (alertElement) {
-                  alertElement.classList.add('animate-fadeOut');
-                  alertElement.classList.remove('animate-fadeIn');
-                  
-                  // Wait for animation to complete before removing the alert
-                  setTimeout(() => {
-                    setAlertMessage(null);
-                  }, 300); // Match the animation duration
-                } else {
-                  // Fallback if element not found
-                  setAlertMessage(null);
-                }
-              }}
-              className="ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-              aria-label="Dismiss notification"
+        role="alert"
+      >            <div className="flex items-center">
+          <span className="mr-2">
+            {alertMessage.type === 'info' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>}
+            {alertMessage.type === 'success' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>}
+            {alertMessage.type === 'error' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>}
+            {alertMessage.type === 'warning' && <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>}
+          </span>
+          <span className="text-sm font-medium">{alertMessage.text}</span>
+        </div><button
+          onClick={() => {
+            // Add fadeOut class and then remove the alert after animation completes
+            const alertElement = document.querySelector('[role="alert"]');
+            if (alertElement) {
+              alertElement.classList.add('animate-fadeOut');
+              alertElement.classList.remove('animate-fadeIn');
+
+              // Wait for animation to complete before removing the alert
+              setTimeout(() => {
+                setAlertMessage(null);
+              }, 300); // Match the animation duration
+            } else {
+              // Fallback if element not found
+              setAlertMessage(null);
+            }
+          }}
+          className="ml-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          aria-label="Dismiss notification"
+        >
+          ×
+        </button>
+      </div>
+    )}
+
+    <div className="w-full mx-auto rounded-lg overflow-hidden border border-gray-200">
+      <div className="grid md:grid-cols-2 relative">
+        {/* Swap button in center */}          <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10 md:block hidden">
+          <div className="flex flex-col items-center">
+            <Button
+              onClick={toggleMode}
+              variant="outline"
+              size="icon"
+              className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md overflow-hidden"
             >
-              ×
-            </button>
-          </div>
-        )}
-
-      <div className="w-full mx-auto rounded-lg overflow-hidden border border-gray-200">
-        <div className="grid md:grid-cols-2 relative">
-          {/* Swap button in center */}          <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10 md:block hidden">
-            <div className="flex flex-col items-center">
-              <Button
-                onClick={toggleMode}
-                variant="outline"
-                size="icon"
-                className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md overflow-hidden"
-              >
-                <div className="swap-arrow-container">
-                  <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
-                </div>
-              </Button>
-              <span className="text-xs mt-1 text-[#456359]">{strings.swap}</span>
-            </div>
-          </div>
-
-          {/* Input section */}
-          <div className="border-r border-gray-200">
-            <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200">
-              <div className="flex items-center">
-                <span className="text-lg font-semibold text-[#456359]">
-                  {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
-                </span>
+              <div className="swap-arrow-container">
+                <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
               </div>
-
-              {/* Action buttons for input */}
-              <div className="flex items-center  gap-1">                {/* Playback control buttons */}                <Button
-                  onClick={() => playSelectedEffects(inputText, true)}
-                  variant="ghost"
-                  size="sm"
-                  className={`text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row flex-col gap-1`}
-                  disabled={
-                    !inputText || 
-                    (!audioEffectSelected && !visualEffectSelected) || 
-                    isAnyPlaying ||
-                    // Disable if only visual is selected but content is not Morse
-                    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
-                  }
-                  title="Play Input"
-                >
-                  <Play size={18} />
-                  {strings.play}
-                </Button>                <Button
-                  onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
-                  variant="ghost"
-                  size="sm"
-                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
-                  disabled={
-                    // Enable if something is playing or if something is paused
-                    !(
-                      // Something is currently playing
-                      (isInputPlaying || isInputVisualPlaying) ||
-                      // Something is currently paused
-                      (isAnyPaused)
-                    ) ||
-                    // If only visual is selected but text is not Morse, disable
-                    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
-                  }
-                  title={isAnyPaused ? `${strings.resume}` :  `${strings.pause}`}
-                >
-                  <Pause size={18} />
-                  {isAnyPaused ?  `${strings.resume}` : `${strings.pause}`}
-                </Button>                <Button
-                  onClick={() => stopAllEffects(true)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-[#456359] flex items-center gap-1 md:flex-row flex-col"
-                  disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
-                  title="Stop Input"
-                >
-                  <Square size={18} />
-                  {strings.stop}
-                </Button>                {/* Show swap button on mobile */}
-                <Button
-                  onClick={toggleMode}
-                  variant="ghost"
-                  size="sm"
-                  className="md:hidden text-[#456359] flex flex-col"
-                  title="Swap Modes"
-                >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
-                  {strings.swap}
-                </Button>
-              </div>
-            </div>            <div className="relative">
-              <Textarea
-                ref={inputRef}
-                value={inputText}
-                onChange={handleInputChange}
-                onClick={() => {
-                  if (!inputText) {
-                    showAlert("Enter text or morse code to enable audio/visual", 'warning', 3000);
-                  }
-                }}
-                placeholder={typingPlaceholder}
-                className={`
-                  p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
-                  ${initialText.length === 0
-                    ? "min-h-[200px] md:min-h-[300px]"
-                    : "min-h-[100px] md:min-h-[200px]"}
-                  ${isSingleLetterMode && inputText === initialText
-                    ? "text-center text-4xl md:text-6xl"
-                    : "text-xl/relaxed"}
-                `}
-              />
-
-              {/* Error message */}
-              {inputError && (
-                <div className="absolute bottom-2 left-0 right-0 mx-4 p-2 bg-red-50 text-red-600 text-sm rounded-md border border-red-200">
-                  {inputError}
-                </div>
-              )}
-            </div>
-
-            <div className="p-3 border-t flex justify-between border-gray-200">              <Button
-                onClick={handleClear}
-                variant="ghost"
-                size="sm"
-                className="text-[#372824] hover:text-black flex flex-col"
-                title="Clear Input"
-              >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
-                {strings.clear}
-              </Button>
-
-            </div>
-          </div>
-
-          {/* Output section */}
-          <div>
-            <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824]">
-              <div className="flex items-center">
-                <span className="text-lg text-[#456359] font-semibold">
-                  {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
-                </span>
-              </div>                {/* Playback control buttons */}
-              <div className="flex items-center gap-1">                <Button
-                  onClick={() => playSelectedEffects(outputText, false)}
-                  variant="ghost"
-                  size="sm"
-                  className={`text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
-                  disabled={
-                    !outputText || 
-                    (!audioEffectSelected && !visualEffectSelected) || 
-                    (isInputPlaying || isInputVisualPlaying) ||
-                    // Disable if only visual is selected but content is not Morse
-                    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
-                  }
-                  title="Play Output"
-                >
-                  <Play size={18} />
-                  {strings.play}
-                </Button>                <Button
-                  onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
-                  variant="ghost"
-                  size="sm"
-                  className={`text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
-                  disabled={
-                    // Enable if something is playing or if something is paused
-                    !(
-                      // Something is currently playing
-                      (isPlaying || isVisualPlaying) ||
-                      // Something is currently paused
-                      isAnyPaused
-                    ) ||
-                    // If only visual is selected but text is not Morse, disable
-                    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
-                  }                  title={isAnyPaused ? `${strings.resume} Output` : `${strings.pause} Output`}
-                >
-                  <Pause size={18} />
-                  {isAnyPaused ? strings.resume : strings.pause}
-                </Button>                <Button
-                  onClick={() => stopAllEffects(false)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-[#456359] flex items-center gap-1 md:flex-row flex-col"
-                  disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
-                  title="Stop Output"
-                >
-                  <Square size={18} />
-                  {strings.stop}
-                </Button>
-              </div>
-            </div>
-
-            <div className={`
-              p-4 text-gray-800 whitespace-pre-wrap
-              ${initialText.length === 0
-                ? "min-h-[200px] md:min-h-[300px]"
-                : "min-h-[100px] md:min-h-[200px]"}
-              ${isSingleLetterMode
-                ? "text-center text-4xl md:text-6xl"
-                : "text-xl"}
-            `}>
-              {outputText || (                <span className="text-gray-400 text-md">
-                  {mode === "morse-to-text" 
-                    ? strings.convertedTextWillAppearHere
-                    : strings.morseCodeWillAppearHere
-                  }
-                </span>
-              )}
-            </div>
-
-            <div className="p-3 border-t border-gray-200 flex justify-between space-x-2">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2">                <Button
-                  onClick={toggleAudioEffect}
-                  variant="ghost"
-                  size="sm"
-                  className={`${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
-                  title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
-                  disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
-                >                  <Volume2 className="h-5 w-5" />
-                  {strings.audio}
-                  <Check className={`h-5 w-5 ${audioEffectSelected ? 'text-white' : 'hidden'}`} />
-                </Button>                <Button
-                  onClick={toggleVisualEffect}
-                  variant="ghost"
-                  size="sm"
-                  className={`${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359]  text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
-                  title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
-                  disabled={
-                    isAnyPlaying || 
-                    isAnyPaused || 
-                    (!isInputMorse && !isOutputMorse) || // Disable visual if neither input nor output is Morse
-                    (!audioEffectSelected && visualEffectSelected) // Prevent deselecting when it's the only selection
-                  }
-                >                  <Lightbulb className="h-5 w-5" />
-                  {strings.visual}
-                  <Check className={`h-5 w-5 ${visualEffectSelected ? 'text-white' : 'hidden'}`} />
-                </Button>
-              </div>
-
-              {/* Utility buttons */}
-              <div className="flex items-center space-x-2">
-                {/* Copy Button */}
-                <Button
-                  onClick={handleCopy}
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-500 hover:text-gray-700 flex flex-col"
-                  disabled={!outputText}
-                  title={`${strings.copy} Output`}
-                >
-                    <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
-                  {strings.copy}
-                  {copied && <span className="sr-only">{strings.copied}</span>}
-                </Button>                {/* Download Button */}
-                <Button
-                  onClick={handleDownload}
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-500 hover:text-gray-700 flex flex-col"
-                  disabled={!outputText}
-                  title="Download Output"
-                >                  <Download className="h-5 w-5 p-0 m-0 -mb-2" />
-                  {strings.download}
-                </Button>
-                
-                {/* Help Button */}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-500 hover:text-gray-700 flex flex-col"
-                  title="Help"
-                  onClick={handleHelp}
-                >                  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
-                  {strings.help}
-                </Button>
-              </div>
-            </div>
+            </Button>
+            <span className="text-xs mt-1 text-[#456359]">{strings.swap}</span>
           </div>
         </div>
 
-        {/* Audio Settings at the bottom */}
-        <Collapsible className="border-t border-gray-200">
-          <div className="flex justify-between items-center px-4 py-2">
-            <span className="text-sm font-medium text-[#456359]">{strings.settings}</span>
-            <CollapsibleTrigger asChild>
+        {/* Input section */}
+        <div className="border-r border-gray-200">
+          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200">
+            <div className="flex items-center">
+              <span className="text-lg font-semibold text-[#456359]">
+                {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
+              </span>
+            </div>
+
+            {/* Action buttons for input */}
+            <div className="flex items-center  gap-1">                {/* Playback control buttons */}      
+              
+                      <Button
+  onClick={() => playSelectedEffects(inputText, true)}
+  variant="ghost"
+  size="sm"
+  className={`relative text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row flex-col gap-1`}
+  disabled={
+    !inputText || 
+    (!audioEffectSelected && !visualEffectSelected) || 
+    isAnyPlaying ||
+    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
+  }
+  title="Play Input"
+>
+  {flashText.button === "play-input" && flashText.active && (
+    <span className="flash-text-secondary">{flashText.text}</span>
+  )}
+  <Play size={18} />
+  {strings.play}
+</Button>
+
+{/* Pause/Resume Button for Input */}
+<Button
+  onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
+  variant="ghost"
+  size="sm"
+  className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
+  disabled={
+    !((isInputPlaying || isInputVisualPlaying) || isAnyPaused) ||
+    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
+  }
+  title={isAnyPaused ? `${strings.resume}` : `${strings.pause}`}
+>
+  {flashText.button === "pause-input" && flashText.active && (
+    <span className="flash-text-secondary">{flashText.text}</span>
+  )}
+  <Pause size={18} />
+  {isAnyPaused ? `${strings.resume}` : `${strings.pause}`}
+</Button>
+
+{/* Stop Button for Input */}
+<Button
+  onClick={() => stopAllEffects(true)}
+  variant="ghost"
+  size="sm"
+  className="relative text-[#456359] flex items-center gap-1 md:flex-row flex-col"
+  disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
+  title="Stop Input"
+>
+  {flashText.button === "stop-input" && flashText.active && (
+    <span className="flash-text-secondary">{flashText.text}</span>
+  )}
+  <Square size={18} />
+  {strings.stop}
+</Button>
+
+
+          {/* Show swap button on mobile */}
               <Button
+                onClick={toggleMode}
                 variant="ghost"
                 size="sm"
-                className="text-[#456359]"
-              >
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Toggle {strings.settings.toLowerCase()}</span>
+                className="md:hidden text-[#456359] flex flex-col"
+                title="Swap Modes"
+              >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
+                {strings.swap}
               </Button>
-            </CollapsibleTrigger>
+            </div>
+          </div>            <div className="relative">
+            <Textarea
+              ref={inputRef}
+              value={inputText}
+              onChange={handleInputChange}
+              onClick={() => {
+                if (!inputText) {
+                  showAlert("Enter text or morse code to enable audio/visual", 'warning', 3000);
+                }
+              }}
+              placeholder={typingPlaceholder}
+              className={`
+                  p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
+                  ${initialText.length === 0
+                  ? "min-h-[200px] md:min-h-[300px]"
+                  : "min-h-[100px] md:min-h-[200px]"}
+                  ${isSingleLetterMode && inputText === initialText
+                  ? "text-center text-4xl md:text-6xl"
+                  : "text-xl/relaxed"}
+                `}
+            />
+
+            {/* Error message */}
+            {inputError && (
+              <div className="absolute bottom-2 left-0 right-0 mx-4 p-2 bg-red-50 text-red-600 text-sm rounded-md border border-red-200">
+                {inputError}
+              </div>
+            )}
           </div>
 
-          <CollapsibleContent>
-            <div className="p-4 border-t border-gray-100 grid gap-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <label className="text-sm text-right col-span-1">
-                  WPM:
-                </label>
-                <div className="col-span-2">
-                  <input
-                    type="range"
-                    min="5"
-                    max="30"
-                    value={audioSettings.wpm}
-                    onChange={(e) => {
-                      const newValue = Number(e.target.value);
-                      setAudioSettings({
-                        ...audioSettings,
-                        wpm: newValue
-                      });
-                      showAlert(`Playback speed set to ${newValue} WPM`, 'info', 1500);
-                    }}
-                    className="w-full accent-[#456359]"
-                  />
-                </div>
-                <span className="col-span-1 text-sm">{audioSettings.wpm}</span>
-              </div>
+          <div className="p-3 border-t flex justify-between border-gray-200">              <Button
+            onClick={handleClear}
+            variant="ghost"
+            size="sm"
+            className="text-[#372824] hover:text-black flex flex-col"
+            title="Clear Input"
+          >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
+            {strings.clear}
+          </Button>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <label className="text-sm text-right col-span-1">
-                  Frequency:
-                </label>
-                <div className="col-span-2">                  <input
-                    type="range"
-                    min="400"
-                    max="1000"
-                    step="50"
-                    value={audioSettings.frequency}
-                    onChange={(e) => {
-                      const newValue = Number(e.target.value);
-                      setAudioSettings({
-                        ...audioSettings,
-                        frequency: newValue
-                      });
-                      showAlert(`Tone frequency set to ${newValue} Hz`, 'info', 1500);
-                    }}
-                    className="w-full accent-[#456359]"
-                  />
-                </div>
-                <span className="col-span-1 text-sm">{audioSettings.frequency} Hz</span>
-              </div>
+          </div>
+        </div>
 
-              <div className="grid grid-cols-4 items-center gap-4">
-                <label className="text-sm text-right col-span-1">
-                  Volume:
-                </label>
-                <div className="col-span-2">                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={audioSettings.volume}
-                    onChange={(e) => {
-                      const newValue = Number(e.target.value);
-                      setAudioSettings({
-                        ...audioSettings,
-                        volume: newValue
-                      });
-                      showAlert(`Volume set to ${Math.round(newValue * 100)}%`, 'info', 1500);
-                    }}
-                    className="w-full accent-[#456359]"
-                  />
-                </div>
-                <span className="col-span-1 text-sm">{Math.round(audioSettings.volume * 100)}%</span>
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <label className="text-sm text-right col-span-1">
-                  Sound Type:
-                </label>
-                <div className="col-span-3">
-                  <div className="flex gap-2">
-                    <label className="flex items-center">                      <input
-                        type="radio"
-                        name="soundType"
-                        value="cw"
-                        checked={audioSettings.soundType === 'cw'}
-                        onChange={() => {
-                          setAudioSettings({
-                            ...audioSettings,
-                            soundType: 'cw'
-                          });
-                          showAlert('Sound type set to CW Radio Tone', 'info', 2000);
-                        }}
-                        className="mr-1 accent-[#456359]"
-                      />
-                      CW Radio Tone
-                    </label>
-                    <label className="flex items-center">                      <input
-                        type="radio"
-                        name="soundType"
-                        value="telegraph"
-                        checked={audioSettings.soundType === 'telegraph'}
-                        onChange={() => {
-                          setAudioSettings({
-                            ...audioSettings,
-                            soundType: 'telegraph'
-                          });
-                          showAlert('Sound type set to Telegraph Sounder', 'info', 2000);
-                        }}
-                        className="mr-1 accent-[#456359]"
-                      />
-                      Telegraph Sounder
-                    </label>
-                  </div>
-                </div>
-              </div>
+        {/* Output section */}
+        <div>
+          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824]">
+            <div className="flex items-center">
+              <span className="text-lg text-[#456359] font-semibold">
+                {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
+              </span>
+            </div>                {/* Playback control buttons */}
+            <div className="flex items-center gap-1">         {/* Play Button for Output */}
+<Button
+  onClick={() => playSelectedEffects(outputText, false)}
+  variant="ghost"
+  size="sm"
+  className={`relative text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
+  disabled={
+    !outputText || 
+    (!audioEffectSelected && !visualEffectSelected) || 
+    (isInputPlaying || isInputVisualPlaying) ||
+    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
+  }
+  title="Play Output"
+>
+  {flashText.button === "play-output" && flashText.active && (
+    <span className="flash-text-secondary">{flashText.text}</span>
+  )}
+  <Play size={18} />
+  {strings.play}
+</Button>
+
+{/* Pause/Resume Button for Output */}
+<Button
+  onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
+  variant="ghost"
+  size="sm"
+  className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
+  disabled={
+    !((isPlaying || isVisualPlaying) || isAnyPaused) ||
+    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
+  }
+  title={isAnyPaused ? `${strings.resume} Output` : `${strings.pause} Output`}
+>
+  {flashText.button === "pause-output" && flashText.active && (
+    <span className="flash-text-secondary">{flashText.text}</span>
+  )}
+  <Pause size={18} />
+  {isAnyPaused ? strings.resume : strings.pause}
+</Button>
+
+{/* Stop Button for Output */}
+<Button
+  onClick={() => stopAllEffects(false)}
+  variant="ghost"
+  size="sm"
+  className="relative text-[#456359] flex items-center gap-1 md:flex-row flex-col"
+  disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
+  title="Stop Output"
+>
+  {flashText.button === "stop-output" && flashText.active && (
+    <span className="flash-text-secondary">{flashText.text}</span>
+  )}
+  <Square size={18} />
+  {strings.stop}
+</Button>
+            </div>
+          </div>
+
+          <div className={`
+              p-4 text-gray-800 whitespace-pre-wrap
+              ${initialText.length === 0
+              ? "min-h-[200px] md:min-h-[300px]"
+              : "min-h-[100px] md:min-h-[200px]"}
+              ${isSingleLetterMode
+              ? "text-center text-4xl md:text-6xl"
+              : "text-xl"}
+            `}>
+            {outputText || (<span className="text-gray-400 text-md">
+              {mode === "morse-to-text"
+                ? strings.convertedTextWillAppearHere
+                : strings.morseCodeWillAppearHere
+              }
+            </span>
+            )}
+          </div>
+
+          <div className="p-3 border-t border-gray-200 flex justify-between space-x-2">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
+  onClick={toggleAudioEffect}
+  variant="ghost"
+  size="sm"
+  className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+  title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
+  disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
+>
+  {flashText.button === "audioeffect" && flashText.active && (
+    <span className="flash-text">{flashText.text}</span>
+  )}
+  <Volume2 className="h-5 w-5" />
+  {strings.audio}
+  <Check className={`h-5 w-5 ${audioEffectSelected ? 'text-white' : 'hidden'}`} />
+</Button>
+<Button
+  onClick={toggleVisualEffect}
+  variant="ghost"
+  size="sm"
+  className={`relative ${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+  title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
+  disabled={isAnyPlaying || isAnyPaused || (!isInputMorse && !isOutputMorse) || (!audioEffectSelected && visualEffectSelected)}
+>
+  {flashText.button === "visualeffect" && flashText.active && (
+    <span className="flash-text">{flashText.text}</span>
+  )}
+  <Lightbulb className="h-5 w-5" />
+  {strings.visual}
+  <Check className={`h-5 w-5 ${visualEffectSelected ? 'text-white' : 'hidden'}`} />
+</Button>
+
+          </div>
+
+            {/* Utility buttons */}
+            <div className="flex items-center space-x-2">
+              {/* Copy Button */}
+<Button
+  onClick={handleCopy}
+  variant="ghost"
+  size="sm"
+  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+  disabled={!outputText}
+  title={`${strings.copy} Output`}
+>
+  {flashText.button === "copy" && flashText.active && (
+    <span className="flash-text">{flashText.text}</span>
+  )}
+  <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
+  {strings.copy}
+</Button>
+
+<Button
+  onClick={handleDownload}
+  variant="ghost"
+  size="sm"
+  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+  disabled={!outputText}
+  title="Download Output"
+>
+  {flashText.button === "download" && flashText.active && (
+    <span className="flash-text">Downloaded!</span>
+  )}
+  <Download className="h-5 w-5 p-0 m-0 -mb-2" />
+  {strings.download}
+</Button>
+
+
+              {/* Help Button */}
+{/* Help Button with flash text */}
+<Button
+  variant="ghost"
+  size="sm"
+  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+  title="Help"
+  onClick={handleHelp}
+>
+  {flashText.button === "help" && flashText.active && (
+    <span className="flash-text help-flash-text">{flashText.text}</span>
+  )}
+  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
+  {strings.help}
+</Button>
 
             </div>
-          </CollapsibleContent>
-        </Collapsible>
+          </div>
+        </div>
       </div>
 
-      {/* Add custom animation keyframes */}      <style jsx global>{`
+      {/* Audio Settings at the bottom */}
+      <Collapsible className="border-t border-gray-200">
+        <div className="flex justify-between items-center px-4 py-2">
+          <span className="text-sm font-medium text-[#456359]">{strings.settings}</span>
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-[#456359]"
+            >
+              <Settings className="h-5 w-5" />
+              <span className="sr-only">Toggle {strings.settings.toLowerCase()}</span>
+            </Button>
+          </CollapsibleTrigger>
+        </div>
+
+        <CollapsibleContent>
+          <div className="p-4 border-t border-gray-100 grid gap-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label className="text-sm text-right col-span-1">
+                WPM:
+              </label>
+              <div className="col-span-2">
+                <input
+                  type="range"
+                  min="5"
+                  max="30"
+                  value={audioSettings.wpm}
+                  onChange={(e) => {
+                    const newValue = Number(e.target.value);
+                    setAudioSettings({
+                      ...audioSettings,
+                      wpm: newValue
+                    });
+                    showAlert(`Playback speed set to ${newValue} WPM`, 'info', 1500);
+                  }}
+                  className="w-full accent-[#456359]"
+                />
+              </div>
+              <span className="col-span-1 text-sm">{audioSettings.wpm}</span>
+            </div>
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label className="text-sm text-right col-span-1">
+                Frequency:
+              </label>
+              <div className="col-span-2">                  <input
+                type="range"
+                min="400"
+                max="1000"
+                step="50"
+                value={audioSettings.frequency}
+                onChange={(e) => {
+                  const newValue = Number(e.target.value);
+                  setAudioSettings({
+                    ...audioSettings,
+                    frequency: newValue
+                  });
+                  showAlert(`Tone frequency set to ${newValue} Hz`, 'info', 1500);
+                }}
+                className="w-full accent-[#456359]"
+              />
+              </div>
+              <span className="col-span-1 text-sm">{audioSettings.frequency} Hz</span>
+            </div>
+
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label className="text-sm text-right col-span-1">
+                Volume:
+              </label>
+              <div className="col-span-2">                  <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={audioSettings.volume}
+                onChange={(e) => {
+                  const newValue = Number(e.target.value);
+                  setAudioSettings({
+                    ...audioSettings,
+                    volume: newValue
+                  });
+                  showAlert(`Volume set to ${Math.round(newValue * 100)}%`, 'info', 1500);
+                }}
+                className="w-full accent-[#456359]"
+              />
+              </div>
+              <span className="col-span-1 text-sm">{Math.round(audioSettings.volume * 100)}%</span>
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label className="text-sm text-right col-span-1">
+                Sound Type:
+              </label>
+              <div className="col-span-3">
+                <div className="flex gap-2">
+                  <label className="flex items-center">                      <input
+                    type="radio"
+                    name="soundType"
+                    value="cw"
+                    checked={audioSettings.soundType === 'cw'}
+                    onChange={() => {
+                      setAudioSettings({
+                        ...audioSettings,
+                        soundType: 'cw'
+                      });
+                      showAlert('Sound type set to CW Radio Tone', 'info', 2000);
+                    }}
+                    className="mr-1 accent-[#456359]"
+                  />
+                    CW Radio Tone
+                  </label>
+                  <label className="flex items-center">                      <input
+                    type="radio"
+                    name="soundType"
+                    value="telegraph"
+                    checked={audioSettings.soundType === 'telegraph'}
+                    onChange={() => {
+                      setAudioSettings({
+                        ...audioSettings,
+                        soundType: 'telegraph'
+                      });
+                      showAlert('Sound type set to Telegraph Sounder', 'info', 2000);
+                    }}
+                    className="mr-1 accent-[#456359]"
+                  />
+                    Telegraph Sounder
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
+    </div>
+
+    {/* Add custom animation keyframes */}      <style jsx global>{`
         @keyframes spin-slow {
           from {
             transform: rotate(0deg);
@@ -1826,6 +1857,6 @@ const isOutputPaused = isOutputAudioPaused || isOutputVisualPaused;
           animation: fadeOut 0.3s ease-in-out forwards;
         }
       `}</style>
-    </div>
+  </div>
   )
 }
