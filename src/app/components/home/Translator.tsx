@@ -276,6 +276,50 @@ export const internationalMorseCodeMap: Record<string, string> = {
   "---...": ":", "-.-.-.": ";", "-...-": "=", ".-.-.": "+", "-....-": "-",
   "..--.-": "_", ".-..-.": '"', "...-..-": "$", ".--.-.": "@", "": " ",
 }
+export const russianMorseCodeMap = {
+  ".-": "А",      // A
+  "-...": "Б",    // B
+  ".--": "В",     // W
+  "--.": "Г",     // G
+  "-..": "Д",     // D
+  ".": "Е",       // E
+  "...-": "Ж",    // V
+  "--..": "З",    // Z
+  "..": "И",      // I
+  ".---": "Й",    // J
+  "-.-": "К",     // K
+  ".-..": "Л",    // L
+  "--": "М",      // M
+  "-.": "Н",      // N
+  "---": "О",     // O
+  ".--.": "П",    // P
+  ".-.": "Р",     // R
+  "...": "С",     // S
+  "-": "Т",       // T
+  "..-": "У",     // U
+  "..-.": "Ф",    // F
+  "....": "Х",    // H
+  "-.-.": "Ц",    // C
+  "---.": "Ч",    // Special
+  "----": "Ш",    // Special  
+  "--.-": "Щ",    // Q
+  ".--.-": "Ъ",   // No Latin equivalent
+  "-.--": "Ы",    // Y
+  "-..-": "Ь",    // X
+  "..-..": "Э",   // Special
+  "..--": "Ю",    // Special
+  ".-.-": "Я",    // Special
+  ".----": "1",
+  "..---": "2",
+  "...--": "3",
+  "....-": "4",
+  ".....": "5",
+  "-....": "6",
+  "--...": "7",
+  "---..": "8",
+  "----.": "9",
+  "-----": "0"
+}
 
 // American Morse Code Map
 // American Morse code uses different patterns than International Morse
@@ -320,6 +364,144 @@ export const americanMorseCodeMap: Record<string, string> = {
   "------": "0"
 };
 
+export const germanMorseCodeMap = {
+  ".-": "A",
+  "-...": "B",
+  "-.-.": "C",
+  "-..": "D",
+  ".": "E",
+  "..-.": "F",
+  "--.": "G",
+  "....": "H",
+  "..": "I",
+  ".---": "J",
+  "-.-": "K",
+  ".-..": "L",
+  "--": "M",
+  "-.": "N",
+  "---": "O",
+  ".--.": "P",
+  "--.-": "Q",
+  ".-.": "R",
+  "...": "S",
+  "-": "T",
+  "..-": "U",
+  "...-": "V",
+  ".--": "W",
+  "-..-": "X",
+  "-.--": "Y",
+  "--..": "Z",
+  ".-.-": "Ä",
+  "---.": "Ö",
+  "..--": "Ü",
+  "...--..": "ß",
+  ".----": "1",
+  "..---": "2",
+  "...--": "3",
+  "....-": "4",
+  ".....": "5",
+  "-....": "6",
+  "--...": "7",
+  "---..": "8",
+  "----.": "9",
+  "-----": "0",
+  ".-.-.-": ".",
+  "--..--": ",",
+  "..--..": "?",
+  ".----.": "'",
+  "-.-.--": "!",
+  "-..-.": "/",
+  "-.--.": "(",
+  "-.--.-": ")",
+  ".-...": "&",
+  "---...": ":",
+  "-.-.-.": ";",
+  "-...-": "=",
+  ".-.-.": "+",
+  "-....-": "-",
+  "..--.-": "_",
+  ".-..-.": "\"",
+  "...-..-": "$",
+  ".--.-.": "@",
+  "": " "
+}
+// French Morse code map (extending International with French-specific characters)
+export const frenchMorseCodeMap = {
+  ...internationalMorseCodeMap,
+  "..-..": "é",
+  ".-..-": "è",
+  "-.-.--": "ç",
+  ".--.-": "à",
+  ".-.-": "â",
+  "..-.": "ê",
+  "--..-.": "ù",
+}
+
+// Italian Morse code map
+export const italianMorseCodeMap = {
+  ...internationalMorseCodeMap,
+  ".--.-": "à",
+  ".-.-": "è",
+  ".-..-": "é",
+  "----.": "ì",
+  "--.--": "ò",
+  "..--": "ù",
+}
+
+// Spanish Morse code map
+// Spanish Morse code map
+export const spanishMorseCodeMap = {
+  ...internationalMorseCodeMap,
+  "--.--": "ñ",
+  ".--.-": "á",
+  ".-.-": "é",
+  "..-.": "í",
+  "---.": "ó",  // Fixed: changed from "--.--" to "---."
+  "..--": "ú",
+  "...-...": "ü",
+}
+
+// Turkish Morse code map
+export const turkishMorseCodeMap = {
+  ...internationalMorseCodeMap,
+  "-.-.--": "ç",
+  "--.-.": "ğ",  // Fixed: changed from "..--" to "--.-."
+  "..-.-": "ı",
+  "--.--": "ö",
+  ".--.": "ş",
+  "..--": "ü",
+}
+
+
+// Portuguese Morse code map
+export const portugueseMorseCodeMap = {
+  ...internationalMorseCodeMap,
+  ".--.-": "á",
+  ".-.-": "â",
+  ".--.-.": "ã",
+  "-.-.--": "ç",
+  "..-..": "é",
+  ".-..-": "ê",
+  "----.": "í",
+  "--.--": "ó",
+  "--.-.-": "õ",
+  "..--": "ú",
+}
+
+// Turkish Morse code map
+
+// Vietnamese Morse code map
+export const vietnameseMorseCodeMap = {
+  ...internationalMorseCodeMap,
+  ".--.-": "ă",
+  ".-.-": "â",
+  "..-.": "ê",
+  "--.--": "ô",
+  "--.-": "ơ",
+  "--..-.": "ư",
+  "-..-.": "đ",
+}
+
 // For backward compatibility
 export const morseCodeMap = internationalMorseCodeMap;
 
@@ -341,6 +523,55 @@ const textToInternationalMorseMap = buildTextToMorseMap(internationalMorseCodeMa
 
 // Create the American text-to-morse map
 const textToAmericanMorseMap = buildTextToMorseMap(americanMorseCodeMap);
+
+const textToRussianMorseMap = buildTextToMorseMap(russianMorseCodeMap);
+
+const textToGermanMorseMap = buildTextToMorseMap(germanMorseCodeMap);
+// Create text-to-morse maps for each language
+const textToFrenchMorseMap = buildTextToMorseMap(frenchMorseCodeMap);
+const textToItalianMorseMap = buildTextToMorseMap(italianMorseCodeMap);
+const textToSpanishMorseMap = buildTextToMorseMap(spanishMorseCodeMap);
+const textToPortugueseMorseMap = buildTextToMorseMap(portugueseMorseCodeMap);
+const textToTurkishMorseMap = buildTextToMorseMap(turkishMorseCodeMap);
+const textToVietnameseMorseMap = buildTextToMorseMap(vietnameseMorseCodeMap);
+
+// Function to select the appropriate Morse code map based on language
+const getMorseToTextMap = (language, isAmericanMorseCode) => {
+  if (isAmericanMorseCode) {
+    return americanMorseCodeMap;
+  }
+  
+  switch (language) {
+    case "ru": return russianMorseCodeMap;
+    case "de": return germanMorseCodeMap;
+    case "fr": return frenchMorseCodeMap;
+    case "it": return italianMorseCodeMap;
+    case "es": return spanishMorseCodeMap;
+    case "pt": return portugueseMorseCodeMap;
+    case "tr": return turkishMorseCodeMap;
+    case "vi": return vietnameseMorseCodeMap;
+    default: return internationalMorseCodeMap;
+  }
+};
+
+// Function to select the appropriate text-to-morse map based on language
+const getTextToMorseMap = (language, isAmericanMorseCode) => {
+  if (isAmericanMorseCode) {
+    return textToAmericanMorseMap;
+  }
+  
+  switch (language) {
+    case "ru": return textToRussianMorseMap;
+    case "de": return textToGermanMorseMap;
+    case "fr": return textToFrenchMorseMap;
+    case "it": return textToItalianMorseMap;
+    case "es": return textToSpanishMorseMap;
+    case "pt": return textToPortugueseMorseMap;
+    case "tr": return textToTurkishMorseMap;
+    case "vi": return textToVietnameseMorseMap;
+    default: return textToInternationalMorseMap;
+  }
+};
 
 // For backward compatibility
 
@@ -525,92 +756,89 @@ export default function MorseConverter({
 
   // Convert morse code to text
   // Convert morse code to text
-  const convertMorseToText = (morse: string) => {
-    if (!morse.trim()) {
-      setOutputText("")
-      return
-    }
+  // Convert morse code to text
+const convertMorseToText = (morse: string) => {
+  if (!morse.trim()) {
+    setOutputText("")
+    return
+  }
 
-    // Select the correct map based on the mode
-    const morseToTextMap = isAmericanMorseCode ? americanMorseCodeMap : internationalMorseCodeMap
+  // Select the correct map based on the language and mode
+  const morseToTextMap = getMorseToTextMap(language, isAmericanMorseCode);
 
-    const morseWords = morse.trim().split("   ") // Split input into words based on 3 spaces
+  const morseWords = morse.trim().split("   ") // Split input into words based on 3 spaces
 
-    const textWords = morseWords.map((word) => {
-      // --- Logic Branching ---
-      if (!isAmericanMorseCode) {
-        // --- International Morse Code Logic (Original) ---
-        // Standard split by single space works here
-        const morseChars = word.split(" ")
-        return morseChars.map((char) => morseToTextMap[char] || "").join("")
+  const textWords = morseWords.map((word) => {
+    // --- Logic Branching ---
+    if (!isAmericanMorseCode) {
+      // --- International or language-specific Morse Code Logic ---
+      // Standard split by single space works here
+      const morseChars = word.split(" ")
+      return morseChars.map((char) => morseToTextMap[char] || "").join("")
+    } else {
+      // --- American Morse Code Logic (NEW) ---
+      let decodedWord = ""
+      let currentIndex = 0
+      // Get map keys and sort them by length DESCENDING to prioritize longer matches
+      const sortedKeys = Object.keys(morseToTextMap).sort((a, b) => b.length - a.length)
 
-      } else {
-        // --- American Morse Code Logic (NEW) ---
-        let decodedWord = ""
-        let currentIndex = 0
-        // Get map keys and sort them by length DESCENDING to prioritize longer matches (like ".. ." over "..")
-        const sortedKeys = Object.keys(morseToTextMap).sort((a, b) => b.length - a.length)
-
-        while (currentIndex < word.length) {
-          let matchedKey = null;
-          // Find the longest key from the map that matches the current position in the word
-          for (const key of sortedKeys) {
-            // Check if the word starts with the key at the current index
-            if (word.startsWith(key, currentIndex)) {
-              matchedKey = key;
-              break; // Found the longest possible match, stop searching
-            }
-          }
-
-          if (matchedKey) {
-            // Found a valid American Morse character
-            decodedWord += morseToTextMap[matchedKey]; // Append the corresponding text character
-            currentIndex += matchedKey.length; // Move the index past the matched Morse code
-
-            // IMPORTANT: After a character, check if the next character is a single space
-            // This space acts as the separator between characters. Consume it.
-            if (currentIndex < word.length && word[currentIndex] === ' ') {
-              currentIndex++; // Move index past the inter-character space
-            }
-          } else {
-            // No valid Morse character found at the current position.
-            // This could be an invalid sequence or potentially just an extra space.
-            // If it's a space we couldn't match (e.g., leading/trailing space within word), skip it.
-            // You might want to add more robust error handling here.
-            // decodedWord += '?'; // Optional: Add placeholder for errors
-            currentIndex++;
+      while (currentIndex < word.length) {
+        let matchedKey = null;
+        // Find the longest key from the map that matches the current position in the word
+        for (const key of sortedKeys) {
+          // Check if the word starts with the key at the current index
+          if (word.startsWith(key, currentIndex)) {
+            matchedKey = key;
+            break; // Found the longest possible match, stop searching
           }
         }
-        return decodedWord; // Return the fully decoded word
-      }
-      // --- End Logic Branching ---
-    })
 
-    setOutputText(textWords.join(" ")) // Join decoded words with spaces
-  }
+        if (matchedKey) {
+          // Found a valid American Morse character
+          decodedWord += morseToTextMap[matchedKey]; // Append the corresponding text character
+          currentIndex += matchedKey.length; // Move the index past the matched Morse code
+
+          // IMPORTANT: After a character, check if the next character is a single space
+          // This space acts as the separator between characters. Consume it.
+          if (currentIndex < word.length && word[currentIndex] === ' ') {
+            currentIndex++; // Move index past the inter-character space
+          }
+        } else {
+          // No valid Morse character found at the current position.
+          currentIndex++;
+        }
+      }
+      return decodedWord; // Return the fully decoded word
+    }
+    // --- End Logic Branching ---
+  })
+
+  setOutputText(textWords.join(" ")) // Join decoded words with spaces
+}
+
 
 
   // Convert text to morse code
-  const convertTextToMorse = (text: string) => {
-    if (!text.trim()) {
-      setOutputText("")
-      return
-    }
-
-    // Use the appropriate map based on the current mode
-    const currentTextToMorseMap = isAmericanMorseCode
-      ? textToAmericanMorseMap
-      : textToInternationalMorseMap
-
-    const words = text.toLowerCase().split(" ")
-    const morseWords = words.map((word) => {
-      return Array.from(word)
-        .map((char) => currentTextToMorseMap[char] || "")
-        .filter((morse) => morse !== "")
-        .join(" ")
-    })
-    setOutputText(morseWords.join("   "))
+  // Convert text to morse code
+const convertTextToMorse = (text: string) => {
+  if (!text.trim()) {
+    setOutputText("")
+    return
   }
+
+  // Use the appropriate map based on the language and current mode
+  const currentTextToMorseMap = getTextToMorseMap(language, isAmericanMorseCode);
+
+  const words = text.toLowerCase().split(" ")
+  const morseWords = words.map((word) => {
+    return Array.from(word)
+      .map((char) => currentTextToMorseMap[char] || "")
+      .filter((morse) => morse !== "")
+      .join(" ")
+  })
+  setOutputText(morseWords.join("   "))
+}
+
   // Toggle conversion mode
   const toggleMode = () => {
     // Save current values before changing

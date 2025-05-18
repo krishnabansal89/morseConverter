@@ -39,6 +39,23 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
       priority: 0.9,
     }));
     
+    // Language pages
+    const languageUrls:MetadataRoute.Sitemap = [
+      'de',
+      'es',
+      'fr',
+      'it',
+      'pt',
+      'ru',
+      'tr',
+      'vi'
+    ].map(lang => ({
+      url: `${baseUrl}/${lang}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    }));
+    
     // Static pages
     const staticPages:MetadataRoute.Sitemap = [
       {
@@ -66,6 +83,5 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
       },
     ];
     
-    return [...staticPages, ...alphabetUrls, ...numberUrls, ...blogUrls];
+    return [...staticPages, ...alphabetUrls, ...numberUrls, ...blogUrls, ...languageUrls];
   }
-  
