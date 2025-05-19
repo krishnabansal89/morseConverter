@@ -510,13 +510,16 @@ const buildTextToMorseMap = (morseToTextMap: Record<string, string>): Record<str
   return Object.entries(morseToTextMap).reduce(
     (acc, [morse, text]) => {
       if (text !== " ") {
-        acc[text.toLowerCase()] = morse
+        // Normalize the character before using it as a key
+        const normalizedChar = text.normalize('NFC').toLowerCase();
+        acc[normalizedChar] = morse;
       }
       return acc
     },
     {} as Record<string, string>
   );
 }
+
 
 // Create the international text-to-morse map
 const textToInternationalMorseMap = buildTextToMorseMap(internationalMorseCodeMap);
@@ -828,11 +831,19 @@ const convertTextToMorse = (text: string) => {
 
   // Use the appropriate map based on the language and current mode
   const currentTextToMorseMap = getTextToMorseMap(language, isAmericanMorseCode);
+  
+  // Normalize text to ensure consistent Unicode representation
+  // This is especially important for non-Latin characters
+  const normalizedText = text.normalize('NFC').toLowerCase();
 
-  const words = text.toLowerCase().split(" ")
+  const words = normalizedText.split(" ")
   const morseWords = words.map((word) => {
     return Array.from(word)
-      .map((char) => currentTextToMorseMap[char] || "")
+      .map((char) => {
+        // Add debug logging to see character codes
+        console.log(`Character: ${char}, Code: ${char.charCodeAt(0)}, Morse: ${currentTextToMorseMap[char]}`);
+        return currentTextToMorseMap[char] || ""
+      })
       .filter((morse) => morse !== "")
       .join(" ")
   })
@@ -1300,16 +1311,47 @@ const convertTextToMorse = (text: string) => {
 
 
   // Text-to-speech for regular text (basic implementation - no pause/resume)
-  const speakText = (text: string) => {
-    if (text && window.speechSynthesis) {
-      // Cancel any previous utterances
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text)
-      utterance.lang = "en-US"
-      // Add event listeners if needed (e.g., onend)
-      window.speechSynthesis.speak(utterance)
-    }
+  // Enhanced text-to-speech with multi-language support
+const speakText = (text: string) => {
+  if (!text || !window.speechSynthesis) return;
+
+  // Cancel any previous utterances
+  window.speechSynthesis.cancel();
+  
+  const utterance = new SpeechSynthesisUtterance(text);
+  
+  // Map language codes to BCP-47 language tags
+  const languageMappings: Record<string, string> = {
+    "en": "en-US",
+    "de": "de-DE",
+    "it": "it-IT",
+    "tr": "tr-TR",
+    "es": "es-ES",
+    "fr": "fr-FR",
+    "pt": "pt-BR",
+    "vi": "vi-VN",
+    "ru": "ru-RU"
+  };
+  
+  // Set the language based on the current application language
+  utterance.lang = languageMappings[language] || "en-US";
+  
+  // Set rate and volume from audioSettings
+  utterance.rate = audioSettings.wpm / 15; // Normalize WPM to a reasonable rate
+  utterance.volume = audioSettings.volume;
+  
+  // Try to find a voice matching the language
+  const voices = window.speechSynthesis.getVoices();
+  const matchingVoices = voices.filter(voice => voice.lang.startsWith(utterance.lang.split('-')[0]));
+  
+  if (matchingVoices.length > 0) {
+    utterance.voice = matchingVoices[0]; // Use the first matching voice
   }
+  
+  // Speak the utterance
+  window.speechSynthesis.speak(utterance);
+}
+
 
   // --- Updated Control Functions ---  // Play both audio and visual effects simultaneously based on selection
 // Update playSelectedEffects function to use flash text
