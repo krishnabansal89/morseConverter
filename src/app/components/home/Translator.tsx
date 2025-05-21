@@ -543,7 +543,7 @@ const getMorseToTextMap = (language, isAmericanMorseCode) => {
   if (isAmericanMorseCode) {
     return americanMorseCodeMap;
   }
-  
+
   switch (language) {
     case "ru": return russianMorseCodeMap;
     case "de": return germanMorseCodeMap;
@@ -562,7 +562,7 @@ const getTextToMorseMap = (language, isAmericanMorseCode) => {
   if (isAmericanMorseCode) {
     return textToAmericanMorseMap;
   }
-  
+
   switch (language) {
     case "ru": return textToRussianMorseMap;
     case "de": return textToGermanMorseMap;
@@ -760,95 +760,95 @@ export default function MorseConverter({
   // Convert morse code to text
   // Convert morse code to text
   // Convert morse code to text
-const convertMorseToText = (morse: string) => {
-  if (!morse.trim()) {
-    setOutputText("")
-    return
-  }
-
-  // Select the correct map based on the language and mode
-  const morseToTextMap = getMorseToTextMap(language, isAmericanMorseCode);
-
-  const morseWords = morse.trim().split("   ") // Split input into words based on 3 spaces
-
-  const textWords = morseWords.map((word) => {
-    // --- Logic Branching ---
-    if (!isAmericanMorseCode) {
-      // --- International or language-specific Morse Code Logic ---
-      // Standard split by single space works here
-      const morseChars = word.split(" ")
-      return morseChars.map((char) => morseToTextMap[char] || "").join("")
-    } else {
-      // --- American Morse Code Logic (NEW) ---
-      let decodedWord = ""
-      let currentIndex = 0
-      // Get map keys and sort them by length DESCENDING to prioritize longer matches
-      const sortedKeys = Object.keys(morseToTextMap).sort((a, b) => b.length - a.length)
-
-      while (currentIndex < word.length) {
-        let matchedKey = null;
-        // Find the longest key from the map that matches the current position in the word
-        for (const key of sortedKeys) {
-          // Check if the word starts with the key at the current index
-          if (word.startsWith(key, currentIndex)) {
-            matchedKey = key;
-            break; // Found the longest possible match, stop searching
-          }
-        }
-
-        if (matchedKey) {
-          // Found a valid American Morse character
-          decodedWord += morseToTextMap[matchedKey]; // Append the corresponding text character
-          currentIndex += matchedKey.length; // Move the index past the matched Morse code
-
-          // IMPORTANT: After a character, check if the next character is a single space
-          // This space acts as the separator between characters. Consume it.
-          if (currentIndex < word.length && word[currentIndex] === ' ') {
-            currentIndex++; // Move index past the inter-character space
-          }
-        } else {
-          // No valid Morse character found at the current position.
-          currentIndex++;
-        }
-      }
-      return decodedWord; // Return the fully decoded word
+  const convertMorseToText = (morse: string) => {
+    if (!morse.trim()) {
+      setOutputText("")
+      return
     }
-    // --- End Logic Branching ---
-  })
 
-  setOutputText(textWords.join(" ")) // Join decoded words with spaces
-}
+    // Select the correct map based on the language and mode
+    const morseToTextMap = getMorseToTextMap(language, isAmericanMorseCode);
 
+    const morseWords = morse.trim().split("   ") // Split input into words based on 3 spaces
 
+    const textWords = morseWords.map((word) => {
+      // --- Logic Branching ---
+      if (!isAmericanMorseCode) {
+        // --- International or language-specific Morse Code Logic ---
+        // Standard split by single space works here
+        const morseChars = word.split(" ")
+        return morseChars.map((char) => morseToTextMap[char] || "").join("")
+      } else {
+        // --- American Morse Code Logic (NEW) ---
+        let decodedWord = ""
+        let currentIndex = 0
+        // Get map keys and sort them by length DESCENDING to prioritize longer matches
+        const sortedKeys = Object.keys(morseToTextMap).sort((a, b) => b.length - a.length)
 
-  // Convert text to morse code
-  // Convert text to morse code
-const convertTextToMorse = (text: string) => {
-  if (!text.trim()) {
-    setOutputText("")
-    return
+        while (currentIndex < word.length) {
+          let matchedKey = null;
+          // Find the longest key from the map that matches the current position in the word
+          for (const key of sortedKeys) {
+            // Check if the word starts with the key at the current index
+            if (word.startsWith(key, currentIndex)) {
+              matchedKey = key;
+              break; // Found the longest possible match, stop searching
+            }
+          }
+
+          if (matchedKey) {
+            // Found a valid American Morse character
+            decodedWord += morseToTextMap[matchedKey]; // Append the corresponding text character
+            currentIndex += matchedKey.length; // Move the index past the matched Morse code
+
+            // IMPORTANT: After a character, check if the next character is a single space
+            // This space acts as the separator between characters. Consume it.
+            if (currentIndex < word.length && word[currentIndex] === ' ') {
+              currentIndex++; // Move index past the inter-character space
+            }
+          } else {
+            // No valid Morse character found at the current position.
+            currentIndex++;
+          }
+        }
+        return decodedWord; // Return the fully decoded word
+      }
+      // --- End Logic Branching ---
+    })
+
+    setOutputText(textWords.join(" ")) // Join decoded words with spaces
   }
 
-  // Use the appropriate map based on the language and current mode
-  const currentTextToMorseMap = getTextToMorseMap(language, isAmericanMorseCode);
-  
-  // Normalize text to ensure consistent Unicode representation
-  // This is especially important for non-Latin characters
-  const normalizedText = text.normalize('NFC').toLowerCase();
 
-  const words = normalizedText.split(" ")
-  const morseWords = words.map((word) => {
-    return Array.from(word)
-      .map((char) => {
-        // Add debug logging to see character codes
-        console.log(`Character: ${char}, Code: ${char.charCodeAt(0)}, Morse: ${currentTextToMorseMap[char]}`);
-        return currentTextToMorseMap[char] || ""
-      })
-      .filter((morse) => morse !== "")
-      .join(" ")
-  })
-  setOutputText(morseWords.join("   "))
-}
+
+  // Convert text to morse code
+  // Convert text to morse code
+  const convertTextToMorse = (text: string) => {
+    if (!text.trim()) {
+      setOutputText("")
+      return
+    }
+
+    // Use the appropriate map based on the language and current mode
+    const currentTextToMorseMap = getTextToMorseMap(language, isAmericanMorseCode);
+
+    // Normalize text to ensure consistent Unicode representation
+    // This is especially important for non-Latin characters
+    const normalizedText = text.normalize('NFC').toLowerCase();
+
+    const words = normalizedText.split(" ")
+    const morseWords = words.map((word) => {
+      return Array.from(word)
+        .map((char) => {
+          // Add debug logging to see character codes
+          console.log(`Character: ${char}, Code: ${char.charCodeAt(0)}, Morse: ${currentTextToMorseMap[char]}`);
+          return currentTextToMorseMap[char] || ""
+        })
+        .filter((morse) => morse !== "")
+        .join(" ")
+    })
+    setOutputText(morseWords.join("   "))
+  }
 
   // Toggle conversion mode
   const toggleMode = () => {
@@ -864,7 +864,7 @@ const convertTextToMorse = (text: string) => {
     setMode(newMode)
 
     // Show appropriate message based on the new mode
-    
+
 
     // Swap input and output (only if there is actual output to swap)
     if (currentOutput) {
@@ -975,7 +975,7 @@ const convertTextToMorse = (text: string) => {
     setCurrentVisualIndex(0); // Reset position
     setVisualEffect({ active: false, isDash: false }); // Turn off visual effect
   }  // Stop both audio and visual effects
-  
+
 
   // --- Updated Visual Playback with Pause/Resume ---
   const playVisualMorse = (morseText: string, isInput = false, startIndex = 0) => {
@@ -1312,141 +1312,141 @@ const convertTextToMorse = (text: string) => {
 
   // Text-to-speech for regular text (basic implementation - no pause/resume)
   // Enhanced text-to-speech with multi-language support
-const speakText = (text: string) => {
-  if (!text || !window.speechSynthesis) return;
+  const speakText = (text: string) => {
+    if (!text || !window.speechSynthesis) return;
 
-  // Cancel any previous utterances
-  window.speechSynthesis.cancel();
-  
-  const utterance = new SpeechSynthesisUtterance(text);
-  
-  // Map language codes to BCP-47 language tags
-  const languageMappings: Record<string, string> = {
-    "en": "en-US",
-    "de": "de-DE",
-    "it": "it-IT",
-    "tr": "tr-TR",
-    "es": "es-ES",
-    "fr": "fr-FR",
-    "pt": "pt-BR",
-    "vi": "vi-VN",
-    "ru": "ru-RU"
-  };
-  
-  // Set the language based on the current application language
-  utterance.lang = languageMappings[language] || "en-US";
-  
-  // Set rate and volume from audioSettings
-  utterance.rate = audioSettings.wpm / 15; // Normalize WPM to a reasonable rate
-  utterance.volume = audioSettings.volume;
-  
-  // Try to find a voice matching the language
-  const voices = window.speechSynthesis.getVoices();
-  const matchingVoices = voices.filter(voice => voice.lang.startsWith(utterance.lang.split('-')[0]));
-  
-  if (matchingVoices.length > 0) {
-    utterance.voice = matchingVoices[0]; // Use the first matching voice
+    // Cancel any previous utterances
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // Map language codes to BCP-47 language tags
+    const languageMappings: Record<string, string> = {
+      "en": "en-US",
+      "de": "de-DE",
+      "it": "it-IT",
+      "tr": "tr-TR",
+      "es": "es-ES",
+      "fr": "fr-FR",
+      "pt": "pt-BR",
+      "vi": "vi-VN",
+      "ru": "ru-RU"
+    };
+
+    // Set the language based on the current application language
+    utterance.lang = languageMappings[language] || "en-US";
+
+    // Set rate and volume from audioSettings
+    utterance.rate = audioSettings.wpm / 15; // Normalize WPM to a reasonable rate
+    utterance.volume = audioSettings.volume;
+
+    // Try to find a voice matching the language
+    const voices = window.speechSynthesis.getVoices();
+    const matchingVoices = voices.filter(voice => voice.lang.startsWith(utterance.lang.split('-')[0]));
+
+    if (matchingVoices.length > 0) {
+      utterance.voice = matchingVoices[0]; // Use the first matching voice
+    }
+
+    // Speak the utterance
+    window.speechSynthesis.speak(utterance);
   }
-  
-  // Speak the utterance
-  window.speechSynthesis.speak(utterance);
-}
 
 
   // --- Updated Control Functions ---  // Play both audio and visual effects simultaneously based on selection
-// Update playSelectedEffects function to use flash text
-const playSelectedEffects = (text: string, isInput = false) => {
-  // Check whether the content is Morse code based on the current mode and which side we're playing
-  const isMorseContent = isInput ? isInputMorse : isOutputMorse;
-  
-  // Stop any currently playing effects
-  stopAllEffects(isInput);
-  
-  // Stop TTS if it's running
-  window.speechSynthesis?.cancel();
+  // Update playSelectedEffects function to use flash text
+  const playSelectedEffects = (text: string, isInput = false) => {
+    // Check whether the content is Morse code based on the current mode and which side we're playing
+    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
 
-  if (!isMorseContent) {
-    // For non-Morse text, use TTS if audio is selected
-    if (audioEffectSelected) {
-      showFlashText(`play-${isInput ? "input" : "output"}`, "Playing speech", 1500);
-      speakText(text);
+    // Stop any currently playing effects
+    stopAllEffects(isInput);
+
+    // Stop TTS if it's running
+    window.speechSynthesis?.cancel();
+
+    if (!isMorseContent) {
+      // For non-Morse text, use TTS if audio is selected
+      if (audioEffectSelected) {
+        showFlashText(`play-${isInput ? "input" : "output"}`, "Playing speech", 1500);
+        speakText(text);
+      }
+      return;
     }
-    return;
-  }
-  
-  // Show flash text on the play button
-  if (audioEffectSelected && visualEffectSelected) {
-    showFlashText(`play-${isInput ? "input" : "output"}`, "Playing audio + visual", 1500);
-  } else if (audioEffectSelected) {
-    showFlashText(`play-${isInput ? "input" : "output"}`, "Playing audio", 1500);
-  } else if (visualEffectSelected) {
-    showFlashText(`play-${isInput ? "input" : "output"}`, "Playing visual", 1500);
-  }
-  
-  // Play selected effects for Morse code
-  if (audioEffectSelected) {
-    playMorseAudio(text, isInput, 0);
-  }
-  if (visualEffectSelected) {
-    playVisualMorse(text, isInput, 0);
-  }
-};
 
-// Update pauseSelectedEffects function
-const pauseSelectedEffects = (isInput = false) => {
-  const isMorseContent = isInput ? isInputMorse : isOutputMorse;
-  let isPausing = false;
-  
-  if (audioEffectSelected && (isInput ? isInputPlaying : isPlaying) && !(isInput ? isInputAudioPaused : isOutputAudioPaused)) {
-    pauseAudio(isInput);
-    isPausing = true;
-  }
-  
-  if (visualEffectSelected && (isInput ? isInputVisualPlaying : isVisualPlaying) && !(isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
-    pauseVisual(isInput);
-    isPausing = true;
-  }
-  
-  if (isPausing) {
-    showFlashText(`pause-${isInput ? "input" : "output"}`, "Paused", 1500);
-  }
-};
+    // Show flash text on the play button
+    if (audioEffectSelected && visualEffectSelected) {
+      showFlashText(`play-${isInput ? "input" : "output"}`, "Playing audio + visual", 1500);
+    } else if (audioEffectSelected) {
+      showFlashText(`play-${isInput ? "input" : "output"}`, "Playing audio", 1500);
+    } else if (visualEffectSelected) {
+      showFlashText(`play-${isInput ? "input" : "output"}`, "Playing visual", 1500);
+    }
 
-// Update resumeSelectedEffects function
-const resumeSelectedEffects = (isInput = false) => {
-  const isMorseContent = isInput ? isInputMorse : isOutputMorse;
-  let isResuming = false;
-  
-  if (audioEffectSelected && (isInput ? isInputAudioPaused : isOutputAudioPaused)) {
-    resumeAudio(isInput);
-    isResuming = true;
-  }
-  
-  if (visualEffectSelected && (isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
-    resumeVisual(isInput);
-    isResuming = true;
-  }
-  
-  if (isResuming) {
-    showFlashText(`pause-${isInput ? "input" : "output"}`, "Resuming", 1500);
-  }
-};
+    // Play selected effects for Morse code
+    if (audioEffectSelected) {
+      playMorseAudio(text, isInput, 0);
+    }
+    if (visualEffectSelected) {
+      playVisualMorse(text, isInput, 0);
+    }
+  };
 
-// Update stopAllEffects function
-const stopAllEffects = (isInput = false) => {
-  const wasPlaying = isInput 
-    ? (isInputPlaying || isInputVisualPlaying || isInputAudioPaused || isInputVisualPaused)
-    : (isPlaying || isVisualPlaying || isOutputAudioPaused || isOutputVisualPaused);
-  
-  stopAudio(isInput);
-  stopVisual(isInput);
-  
-  window.speechSynthesis?.cancel();
-  
-  if (wasPlaying) {
-    showFlashText(`stop-${isInput ? "input" : "output"}`, "Stopped", 1500);
-  }
-};
+  // Update pauseSelectedEffects function
+  const pauseSelectedEffects = (isInput = false) => {
+    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+    let isPausing = false;
+
+    if (audioEffectSelected && (isInput ? isInputPlaying : isPlaying) && !(isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+      pauseAudio(isInput);
+      isPausing = true;
+    }
+
+    if (visualEffectSelected && (isInput ? isInputVisualPlaying : isVisualPlaying) && !(isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
+      pauseVisual(isInput);
+      isPausing = true;
+    }
+
+    if (isPausing) {
+      showFlashText(`pause-${isInput ? "input" : "output"}`, "Paused", 1500);
+    }
+  };
+
+  // Update resumeSelectedEffects function
+  const resumeSelectedEffects = (isInput = false) => {
+    const isMorseContent = isInput ? isInputMorse : isOutputMorse;
+    let isResuming = false;
+
+    if (audioEffectSelected && (isInput ? isInputAudioPaused : isOutputAudioPaused)) {
+      resumeAudio(isInput);
+      isResuming = true;
+    }
+
+    if (visualEffectSelected && (isInput ? isInputVisualPaused : isOutputVisualPaused) && isMorseContent) {
+      resumeVisual(isInput);
+      isResuming = true;
+    }
+
+    if (isResuming) {
+      showFlashText(`pause-${isInput ? "input" : "output"}`, "Resuming", 1500);
+    }
+  };
+
+  // Update stopAllEffects function
+  const stopAllEffects = (isInput = false) => {
+    const wasPlaying = isInput
+      ? (isInputPlaying || isInputVisualPlaying || isInputAudioPaused || isInputVisualPaused)
+      : (isPlaying || isVisualPlaying || isOutputAudioPaused || isOutputVisualPaused);
+
+    stopAudio(isInput);
+    stopVisual(isInput);
+
+    window.speechSynthesis?.cancel();
+
+    if (wasPlaying) {
+      showFlashText(`stop-${isInput ? "input" : "output"}`, "Stopped", 1500);
+    }
+  };
 
   // Handle copy to clipboard
   const handleCopy = () => {
@@ -1491,26 +1491,26 @@ const stopAllEffects = (isInput = false) => {
   }
   // Handle help button click
   // Update handleHelp function
-// Update handleHelp function
-const handleHelp = () => {
-  let helpMessage = "";
-  
-  // Keep the context-sensitive logic but create shorter messages for flash text
-  if (isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying) {
-    helpMessage = "Use pause or stop to control playback";
-  } else if (isAnyPaused) {
-    helpMessage = "Resume or stop paused playback";
-  } else if (!inputText && !outputText) {
-    helpMessage = "Enter text/morse to begin";
-  } else if (mode === "morse-to-text") {
-    helpMessage = "Use dots, dashes & spaces for Morse";
-  } else {
-    helpMessage = "Enter text to convert to Morse";
+  // Update handleHelp function
+  const handleHelp = () => {
+    let helpMessage = "";
+
+    // Keep the context-sensitive logic but create shorter messages for flash text
+    if (isPlaying || isInputPlaying || isVisualPlaying || isInputVisualPlaying) {
+      helpMessage = "Use pause or stop to control playback";
+    } else if (isAnyPaused) {
+      helpMessage = "Resume or stop paused playback";
+    } else if (!inputText && !outputText) {
+      helpMessage = "Enter text/morse to begin";
+    } else if (mode === "morse-to-text") {
+      helpMessage = "Use dots, dashes & spaces for Morse";
+    } else {
+      helpMessage = "Enter text to convert to Morse";
+    }
+
+    // Show flash text instead of alert
+    showFlashText("help", helpMessage, 2500);
   }
-  
-  // Show flash text instead of alert
-  showFlashText("help", helpMessage, 2500);
-}
 
 
   const toggleAudioEffect = () => {
@@ -1637,7 +1637,7 @@ const handleHelp = () => {
 
         {/* Input section */}
         <div className="border-r border-gray-200">
-          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200">
+          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 w-[90%] md:w-full md:flex-row flex-col gap-y-2">
             <div className="flex items-center">
               <span className="text-lg font-semibold text-[#456359]">
                 {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
@@ -1645,70 +1645,70 @@ const handleHelp = () => {
             </div>
 
             {/* Action buttons for input */}
-            <div className="flex items-center  gap-1">                {/* Playback control buttons */}      
-              
-                      <Button
-  onClick={() => playSelectedEffects(inputText, true)}
-  variant="ghost"
-  size="sm"
-  className={`relative text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row flex-col gap-1`}
-  disabled={
-    !inputText || 
-    (!audioEffectSelected && !visualEffectSelected) || 
-    isAnyPlaying ||
-    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
-  }
-  title="Play Input"
->
-  {flashText.button === "play-input" && flashText.active && (
-    <span className="flash-text-secondary">{flashText.text}</span>
-  )}
-  <Play size={18} />
-  {strings.play}
-</Button>
+            <div className="flex  items-center  gap-1">                {/* Playback control buttons */}
 
-{/* Pause/Resume Button for Input */}
-<Button
-  onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
-  variant="ghost"
-  size="sm"
-  className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
-  disabled={
-    !((isInputPlaying || isInputVisualPlaying) || isAnyPaused) ||
-    (visualEffectSelected && !audioEffectSelected && !isInputMorse)
-  }
-  title={isAnyPaused ? `${strings.resume}` : `${strings.pause}`}
->
-  {flashText.button === "pause-input" && flashText.active && (
-    <span className="flash-text-secondary">{flashText.text}</span>
-  )}
-  <Pause size={18} />
-  {isAnyPaused ? `${strings.resume}` : `${strings.pause}`}
-</Button>
+              <Button
+                onClick={() => playSelectedEffects(inputText, true)}
+                variant="ghost"
+                size="sm"
+                className={`relative text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row  gap-1`}
+                disabled={
+                  !inputText ||
+                  (!audioEffectSelected && !visualEffectSelected) ||
+                  isAnyPlaying ||
+                  (visualEffectSelected && !audioEffectSelected && !isInputMorse)
+                }
+                title="Play Input"
+              >
+                {flashText.button === "play-input" && flashText.active && (
+                  <span className="flash-text-secondary">{flashText.text}</span>
+                )}
+                <Play size={18} />
+                {strings.play}
+              </Button>
 
-{/* Stop Button for Input */}
-<Button
-  onClick={() => stopAllEffects(true)}
-  variant="ghost"
-  size="sm"
-  className="relative text-[#456359] flex items-center gap-1 md:flex-row flex-col"
-  disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
-  title="Stop Input"
->
-  {flashText.button === "stop-input" && flashText.active && (
-    <span className="flash-text-secondary">{flashText.text}</span>
-  )}
-  <Square size={18} />
-  {strings.stop}
-</Button>
+              {/* Pause/Resume Button for Input */}
+              <Button
+                onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
+                variant="ghost"
+                size="sm"
+                className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
+                disabled={
+                  !((isInputPlaying || isInputVisualPlaying) || isAnyPaused) ||
+                  (visualEffectSelected && !audioEffectSelected && !isInputMorse)
+                }
+                title={isAnyPaused ? `${strings.resume}` : `${strings.pause}`}
+              >
+                {flashText.button === "pause-input" && flashText.active && (
+                  <span className="flash-text-secondary" style={{ backgroundColor: 'rgba(255, 191, 0, 1)', border: '#f5c749 2px solid' }}>{flashText.text}</span>
+                )}
+                <Pause size={18} />
+                {isAnyPaused ? `${strings.resume}` : `${strings.pause}`}
+              </Button>
+
+              {/* Stop Button for Input */}
+              <Button
+                onClick={() => stopAllEffects(true)}
+                variant="ghost"
+                size="sm"
+                className="relative text-[#456359] flex items-center gap-1 md:flex-row "
+                disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
+                title="Stop Input"
+              >
+                {flashText.button === "stop-input" && flashText.active && (
+                  <span className="flash-text-secondary" style={{ backgroundColor: 'rgba(255, 191, 0, 1)', border: '#f5c749 2px solid' }}>{flashText.text} </span>
+                )}
+                <Square size={18} />
+                {strings.stop}
+              </Button>
 
 
-          {/* Show swap button on mobile */}
+              {/* Show swap button on mobile */}
               <Button
                 onClick={toggleMode}
                 variant="ghost"
                 size="sm"
-                className="md:hidden text-[#456359] flex flex-col"
+                className="md:hidden text-[#456359] flex"
                 title="Swap Modes"
               >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
                 {strings.swap}
@@ -1744,7 +1744,7 @@ const handleHelp = () => {
             )}
           </div>
 
-          <div className="p-3 border-t flex justify-between border-gray-200">              <Button
+          <div className="p-3 border-t flex md:justify-between md:w-full w-[90%] justify-center border-gray-200">              <Button
             onClick={handleClear}
             variant="ghost"
             size="sm"
@@ -1759,67 +1759,67 @@ const handleHelp = () => {
 
         {/* Output section */}
         <div>
-          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824]">
+          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824] 200 md:w-full w-[90%]  md:flex-row flex-col gap-y-2 " >
             <div className="flex items-center">
               <span className="text-lg text-[#456359] font-semibold">
                 {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
               </span>
             </div>                {/* Playback control buttons */}
             <div className="flex items-center gap-1">         {/* Play Button for Output */}
-<Button
-  onClick={() => playSelectedEffects(outputText, false)}
-  variant="ghost"
-  size="sm"
-  className={`relative text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
-  disabled={
-    !outputText || 
-    (!audioEffectSelected && !visualEffectSelected) || 
-    (isInputPlaying || isInputVisualPlaying) ||
-    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
-  }
-  title="Play Output"
->
-  {flashText.button === "play-output" && flashText.active && (
-    <span className="flash-text-secondary">{flashText.text}</span>
-  )}
-  <Play size={18} />
-  {strings.play}
-</Button>
+              <Button
+                onClick={() => playSelectedEffects(outputText, false)}
+                variant="ghost"
+                size="sm"
+                className={`relative text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
+                disabled={
+                  !outputText ||
+                  (!audioEffectSelected && !visualEffectSelected) ||
+                  (isInputPlaying || isInputVisualPlaying) ||
+                  (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
+                }
+                title="Play Output"
+              >
+                {flashText.button === "play-output" && flashText.active && (
+                  <span className="flash-text-secondary">{flashText.text}</span>
+                )}
+                <Play size={18} />
+                {strings.play}
+              </Button>
 
-{/* Pause/Resume Button for Output */}
-<Button
-  onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
-  variant="ghost"
-  size="sm"
-  className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row flex-col`}
-  disabled={
-    !((isPlaying || isVisualPlaying) || isAnyPaused) ||
-    (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
-  }
-  title={isAnyPaused ? `${strings.resume} Output` : `${strings.pause} Output`}
->
-  {flashText.button === "pause-output" && flashText.active && (
-    <span className="flash-text-secondary">{flashText.text}</span>
-  )}
-  <Pause size={18} />
-  {isAnyPaused ? strings.resume : strings.pause}
-</Button>
+              {/* Pause/Resume Button for Output */}
+              <Button
+                onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
+                variant="ghost"
+                size="sm"
+                className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
+                disabled={
+                  !((isPlaying || isVisualPlaying) || isAnyPaused) ||
+                  (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
+                }
+                title={isAnyPaused ? `${strings.resume} Output` : `${strings.pause} Output`}
+              >
+                {flashText.button === "pause-output" && flashText.active && (
+                  <span className="flash-text-secondary">{flashText.text}</span>
+                )}
+                <Pause size={18} />
+                {isAnyPaused ? strings.resume : strings.pause}
+              </Button>
 
-{/* Stop Button for Output */}
-<Button
-  onClick={() => stopAllEffects(false)}
-  variant="ghost"
-  size="sm"
-  className="relative text-[#456359] flex items-center gap-1 md:flex-row flex-col"
-  disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
-  title="Stop Output"
->
-  {flashText.button === "stop-output" && flashText.active && (
-    <span className="flash-text-secondary">{flashText.text}</span>
-  )}
-  <Square size={18} />
-  {strings.stop}
-</Button>
+              {/* Stop Button for Output */}
+              <Button
+                onClick={() => stopAllEffects(false)}
+                variant="ghost"
+                size="sm"
+                className="relative text-[#456359] flex items-center gap-1 md:flex-row "
+                disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
+                title="Stop Output"
+              >
+                {flashText.button === "stop-output" && flashText.active && (
+                  <span className="flash-text-secondary">{flashText.text}</span>
+                )}
+                <Square size={18} />
+                {strings.stop}
+              </Button>
             </div>
           </div>
 
@@ -1841,88 +1841,88 @@ const handleHelp = () => {
             )}
           </div>
 
-          <div className="p-3 border-t border-gray-200 flex justify-between space-x-2">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
-  onClick={toggleAudioEffect}
-  variant="ghost"
-  size="sm"
-  className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
-  title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
-  disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
->
-  {flashText.button === "audioeffect" && flashText.active && (
-    <span className="flash-text">{flashText.text}</span>
-  )}
-  <Volume2 className="h-5 w-5" />
-  {strings.audio}
-  <Check className={`h-5 w-5 ${audioEffectSelected ? 'text-white' : 'hidden'}`} />
-</Button>
-<Button
-  onClick={toggleVisualEffect}
-  variant="ghost"
-  size="sm"
-  className={`relative ${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
-  title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
-  disabled={isAnyPlaying || isAnyPaused || (!isInputMorse && !isOutputMorse) || (!audioEffectSelected && visualEffectSelected)}
->
-  {flashText.button === "visualeffect" && flashText.active && (
-    <span className="flash-text">{flashText.text}</span>
-  )}
-  <Lightbulb className="h-5 w-5" />
-  {strings.visual}
-  <Check className={`h-5 w-5 ${visualEffectSelected ? 'text-white' : 'hidden'}`} />
-</Button>
+          <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full w-[90%] items-center gap-y-2 justify-center">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
+            onClick={toggleAudioEffect}
+            variant="ghost"
+            size="sm"
+            className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+            title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
+            disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
+          >
+            {flashText.button === "audioeffect" && flashText.active && (
+              <span className={`${audioEffectSelected ? 'flash-text' : 'flash-text-inactive'}`}>{flashText.text}</span>
+            )}
+            <Volume2 className="h-5 w-5" />
+            {strings.audio}
+            <Check className={`h-5 w-5 ${audioEffectSelected ? 'text-white' : 'hidden'}`} />
+          </Button>
+            <Button
+              onClick={toggleVisualEffect}
+              variant="ghost"
+              size="sm"
+              className={`relative ${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+              title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
+              disabled={isAnyPlaying || isAnyPaused || (!isInputMorse && !isOutputMorse) || (!audioEffectSelected && visualEffectSelected)}
+            >
+              {flashText.button === "visualeffect" && flashText.active && (
+                <span className={`${visualEffectSelected ? 'flash-text' : 'flash-text-inactive'}`}>{flashText.text}</span>
+              )}
+              <Lightbulb className="h-5 w-5" />
+              {strings.visual}
+              <Check className={`h-5 w-5 ${visualEffectSelected ? 'text-white' : 'hidden'}`} />
+            </Button>
 
           </div>
 
             {/* Utility buttons */}
             <div className="flex items-center space-x-2">
               {/* Copy Button */}
-<Button
-  onClick={handleCopy}
-  variant="ghost"
-  size="sm"
-  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
-  disabled={!outputText}
-  title={`${strings.copy} Output`}
->
-  {flashText.button === "copy" && flashText.active && (
-    <span className="flash-text">{flashText.text}</span>
-  )}
-  <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
-  {strings.copy}
-</Button>
+              <Button
+                onClick={handleCopy}
+                variant="ghost"
+                size="sm"
+                className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+                disabled={!outputText}
+                title={`${strings.copy} Output`}
+              >
+                {flashText.button === "copy" && flashText.active && (
+                  <span className="flash-text">{flashText.text}</span>
+                )}
+                <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
+                {strings.copy}
+              </Button>
 
-<Button
-  onClick={handleDownload}
-  variant="ghost"
-  size="sm"
-  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
-  disabled={!outputText}
-  title="Download Output"
->
-  {flashText.button === "download" && flashText.active && (
-    <span className="flash-text">Downloaded!</span>
-  )}
-  <Download className="h-5 w-5 p-0 m-0 -mb-2" />
-  {strings.download}
-</Button>
+              <Button
+                onClick={handleDownload}
+                variant="ghost"
+                size="sm"
+                className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+                disabled={!outputText}
+                title="Download Output"
+              >
+                {flashText.button === "download" && flashText.active && (
+                  <span className="flash-text">Downloaded!</span>
+                )}
+                <Download className="h-5 w-5 p-0 m-0 -mb-2" />
+                {strings.download}
+              </Button>
 
 
               {/* Help Button */}
-{/* Help Button with flash text */}
-<Button
-  variant="ghost"
-  size="sm"
-  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
-  title="Help"
-  onClick={handleHelp}
->
-  {flashText.button === "help" && flashText.active && (
-    <span className="flash-text help-flash-text">{flashText.text}</span>
-  )}
-  <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
-  {strings.help}
-</Button>
+              {/* Help Button with flash text */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+                title="Help"
+                onClick={handleHelp}
+              >
+                {flashText.button === "help" && flashText.active && (
+                  <span className="flash-text help-flash-text">{flashText.text}</span>
+                )}
+                <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
+                {strings.help}
+              </Button>
 
             </div>
           </div>

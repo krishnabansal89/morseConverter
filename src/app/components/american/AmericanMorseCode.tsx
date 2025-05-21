@@ -165,7 +165,7 @@ Yes, due to its **irregular spacing and variable-length dashes**, American Morse
                     />
                     ,
                     h5: ({ children }) => <div className=""> <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children} </h1>
-                        <div className="editor-window w-full h-full bg-white rounded-lg shadow-lg my-20">
+                        <div className="editor-window md:w-full w-[90%] mx-auto h-full bg-white rounded-lg shadow-lg my-20">
                             <MorseConverter isAmericanMorseCode={true} />
                         </div>
 

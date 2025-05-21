@@ -110,10 +110,10 @@ Absolutely. Our tool includes a play button that outputs Morse in authentic audi
                     ,
                     h5: ({ children }) => <div className="flex flex-col"> 
                     <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children} </h1>
-                    <p className="mt-2 font-maitree  text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">
+                    <p className="mt-2 font-maitree  text-[#2d2d2d] md:ml-4  text-lg/relaxed font-extralight">
                         
                         Our International Morse Code translator addresses a key challenge: making Morse code accessible and easy to use for modern audiences.</p>
-                        <div className="editor-window w-full overflow-x-clip h-full bg-white rounded-lg shadow-lg my-10">
+                        <div className="editor-window md:w-full w-[90%] mx-auto overflow-x-clip h-full bg-white rounded-lg shadow-lg my-10">
                             <MorseConverter />
                         </div>
 
