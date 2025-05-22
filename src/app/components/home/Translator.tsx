@@ -1637,7 +1637,7 @@ export default function MorseConverter({
 
         {/* Input section */}
         <div className="border-r border-gray-200">
-          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 w-[90%] md:w-full md:flex-row flex-col gap-y-2">
+          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200  md:w-full md:flex-row flex-col gap-y-2">
             <div className="flex items-center">
               <span className="text-lg font-semibold text-[#456359]">
                 {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
@@ -1704,15 +1704,16 @@ export default function MorseConverter({
 
 
               {/* Show swap button on mobile */}
-              <Button
-                onClick={toggleMode}
-                variant="ghost"
-                size="sm"
-                className="md:hidden text-[#456359] flex"
-                title="Swap Modes"
-              >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
-                {strings.swap}
-              </Button>
+
+                            <Button
+            onClick={handleClear}
+            variant="ghost"
+            size="sm"
+            className="text-[#372824] hover:text-black flex flex-col md:hidden"
+            title="Clear Input"
+          >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
+            {strings.clear}
+          </Button>
             </div>
           </div>            <div className="relative">
             <Textarea
@@ -1744,22 +1745,30 @@ export default function MorseConverter({
             )}
           </div>
 
-          <div className="p-3 border-t flex md:justify-between md:w-full w-[90%] justify-center border-gray-200">              <Button
+          <div className="p-3 border-t flex md:justify-between md:w-full  justify-center border-gray-200">              <Button
             onClick={handleClear}
             variant="ghost"
             size="sm"
-            className="text-[#372824] hover:text-black flex flex-col"
+            className="text-[#372824] hover:text-black md:flex flex-col hidden"
             title="Clear Input"
           >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
             {strings.clear}
           </Button>
-
+                          <Button
+                onClick={toggleMode}
+                variant="ghost"
+                size="sm"
+                className="md:hidden text-[#456359] flex"
+                title="Swap Modes"
+              >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
+                {strings.swap}
+              </Button>
           </div>
         </div>
 
         {/* Output section */}
         <div>
-          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824] 200 md:w-full w-[90%]  md:flex-row flex-col gap-y-2 " >
+          <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824] 200 md:w-full   md:flex-row flex-col gap-y-2 " >
             <div className="flex items-center">
               <span className="text-lg text-[#456359] font-semibold">
                 {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
@@ -1841,7 +1850,7 @@ export default function MorseConverter({
             )}
           </div>
 
-          <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full w-[90%] items-center gap-y-2 justify-center">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
+          <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full  items-center gap-y-2 justify-center">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
             onClick={toggleAudioEffect}
             variant="ghost"
             size="sm"
@@ -1875,7 +1884,7 @@ export default function MorseConverter({
           </div>
 
             {/* Utility buttons */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center md:justify-end justify-around md:w-fit w-full md:mx-0 mx-auto">
               {/* Copy Button */}
               <Button
                 onClick={handleCopy}
