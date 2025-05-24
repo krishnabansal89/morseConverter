@@ -1761,9 +1761,9 @@ export default function MorseConverter({
               onClick={toggleMode}
                 variant="ghost"
                 size="sm"
-                className="md:hidden bg-white text-[#456359] flex -mb-7 "
+                className="md:hidden bg-[#456359] hover:bg-[#456359] text-white hover:text-white flex -mb-7 "
                 title="Swap Modes"
-              >                  <ArrowUpDown className="h-5 w-5 p-0 m-0 -mb-2" />
+              >                  <ArrowUpDown className="h-5 w-5 p-0 m-0 " />
                 {strings.swap}
               </Button>
           </div>
@@ -1853,7 +1853,7 @@ export default function MorseConverter({
             )}
           </div>
 
-          <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full  items-center gap-y-2 justify-center">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
+          <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full  items-center gap-y-6 justify-center">              {/* Effect selection buttons */}              <div className="flex items-center space-x-2"><Button
             onClick={toggleAudioEffect}
             variant="ghost"
             size="sm"
