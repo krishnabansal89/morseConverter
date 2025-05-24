@@ -19,7 +19,7 @@ export default function Footer() {
             <div>
               <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
               <ul className="space-y-2 font-maitree">                <li>
-                  <Link href="/morse-code-alphabets" className="text-white hover:text-gray-900">
+                  <Link href="/morse-code-alphabets"  className="text-white hover:text-gray-900">
                     Morse Code Alphabets
                   </Link>
                 </li>
@@ -112,13 +112,13 @@ export default function Footer() {
 
 
 
-            <SocialIcon url="https://www.pinterest.com/morsecodde/" className="text-white hover:text-gray-900" ></SocialIcon>
+            <SocialIcon target="_blank" url="https://www.pinterest.com/morsecodde/" className="text-white hover:text-gray-900" ></SocialIcon>
 
 
-            <SocialIcon url="http://www.youtube.com/@LearnMorseCode-l4u" />
+            <SocialIcon target="_blank" url="http://www.youtube.com/@LearnMorseCode-l4u" />
 
 
-            <SocialIcon url="https://www.reddit.com/user/Western_Hunter821/" />
+            <SocialIcon target="_blank" url="https://www.reddit.com/user/Western_Hunter821/" />
           </div>
 
           {/* Footer Credits */}

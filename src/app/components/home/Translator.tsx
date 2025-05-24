@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import {
   Copy, Download, Trash2, HelpCircle, Volume2, Pause, Play, Square,
-  Settings, ArrowLeftRight, Lightbulb, Check
+  Settings, ArrowLeftRight, ArrowUpDown, Lightbulb, Check
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -1639,7 +1639,7 @@ export default function MorseConverter({
         <div className="border-r border-gray-200">
           <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200  md:w-full md:flex-row flex-col gap-y-2">
             <div className="flex items-center">
-              <span className="text-lg font-semibold text-[#456359]">
+              <span className="md:text-lg text-2xl font-bold text-[#456359]">
                 {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
               </span>
             </div>
@@ -1707,6 +1707,7 @@ export default function MorseConverter({
 
                             <Button
             onClick={handleClear}
+            disabled={!inputText}
             variant="ghost"
             size="sm"
             className="text-[#372824] hover:text-black flex flex-col md:hidden"
@@ -1745,22 +1746,24 @@ export default function MorseConverter({
             )}
           </div>
 
-          <div className="p-3 border-t flex md:justify-between md:w-full  justify-center border-gray-200">              <Button
-            onClick={handleClear}
-            variant="ghost"
-            size="sm"
-            className="text-[#372824] hover:text-black md:flex flex-col hidden"
-            title="Clear Input"
-          >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
-            {strings.clear}
-          </Button>
-                          <Button
-                onClick={toggleMode}
+          <div className="p-3 md:border-t md:border-0 border-b flex md:justify-between md:w-full  justify-center border-gray-200 my-3 md:my-0">
+            <Button
+              onClick={handleClear}
+              variant="ghost"
+              size="sm"
+              className="text-[#372824] hover:text-black md:flex flex-col hidden"
+              title="Clear Input"
+            >
+              <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
+              {strings.clear}
+            </Button>
+            <Button
+              onClick={toggleMode}
                 variant="ghost"
                 size="sm"
-                className="md:hidden text-[#456359] flex"
+                className="md:hidden bg-white text-[#456359] flex -mb-7 "
                 title="Swap Modes"
-              >                  <ArrowLeftRight className="h-5 w-5 p-0 m-0 -mb-2" />
+              >                  <ArrowUpDown className="h-5 w-5 p-0 m-0 -mb-2" />
                 {strings.swap}
               </Button>
           </div>
@@ -1770,7 +1773,7 @@ export default function MorseConverter({
         <div>
           <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824] 200 md:w-full   md:flex-row flex-col gap-y-2 " >
             <div className="flex items-center">
-              <span className="text-lg text-[#456359] font-semibold">
+              <span className="md:text-lg text-2xl text-[#456359] font-bold">
                 {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
               </span>
             </div>                {/* Playback control buttons */}
