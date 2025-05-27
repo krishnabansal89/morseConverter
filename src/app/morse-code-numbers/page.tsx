@@ -1,4 +1,4 @@
-import NumberOverview from "../components/numbers/NumbersOverview";
+import NumberOverview from "../../components/numbers/NumbersOverview";
 
 export async function generateMetadata() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_URL

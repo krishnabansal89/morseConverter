@@ -1,4 +1,4 @@
-import MorseConverter from "@/app/components/home/Translator";
+import MorseConverter from "@/components/home/Translator";
 import Markdown from "react-markdown";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 import { ArrowUpRight } from "lucide-react"

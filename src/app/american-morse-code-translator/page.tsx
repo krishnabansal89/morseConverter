@@ -1,4 +1,4 @@
-import AmericanMorseCode from "../components/american/AmericanMorseCode";
+import AmericanMorseCode from "../../components/american/AmericanMorseCode";
 
 export async function generateMetadata() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_URL

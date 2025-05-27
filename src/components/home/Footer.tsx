@@ -38,6 +38,11 @@ export default function Footer() {
                     American Morse Code
                   </Link>
                 </li>
+                                <li>
+                  <Link href="/morse-code-machine" className="text-white hover:text-gray-900">
+                    Morse Code Machine
+                  </Link>
+                </li>
                 <li>
                   <Link href="/morse-code-chart" className="text-white hover:text-gray-900">
                     Morse Code Chart

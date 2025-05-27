@@ -1,4 +1,4 @@
-import MorseConverter from "@/app/components/home/Translator";
+import MorseConverter from "@/components/home/Translator";
 import Breadcrumb from "@/components/breadcrumb";
 import Link from "next/link";
 import Markdown from "react-markdown";

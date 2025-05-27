@@ -1,8 +1,8 @@
 import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
-import { Navbar } from "./components/home/Navbar";
-import Footer from "./components/home/Footer";
+import { Navbar } from "../components/home/Navbar";
+import Footer from "../components/home/Footer";
 import "./globals.css";
 
 const geistSans = Geist({

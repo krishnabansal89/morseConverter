@@ -1,5 +1,4 @@
 import MorseConverter from "./Translator";
-
 export default function Hero() {
     return (
         <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">

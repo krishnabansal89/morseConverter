@@ -1,4 +1,4 @@
-import AlphabetOverview from "../components/alphabets/AlphabetOverview";
+import AlphabetOverview from "../../components/alphabets/AlphabetOverview";
 
 
 export async function generateMetadata() {
