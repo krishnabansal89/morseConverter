@@ -52,9 +52,9 @@ export default function Features() {
         },
         {
             type: "Product",
-            title: "Morse Code Generator",
-            description: "Create Morse signals with adjustable playback speed.",
-            href: "/morse-code-generator",
+            title: "Morse Code Machine",
+            description: "Instantly convert typing to Morse Code. The Morse speed is configurable and can be beeps, a flashing light or vibration.",
+            href: "/morse-code-machine",
             bgColor: "bg-[#705C53]"
         },
         {

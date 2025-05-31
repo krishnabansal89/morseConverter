@@ -90,9 +90,9 @@ function Features() {
         },
         {
             type: "Produkt",
-            title: "Morsecode-Generator",
-            description: "Erstellen Sie Morsecodesignale mit einstellbarer Wiedergabegeschwindigkeit.",
-            href: "/morse-code-generator",
+            title: "Morsecode-Maschine",
+            description: "Wandeln Sie das Tippen sofort in Morsecode um. Die Morsegeschwindigkeit ist konfigurierbar und kann Pieptöne, ein Blinklicht oder Vibration sein.",
+            href: "/morse-code-machine",
             bgColor: "bg-[#705C53]"
         },
         {

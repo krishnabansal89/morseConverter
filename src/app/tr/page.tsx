@@ -81,9 +81,9 @@ function Features() {
         },
         {
             type: "Ürün",
-            title: "Mors Kodu Üretici",
-            description: "Ayarlanabilir oynatma hızıyla mors kod sinyalleri oluşturun.",
-            href: "/morse-code-generator",
+            title: "Mors Kodu Makinesi",
+            description: "Yazmayı anında Mors koduna dönüştürün. Mors hızı yapılandırılabilir ve bip sesleri, yanıpönen bir ışık veya titreşim olabilir.",
+            href: "/morse-code-machine",
             bgColor: "bg-[#705C53]"
         },
         {

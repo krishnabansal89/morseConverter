@@ -81,9 +81,9 @@ function Features() {
         },
         {
             type: "Sản phẩm",
-            title: "Tạo Mã Morse",
-            description: "Tạo tín hiệu mã Morse với tốc độ phát có thể điều chỉnh.",
-            href: "/morse-code-generator",
+            title: "Máy tạo Mã Morse",
+            description: "Chuyển đổi ngay lập tức việc gõ văn bản sang mã Morse. Tốc độ Morse có thể cấu hình và có thể là tiếng bíp, đèn nhấp nháy hoặc rung.",
+            href: "/morse-code-machine",
             bgColor: "bg-[#705C53]"
         },
         {

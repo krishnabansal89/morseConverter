@@ -51,7 +51,7 @@ export default function ContactUsPage() {
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">📧 Email</h2>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            <a href="mailto:hello@morsecod.de" className="text-[#456359] hover:underline">hello@morsecod.de</a>
+            <a href="mailto:hello@Morsecodeholistic" className="text-[#456359] hover:underline">hello@Morsecodeholistic</a>
           </p>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">
             We usually respond within 7 business days.

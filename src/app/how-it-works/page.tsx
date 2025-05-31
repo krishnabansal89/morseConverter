@@ -37,7 +37,7 @@ export default function HowItWorksPage() {
         </h1>
         <div className="text-[#372824]">
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            At MorseCod.de, we’ve designed a fast, accurate Morse code translator that’s simple enough for beginners and powerful enough for enthusiasts.
+            At Morsecodeholistic, we’ve designed a fast, accurate Morse code translator that’s simple enough for beginners and powerful enough for enthusiasts.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">1. Input Your Message</h2>

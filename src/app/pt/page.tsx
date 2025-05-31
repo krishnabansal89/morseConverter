@@ -81,9 +81,9 @@ function Features() {
         },
         {
             type: "Produto",
-            title: "Gerador de Código Morse",
-            description: "Crie sinais de código Morse com velocidade de reprodução ajustável.",
-            href: "/morse-code-generator",
+            title: "Máquina de Código Morse",
+            description: "Converta instantaneamente a digitação para código Morse. A velocidade do Morse é configurável e pode ser bipes, uma luz piscante ou vibração.",
+            href: "/morse-code-machine",
             bgColor: "bg-[#705C53]"
         },
         {

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { SocialIcon } from 'react-social-icons'
-
+import LangSwitcher from "@/components/langSwitcher"
 export default function Footer() {
   return (
     <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto   rounded-lg rounded-b-none rounded-t-none shadow-lg font-poppins">
@@ -130,6 +130,9 @@ export default function Footer() {
           <div className="text-center text-white font-maitree">
 
             <p>© 2025 Morse Code Translator. All rights reserved</p>
+          </div>
+          <div className="text-center text-white font-maitree mt-4">
+            <LangSwitcher />
           </div>
         </div>
       </footer>

@@ -40,12 +40,12 @@ export default function PrivacyPolicyPage() {
           <p className="mb-4 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">Effective Date: April 16, 2025</p>
 
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            At MorseCod.de, your privacy is important to us. This Privacy Policy outlines how we handle your information when you use our website and tools.
+            At Morsecodeholistic, your privacy is important to us. This Privacy Policy outlines how we handle your information when you use our website and tools.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">1. Information We Collect</h2>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            We do not collect any personally identifiable information (PII) when you use MorseCod.de. We also do not require you to create an account or share any personal data.
+            We do not collect any personally identifiable information (PII) when you use Morsecodeholistic. We also do not require you to create an account or share any personal data.
           </p>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             However, like most websites, we may collect non-personal information such as:
@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">4. Data Security</h2>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            MorseCod.de uses HTTPS encryption to ensure a secure connection between your browser and our servers. Your input is not saved or stored after your session ends.
+            Morsecodeholistic uses HTTPS encryption to ensure a secure connection between your browser and our servers. Your input is not saved or stored after your session ends.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">5. Links to External Sites</h2>
@@ -102,7 +102,7 @@ export default function PrivacyPolicyPage() {
             If you have any questions about this Privacy Policy, feel free to reach out:
           </p>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">
-            📧 <a href="mailto:hello@morsecod.de" className="text-[#456359] hover:underline">hello@morsecod.de</a>
+            📧 <a href="mailto:hello@Morsecodeholistic" className="text-[#456359] hover:underline">hello@Morsecodeholistic</a>
           </p>
         </div>
       </div>

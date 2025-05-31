@@ -38,7 +38,7 @@ export default function DataProtectionPolicyPage() {
           <p className="mb-4 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">Effective Date: April 16, 2025</p>
 
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            At MorseCod.de, we are committed to protecting the privacy, integrity, and security of your data. This Data Protection Policy explains how we handle, store, and safeguard any information related to your use of our website and services.
+            At Morsecodeholistic, we are committed to protecting the privacy, integrity, and security of your data. This Data Protection Policy explains how we handle, store, and safeguard any information related to your use of our website and services.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">1. Our Commitment to Data Protection</h2>
@@ -53,7 +53,7 @@ export default function DataProtectionPolicyPage() {
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">2. Minimal Data Collection</h2>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            MorseCod.de is designed with privacy by default. We do not:
+            Morsecodeholistic is designed with privacy by default. We do not:
           </p>
           <ul className="mb-4">
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Collect personal data (such as names, emails, or addresses)</li>
@@ -105,7 +105,7 @@ export default function DataProtectionPolicyPage() {
             <li className="text-[#2d2d2d] list-disc md:ml-10 ml-6 my-2 font-maitree text-lg/relaxed font-extralight">Withdraw consent (if applicable)</li>
           </ul>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            To exercise any of these rights, contact us at <a href="mailto:hello@morsecod.de" className="text-[#456359] hover:underline">hello@morsecod.de</a>.
+            To exercise any of these rights, contact us at <a href="mailto:hello@Morsecodeholistic" className="text-[#456359] hover:underline">hello@Morsecodeholistic</a>.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">7. Contact Us</h2>
@@ -113,7 +113,7 @@ export default function DataProtectionPolicyPage() {
             For questions, concerns, or data access requests, please reach out to:
           </p>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            📧 Email: <a href="mailto:hello@morsecod.de" className="text-[#456359] hover:underline">hello@morsecod.de</a>
+            📧 Email: <a href="mailto:hello@Morsecodeholistic" className="text-[#456359] hover:underline">hello@Morsecodeholistic</a>
           </p>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">
             We will respond to all inquiries within 30 days, as required by applicable data protection laws.

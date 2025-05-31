@@ -42,7 +42,7 @@ export default function FaqPage() {
             Morse code is a method of transmitting text using a series of dots (.) and dashes (–) to represent letters and numbers. It’s been used in telecommunication since the 1800s and is still popular among radio operators and survival enthusiasts.
           </p>
 
-          <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium mt-6 mb-3">🔹 How do I use MorseCod.de?</h2>
+          <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium mt-6 mb-3">🔹 How do I use Morsecodeholistic?</h2>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Just type your text into the input box, choose your language (if applicable), and our tool will instantly translate it to Morse code or decode Morse into readable text.
           </p>
@@ -54,7 +54,7 @@ export default function FaqPage() {
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium mt-6 mb-3">🔹 Can I use this tool offline?</h2>
           <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            Currently, MorseCod.de is web-based. We may consider adding offline functionality or a mobile app in the future.
+            Currently, Morsecodeholistic is web-based. We may consider adding offline functionality or a mobile app in the future.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium mt-6 mb-3">🔹 Is this tool free to use?</h2>
