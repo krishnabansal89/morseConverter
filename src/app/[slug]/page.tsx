@@ -20,16 +20,15 @@ const characterToMorseMap: Record<string, string> = {
     ' ': '' // Note: ' ' maps to empty, specific logic below handles word separation with '/'
 };
 
-// Predefined list of phrases for static generation and "Explore" section
-const PREDEFINED_PHRASES = ["Hi", "Hello", "SOS", "Love", "Thank You", "Help", "Yes", "No", "Good Bye", "OpenAI"];
+const PREDEFINED_PHRASES = ["Hi", "Hello", "SOS", "Love", "Thank You", "Help", "Yes", "No", "Good Bye"];
 
 type tParams = Promise<{ slug: string[] }>;
 
 
 export async function generateMetadata({ params }: { params: tParams }) {
     const { slug } = await params;
-    
-    const phrase = slug[0].replace(/-in-morse-code$/, '').replace(/-/g, ' ');
+
+    const phrase = (slug as unknown as string).replace(/-in-morse-code$/, '').replace(/-/g, ' ');
     const capitalizedPhrase = phrase.charAt(0).toUpperCase() + phrase.slice(1);
     const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "";
 
@@ -45,7 +44,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
             description,
         },
         alternates: {
-            canonical: `${PUBLIC_URL}/${slug[0]}`, // Adjust path if needed
+            canonical: `${PUBLIC_URL}/${slug}`, // Adjust path if needed
         },
     };
 }
@@ -116,7 +115,8 @@ function getPopularPhrases(allPhrases: string[], currentPhrase: string, count: n
 
 export default async function PhraseInMorseCodePage({ params }: { params: tParams }) {
     const { slug } = (await params);
-    const phrase = slug[0].replace(/-in-morse-code$/, '').replace(/-/g, ' ');
+    console.log("slug", slug);
+    const phrase = (slug as unknown as string).replace(/-in-morse-code$/, '').replace(/-/g, ' ');
     const capitalizedPhrase = phrase.charAt(0).toUpperCase() + phrase.slice(1);
 
     const { morseString, characterBreakdownMarkdown, soundString } = getMorseAndSoundForPhrase(phrase, characterToMorseMap);
@@ -165,7 +165,8 @@ Even if you never use Morse code in an emergency or practical setting, understan
     
 
     // Generating FAQ markdown for the page and for SchemaLD
-    const faqMarkdownForPage = `### **1\. How do I practice sending "${capitalizedPhrase}" in Morse code?**  
+    const faqMarkdownForPage = `
+### **1\. How do I practice sending "${capitalizedPhrase}" in Morse code?**  
 
 Use a flashlight, tapping surface, or Morse code app. Practice the sequence of dots and dashes for each letter in "${capitalizedPhrase}", then combine them with appropriate pauses: a short pause between signals of the same letter (if any), a medium pause between letters, and a longer pause between words (represented as '${soundString.includes('/') ? '/' : 'a longer pause'}' in our sound example).
 
