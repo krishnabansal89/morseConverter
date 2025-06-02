@@ -115,7 +115,6 @@ function getPopularPhrases(allPhrases: string[], currentPhrase: string, count: n
 
 export default async function PhraseInMorseCodePage({ params }: { params: tParams }) {
     const { slug } = (await params);
-    console.log("slug", slug);
     const phrase = (slug as unknown as string).replace(/-in-morse-code$/, '').replace(/-/g, ' ');
     const capitalizedPhrase = phrase.charAt(0).toUpperCase() + phrase.slice(1);
 
