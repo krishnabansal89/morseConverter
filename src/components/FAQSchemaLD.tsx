@@ -14,7 +14,7 @@ export const FAQSchemaLD = (
             answer
         }
     })
-
+    
     
     const schemaData = {
         "@context": "https://schema.org",

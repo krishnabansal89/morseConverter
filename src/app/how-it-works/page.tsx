@@ -36,27 +36,27 @@ export default function HowItWorksPage() {
           How It Works
         </h1>
         <div className="text-[#372824]">
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
-            At MorseCod.de, we’ve designed a fast, accurate Morse code translator that’s simple enough for beginners and powerful enough for enthusiasts.
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+            At Morsecodeholistic, we’ve designed a fast, accurate Morse code translator that’s simple enough for beginners and powerful enough for enthusiasts.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">1. Input Your Message</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Enter your text (in English or another supported language) or paste Morse code using dots (.) and dashes (-).
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">2. Automatic Detection</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             Our tool automatically detects whether you’re entering plain text or Morse code and performs the correct translation.
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">3. Instant Translation</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             The translation appears immediately. You can copy it with a click, or even listen to the Morse code (if audio support is enabled).
           </p>
 
           <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">4. Clean Output</h2>
-          <p className="mt-2 font-maitree text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
+          <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight mb-4">
             We format the output to reflect international Morse code standards, including spacing and accurate symbol representation.
           </p>
 

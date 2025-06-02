@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import { Metadata } from 'next';
 import { Clock, Calendar, Tag } from 'lucide-react'; // Assuming you use Lucide icons
-import FAQAccordion from '@/app/components/blogs/FAQaccordion';
+import FAQAccordion from '@/components/blogs/FAQaccordion';
 import Breadcrumb from '@/components/breadcrumb';
 
 

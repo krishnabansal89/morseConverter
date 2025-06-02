@@ -1,4 +1,4 @@
-import MorseConverter from "@/app/components/home/Translator";
+import MorseConverter from "@/components/home/Translator";
 import Breadcrumb from "@/components/breadcrumb";
 import Link from "next/link";
 import Markdown from "react-markdown";
@@ -190,6 +190,7 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
 `
 
 const FaqMarkup = `
+
 ### **1\. How do you say ${letter} in Morse code out loud?**  
 
 
@@ -235,7 +236,7 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2  ">
                     <div className="my-4">
-                        <p className="text-[#6c6860] tracking-tight w-[100%] font-medium   text-lg/relaxed font-maitree ">Discover what &apos;{letter}&apos; in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium   text-lg/relaxed font-maitree ">Discover what &apos;{letter}&apos; in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
 
                         </p>
                     </div>
@@ -245,7 +246,7 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
 
             </div>
             <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">
-                <div className="editor-window md:w-1/2 w-full h-[full] bg-white rounded-lg shadow-lg">
+                <div className="editor-window lg:w-4/5 w-full h-[full] bg-white rounded-lg shadow-lg">
                     <MorseConverter initialText={letter} textToMorse={true} />
                 </div>
             </div>
@@ -266,9 +267,9 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
                         h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
                         h5: ({ children }) => <div className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</div>,
 
-                        p: ({ children }) => <p className="mt-2 font-maitree  mx-auto  text-[#6c6860] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                        p: ({ children }) => <p className="mt-2 font-maitree  mx-auto  text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                         br: () => <br />,
-                        li: ({ children }) => <li className="text-[#6c6860]  mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
+                        li: ({ children }) => <li className="text-[#2d2d2d]  mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                         table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
                         thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
                         tbody: ({ children }) => <tbody>{children}</tbody>,
