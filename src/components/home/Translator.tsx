@@ -841,7 +841,6 @@ export default function MorseConverter({
       return Array.from(word)
         .map((char) => {
           // Add debug logging to see character codes
-          console.log(`Character: ${char}, Code: ${char.charCodeAt(0)}, Morse: ${currentTextToMorseMap[char]}`);
           return currentTextToMorseMap[char] || ""
         })
         .filter((morse) => morse !== "")
@@ -1132,7 +1131,6 @@ export default function MorseConverter({
   // --- Updated Audio Playback with Pause/Resume ---
   const playMorseAudio = (morseText: string, isInput = false, startIndex = 0) => {
     if (!morseText)
-      console.log(strings.debugPlayingMorseAudio, isInput ? strings.debugInputLabel : strings.debugOutputLabel, strings.debugStartIndex, startIndex);
     setupAudio(); const ac = audioContextRef.current;
     const gain = gainNodeRef.current;
     const osc = oscillatorRef.current;
