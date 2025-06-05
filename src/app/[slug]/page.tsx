@@ -5,6 +5,8 @@ import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD"; // Assuming this component exists
 
+export const dynamicParams = true 
+
 // Morse code mapping (from your provided file)
 const characterToMorseMap: Record<string, string> = {
     '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
@@ -50,10 +52,10 @@ export async function generateMetadata({ params }: { params: tParams }) {
 }
 
 export async function generateStaticParams() {
-    return PREDEFINED_PHRASES.map(phrase => ({
-        slug: `${phrase.toLowerCase().replace(/\s+/g, '-')}-in-morse-code`
-    }));
+    return []
 }
+
+
 
 function getMorseAndSoundForPhrase(phrase: string, map: Record<string, string>): {
     morseString: string; // e.g., ".... .."
@@ -214,7 +216,7 @@ Yes. Many web tools and coding platforms allow Morse-based design elements or in
                         {popularPhrasesToDisplay.map((p) => (
                             <Link
                                 key={p}
-                                href={`/${p.toLowerCase().replace(/\s+/g, '-')}-in-morse-code`} // Adjust path if needed
+                                href={`/${p.replace(/\s+/g, '-')}-in-morse-code`} // Adjust path if needed
                                 className="border-2 border-gray-300 px-4 py-3 font-semibold text-[#2d2d2d] font-maitree text-center rounded-md hover:bg-gray-100 transition-colors"
                             >
                                 {p} in Morse Code

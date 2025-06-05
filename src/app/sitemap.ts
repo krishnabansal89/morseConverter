@@ -2,12 +2,30 @@ import type { MetadataRoute , } from 'next'
 
 import { blogSlugsForSiteMap } from "@/sanity/queries";
 import { client } from "@/sanity/client"
+import PageData from '@/lib/models/pageData';
+import Slug from '@/lib/models/slugsModel';
+import connectDB from '@/lib/db';
 
 export const revalidate = 86400; // 24 hours
 
 const getBlogPosts = async ()=> {
   const slugs: Array<{slug:string , publishedAt:Date}> = await client.fetch(blogSlugsForSiteMap)
   return slugs
+}
+
+const getWordsPages = async () => {
+  await connectDB();
+  const words = await Slug.find({ type: 'words' }).sort({ createdAt: -1 });
+  if (!words || words.length === 0) {
+    console.error("No words found in the database");
+    return [];
+  }
+  const wordsData = await PageData.findOne({ type: 'words' });
+
+  const pages = words.slice(0, 
+    wordsData.currentPosition);
+
+  return pages;
 }
 
 const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "https://www.morsecodeholistic.com"
@@ -88,6 +106,14 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
         priority: 0.9,
       },
     ];
-    
-    return [...staticPages, ...alphabetUrls, ...numberUrls, ...blogUrls, ...languageUrls];
+
+    const wordsPages = await getWordsPages();
+    const wordsUrls:MetadataRoute.Sitemap = wordsPages.map(word => ({
+      url: `${baseUrl}/${word.slug}`,
+      lastModified: new Date(word.createdAt),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    }));
+
+    return [...staticPages, ...alphabetUrls, ...numberUrls, ...blogUrls, ...languageUrls, ...wordsUrls];
   }

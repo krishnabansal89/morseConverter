@@ -13,7 +13,7 @@ export const FAQSchemaLD = (
             question,
             answer
         }
-    })
+    }) 
     
     
     const schemaData = {
