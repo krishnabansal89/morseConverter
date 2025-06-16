@@ -1,6 +1,6 @@
 import Markdown from "react-markdown";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
-
+import Badges from "@/components/home/Badges";
 export default function Faq() {
   const content = `
 ### **1\. What is Morse Code?**
@@ -33,6 +33,7 @@ Yes, but it requires memorizing Morse code symbols for each letter and number. O
         p: ({ children }) => <p className="mt-2 text-[#2d2d2d]  font-maitree">{children}</p>,
         br: () => <br />,
       }} >{content}</Markdown>
+      <Badges />
     </div>
   );
 }
