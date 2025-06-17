@@ -1130,7 +1130,7 @@ export default function MorseConverter({
 
   // --- Updated Audio Playback with Pause/Resume ---
   const playMorseAudio = (morseText: string, isInput = false, startIndex = 0) => {
-    if (!morseText)
+    if (!morseText) return;
     setupAudio(); const ac = audioContextRef.current;
     const gain = gainNodeRef.current;
     const osc = oscillatorRef.current;
@@ -1731,7 +1731,7 @@ export default function MorseConverter({
                   ? "min-h-[200px] md:min-h-[300px]"
                   : "min-h-[100px] md:min-h-[200px]"}
                   ${isSingleLetterMode && inputText === initialText
-                  ? "text-center text-4xl md:text-6xl"
+                  ? "text-center pt-14 text-4xl md:text-6xl"
                   : "text-xl/relaxed"}
                 `}
             />
