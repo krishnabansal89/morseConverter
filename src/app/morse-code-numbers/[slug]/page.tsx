@@ -137,7 +137,7 @@ function generateMorseMarkdown(character: string, morse: string): string {
     const signalsList = signals.map(signal => `* ${signal}`).join('\n');
 
     // Create the final markdown
-    return `In Morse code, the letter **'${upperChar}'** is represented as **${readableMorse}** (${morse.replace(/\./g, 'dot').replace(/\-/g, 'dash')}). This means:\n${signalsList}`;
+    return `In Morse code, the number **'${upperChar}'** is represented as **${readableMorse}** (${morse.replace(/\./g, 'dot').replace(/\-/g, 'dash')}). This means:\n${signalsList}`;
 }
 
 type tParams = Promise<{ slug: string }>;

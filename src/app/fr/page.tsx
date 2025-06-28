@@ -14,7 +14,7 @@ function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Traduisez instantanément l`&apos;`anglais en code Morse et inversement avec notre traducteur morse gratuit. Convertissez, décodez et générez des signaux Morse facilement, avec lecture audio et options de partage.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Traduisez instantanément le français en code Morse et inversement avec notre traducteur morse gratuit. Convertissez, décodez et générez des signaux Morse facilement, avec lecture audio et options de partage.
                         </p>
                     </div>
 
@@ -68,14 +68,14 @@ function Features() {
         {
             type: "Produit",
             title: "Traducteur de Code Morse International",
-            description: "Traduisez précisément l'anglais vers le code Morse international et inversement.",
+            description: "Traduisez précisément le français vers le code Morse international et inversement.",
             href: "/international-morse-code",
             bgColor: "bg-[#31363F]"
         },
         {
             type: "Produit",
             title: "Traducteur de Code Morse Américain",
-            description: "Traduisez précisément l'anglais vers le code Morse américain et inversement.",
+            description: "Traduisez précisément le français vers le code Morse américain et inversement.",
             href: "/american-morse-code-translator",
             bgColor: "bg-[#41644A]"
         },

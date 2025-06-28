@@ -12,7 +12,7 @@ function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Übersetzen Sie Englisch in Morsecode und umgekehrt sofort mit unserem kostenlosen Morsecode-Übersetzer. Konvertieren, dekodieren und generieren Sie Morsecodesignale einfach mit Audiowiedergabe und Freigabeoptionen.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Übersetzen Sie Deutsch in Morsecode und umgekehrt sofort mit unserem kostenlosen Morsecode-Übersetzer. Konvertieren, dekodieren und generieren Sie Morsecodesignale einfach mit Audiowiedergabe und Freigabeoptionen.
                         </p>
                     </div>
 

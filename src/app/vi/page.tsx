@@ -14,7 +14,7 @@ function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Dịch tiếng Anh sang mã Morse và ngược lại ngay lập tức với công cụ dịch mã Morse miễn phí của chúng tôi. Chuyển đổi, giải mã và tạo tín hiệu Morse dễ dàng, có hỗ trợ phát âm thanh và chia sẻ.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Dịch tiếng Việt sang mã Morse và ngược lại ngay lập tức với công cụ dịch mã Morse miễn phí của chúng tôi. Chuyển đổi, giải mã và tạo tín hiệu Morse dễ dàng, có hỗ trợ phát âm thanh và chia sẻ.
                         </p>
                     </div>
 
@@ -68,14 +68,14 @@ function Features() {
         {
             type: "Sản phẩm",
             title: "Dịch Mã Morse Quốc Tế",
-            description: "Dịch chính xác giữa tiếng Anh và mã Morse quốc tế.",
+            description: "Dịch chính xác giữa tiếng Việt và mã Morse quốc tế.",
             href: "/international-morse-code",
             bgColor: "bg-[#31363F]"
         },
         {
             type: "Sản phẩm",
             title: "Dịch Mã Morse Mỹ",
-            description: "Dịch chính xác giữa tiếng Anh và mã Morse Mỹ.",
+            description: "Dịch chính xác giữa tiếng Việt và mã Morse Mỹ.",
             href: "/american-morse-code-translator",
             bgColor: "bg-[#41644A]"
         },

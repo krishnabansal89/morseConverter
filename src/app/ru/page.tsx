@@ -12,7 +12,7 @@ function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Мгновенно переводите английский текст в азбуку Морзе и обратно с помощью бесплатного онлайн-переводчика. Генерируйте сигналы Морзе с озвучкой и функцией обмена.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Мгновенно переводите русский текст в азбуку Морзе и обратно с помощью бесплатного онлайн-переводчика. Генерируйте сигналы Морзе с озвучкой и функцией обмена.
                         </p>
                     </div>
 
@@ -75,14 +75,14 @@ function Features() {
         {
             type: "Продукт",
             title: "Международный код-переводчик",
-            description: "Точный перевод с английского на международный код Морзе и обратно.",
+            description: "Точный перевод с русского на международный код Морзе и обратно.",
             href: "/international-morse-code",
             bgColor: "bg-[#31363F]"
         },
         {
             type: "Продукт",
             title: "Американский код-переводчик",
-            description: "Точный перевод с английского на американский код Морзе и обратно.",
+            description: "Точный перевод с русского на американский код Морзе и обратно.",
             href: "/american-morse-code-translator",
             bgColor: "bg-[#41644A]"
         },

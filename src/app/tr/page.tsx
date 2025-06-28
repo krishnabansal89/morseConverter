@@ -14,7 +14,7 @@ function Hero() {
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Ücretsiz Mors Alfabesi Çeviri aracımızla İngilizceyi anında mors koduna çevirin veya mors kodunu çözün. Sesli oynatma ve paylaşım seçenekleriyle kolayca mors sinyalleri üretin, dönüştürün ve okuyun.
+                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Ücretsiz Mors Alfabesi Çeviri aracımızla Türkçeyi anında mors koduna çevirin veya mors kodunu çözün. Sesli oynatma ve paylaşım seçenekleriyle kolayca mors sinyalleri üretin, dönüştürün ve okuyun.
                         </p>
                     </div>
 
@@ -68,14 +68,14 @@ function Features() {
         {
             type: "Ürün",
             title: "Uluslararası Mors Alfabesi Çevirisi",
-            description: "İngilizceyi uluslararası mors koduna ve tersine hassas şekilde çevirin.",
+            description: "Türkçeyi uluslararası mors koduna ve tersine hassas şekilde çevirin.",
             href: "/international-morse-code",
             bgColor: "bg-[#31363F]"
         },
         {
             type: "Ürün",
             title: "Amerikan Mors Kodu Çevirisi",
-            description: "İngilizceyi Amerikan mors koduna ve tersine hassas şekilde çevirin.",
+            description: "Türkçeyi Amerikan mors koduna ve tersine hassas şekilde çevirin.",
             href: "/american-morse-code-translator",
             bgColor: "bg-[#41644A]"
         },

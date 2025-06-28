@@ -79,7 +79,7 @@ const ptComponents = {
     },
     block: {
         h1: ({ children }: { children: React.ReactNode }) => (
-            <h1 className="text-4xl font-bold my-6 font-poppins ">{children}</h1>
+            <h2 className="text-4xl font-bold my-6 font-poppins ">{children}</h2>
         ),
         h2: ({ children }: { children: React.ReactNode }) => (
             <h2 className="text-3xl font-bold mt-8 mb-4 font-poppins">{children}</h2>
