@@ -81,7 +81,7 @@ export default function Page() {
             h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
             h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
             h4: ({ }) => (
-              <div className="editor-container w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center">
+              <div className="editor-container w-[90%] md:px-4 mx-auto h-fit flex justify-center items-center">
                 <div className="editor-window w-full h-full bg-white rounded-lg shadow-lg mb-10">
                   <MorseCodeAudioPlayer />
                 </div>

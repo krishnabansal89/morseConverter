@@ -8,7 +8,8 @@ export async function GET(req: Request) {
         return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 });
     }
     try {
-        await updatePageData();
+        await updatePageData("words");
+        await updatePageData("morse-code-guide");
         await revalidatePath('/sitemap'); // Revalidate the home page
         return NextResponse.json({ ok: true });
     } catch (e) {
@@ -18,3 +19,14 @@ export async function GET(req: Request) {
 }
 
 
+// export async function POST(req: Request) {
+//     try {
+//         await initializePageData();
+//         await initializeSlugs();
+//         return NextResponse.json({ ok: true });
+//     } catch (e) {
+//         console.error(e);
+//         return NextResponse.json({ ok: false, error: String(e) }, { status: 500 });
+//     }
+// }
+    

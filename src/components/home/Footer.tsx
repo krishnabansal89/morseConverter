@@ -48,6 +48,11 @@ export default function Footer() {
                     Morse Code Chart
                   </Link>
                 </li>
+                <li>
+                  <Link href="/morse-code-translator-audio" className="text-white hover:text-gray-900">
+                    Morse Code Translator Audio
+                  </Link>
+                </li>
               </ul>
             </div>
 

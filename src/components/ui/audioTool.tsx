@@ -381,7 +381,7 @@ export default function MorseCodeTranslator({
                 value={inputText}
                 onChange={handleInputChange}
                 placeholder={typingPlaceholder}
-                className="p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[200px] md:min-h-[300px] text-xl/relaxed"
+                className="p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[200px] md:min-h-[200px] text-xl/relaxed"
               />
             </div>
 
