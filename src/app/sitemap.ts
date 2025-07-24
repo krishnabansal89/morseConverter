@@ -28,6 +28,21 @@ const getWordsPages = async () => {
   return pages;
 }
 
+const getGuidePages = async () => {
+  await connectDB();
+  const guides = await Slug.find({ type: 'morse-code-guide' }).sort({ createdAt: -1 });
+  if (!guides || guides.length === 0) {
+    console.error("No guides found in the database");
+    return [];
+  }
+  const guidesData = await PageData.findOne({ type: 'morse-code-guide' });
+
+  const pages = guides.slice(0,
+    guidesData.currentPosition);
+
+  return pages;
+}
+
 const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "https://www.morsecodeholistic.com"
 export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
     const baseUrl = PUBLIC_URL;
@@ -105,6 +120,12 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
         changeFrequency: "weekly",
         priority: 0.9,
       },
+      {
+        url: `${baseUrl}/morse-code-translator-audio`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
     ];
 
     const wordsPages = await getWordsPages();
@@ -115,5 +136,13 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
       priority: 0.8,
     }));
 
-    return [...staticPages, ...alphabetUrls, ...numberUrls, ...blogUrls, ...languageUrls, ...wordsUrls];
+    const guidePages = await getGuidePages();
+    const guideUrls:MetadataRoute.Sitemap = guidePages.map(guide => ({
+      url: `${baseUrl}/morse-code-guide/${guide.slug}`,
+      lastModified: new Date(guide.createdAt),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    }));
+
+    return [...staticPages, ...alphabetUrls, ...numberUrls, ...blogUrls, ...languageUrls, ...wordsUrls, ...guideUrls];
   }

@@ -666,6 +666,7 @@ export default function MorseConverter({
 
   // Check if it's a single letter display mode
   const isSingleLetterMode = initialText.length === 1
+
   // Handle typing effect for placeholders
   useEffect(() => {
     const placeholder = mode === "morse-to-text"
@@ -1732,7 +1733,7 @@ export default function MorseConverter({
                   : "min-h-[100px] md:min-h-[200px]"}
                   ${isSingleLetterMode && inputText === initialText
                   ? "text-center pt-14 text-4xl md:text-6xl"
-                  : "text-xl/relaxed"}
+                  : initialText.length > 1 ? "text-3xl/relaxed" : "text-xl/relaxed"}
                 `}
             />
 
@@ -1840,7 +1841,7 @@ export default function MorseConverter({
               : "min-h-[100px] md:min-h-[200px]"}
               ${isSingleLetterMode
               ? "text-center text-4xl md:text-6xl"
-              : "text-xl"}
+              : initialText.length > 1 ? "text-3xl/relaxed" : "text-xl/relaxed"}
             `}>
             {outputText || (<span className="text-gray-400 text-md">
               {mode === "morse-to-text"
