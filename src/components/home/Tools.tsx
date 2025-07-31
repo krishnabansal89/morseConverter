@@ -59,9 +59,9 @@ export default function Features() {
         },
         {
             type: "Product",
-            title: "Morse Code Generator",
-            description: "Create Morse signals with adjustable playback speed.",
-            href: "/morse-code-generator",
+            title: "Morse Code Translator Audio",
+            description: "Listen to Morse code audio signals for any text.",
+            href: "/morse-code-translator-audio",
             bgColor: "bg-[#31304D]"
         },
         {

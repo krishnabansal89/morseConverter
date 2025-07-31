@@ -91,14 +91,14 @@ function Features() {
             title: "Generador de Código Morse",
             description: "Crea señales de código Morse con velocidad de reproducción ajustable.",
             href: "/morse-code-generator",
-            bgColor: "bg-[#31304D]"
+            bgColor: "bg-[#493628]"
         },
         {
             type: "Producto",
-            title: "Generador de Código Morse",
-            description: "Crea señales de código Morse con velocidad de reproducción ajustable.",
-            href: "/morse-code-generator",
-            bgColor: "bg-[#493628]"
+            title: "Traductor de Código Morse con Audio",
+            description: "Escucha señales de audio de código Morse para cualquier texto.",
+            href: "/morse-code-translator-audio",
+            bgColor: "bg-[#31304D]"
         },
     ]
 

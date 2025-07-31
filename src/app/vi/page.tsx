@@ -88,15 +88,15 @@ function Features() {
         },
         {
             type: "Sản phẩm",
-            title: "Tạo Mã Morse",
-            description: "Tạo tín hiệu mã Morse với tốc độ phát có thể điều chỉnh.",
-            href: "/morse-code-generator",
+            title: "Bộ Dịch Mã Morse Âm Thanh",
+            description: "Nghe tín hiệu âm thanh mã Morse cho bất kỳ văn bản nào.",
+            href: "/morse-code-translator-audio",
             bgColor: "bg-[#31304D]"
         },
         {
             type: "Sản phẩm",
-            title: "Tạo Mã Morse",
-            description: "Tạo tín hiệu mã Morse với tốc độ phát có thể điều chỉnh.",
+            title: "Bộ Tạo Mã Morse",
+            description: "Tạo tín hiệu mã Morse với tốc độ phát lại có thể điều chỉnh.",
             href: "/morse-code-generator",
             bgColor: "bg-[#493628]"
         },

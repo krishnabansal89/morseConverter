@@ -95,8 +95,15 @@ function Features() {
         },
         {
             type: "Prodotto",
+            title: "Traduttore di Codice Morse Audio",
+            description: "Ascolta i segnali audio del codice Morse per qualsiasi testo.",
+            href: "/morse-code-translator-audio",
+            bgColor: "bg-[#31304D]"
+        },
+        {
+            type: "Prodotto",
             title: "Generatore di Codice Morse",
-            description: "Crea segnali in codice Morse con velocità di riproduzione regolabile.",
+            description: "Crea segnali di codice Morse con velocità di riproduzione regolabile.",
             href: "/morse-code-generator",
             bgColor: "bg-[#493628]"
         },

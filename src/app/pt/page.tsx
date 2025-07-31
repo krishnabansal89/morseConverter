@@ -88,9 +88,9 @@ function Features() {
         },
         {
             type: "Produto",
-            title: "Gerador de Código Morse",
-            description: "Crie sinais de código Morse com velocidade de reprodução ajustável.",
-            href: "/morse-code-generator",
+            title: "Tradutor de Código Morse com Áudio",
+            description: "Ouça sinais de áudio do código Morse para qualquer texto.",
+            href: "/morse-code-translator-audio",
             bgColor: "bg-[#31304D]"
         },
         {
