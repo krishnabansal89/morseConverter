@@ -1,4 +1,6 @@
-import MorseConverter from "@/components/home/Translator"; // Assuming this component exists
+import { getWordsPages } from "@/app/sitemap";  
+import { WordGlossary } from "./anchorTags";
+import { SlugType } from "@/types/modelsTypes";
 import Breadcrumb from "@/components/breadcrumb"; // Assuming this component exists
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
@@ -17,6 +19,11 @@ export const metadata = {
 };
 
 const mainContentMarkdown = `
+
+##### Morse Code Words Glossary
+
+Morse code is a time-tested method of communication using dots and dashes to represent letters, numbers, and punctuation. Beyond just individual characters, Morse code can also be used to represent full words, making it especially valuable in emergency communication, military signaling, amateur (ham) radio, and aviation. In this guide, we dive deep into Morse code words, their meanings, and how they are constructed and used.
+
 ### What Are Morse Code Words?
 
 Morse code words are **strings of Morse characters** formed by combining individual Morse symbols for letters and numbers to make actual words. For example, the word **"HELP"** in Morse code is written as:
@@ -131,36 +138,31 @@ Effective learning tools include **mobile apps** (like Morse Trainer), **online 
 Yes! Many people use Morse code words in **jewelry**, **tattoos**, **art**, and **personal notes**. Popular choices include "LOVE," names, or meaningful phrases converted to dots and dashes.
 `;
 
-export default function MorseCodeWordsPage() {
+export default async function MorseCodeWordsPage() {
+    const getWords = await getWordsPages();
+    // Transform getWords (array) to Record<string, string[]>
+    // Assuming each word object has a 'word' property and a 'letter' property
+    let wordsByLetter: Record<string, string[]> = {};
+    getWords.forEach((item: SlugType) => {
+        const letter = item.slug.charAt(0).toUpperCase(); // Assuming slug starts with the letter
+        const word = item.slug.split('-in-morse')[0].replace(/-/g, ' '); 
+        if (letter && word) {
+            if (!wordsByLetter[letter]) {
+                wordsByLetter[letter] = [];
+            }
+            wordsByLetter[letter].push(word);
+        }
+    });
+    //sort getwords on alphabetically
+    wordsByLetter = Object.fromEntries(
+        Object.entries(wordsByLetter).sort(([a], [b]) => a.localeCompare(b))
+    );
+
     return (
         <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none h-fit flex flex-col">
             <div className="md:px-14 flex items-start">
                 <Breadcrumb />
             </div>
-            <div className="w-full h-fit md:my-20 my-10 grid md:px-10 md:grid-cols-[65%_35%] grid-cols-1 justify-center">
-                <div className="flex items-center">
-                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed text-3xl/relaxed font-medium text-[#2d2d2d] tracking-tight md:px-4 font-poppins">
-                        Morse Code Words Glossary <br />
-                        <span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text xl:text-4xl/relaxed lg:text-3xl/relaxed text-2xl/relaxed">
-                            From A-Z Explore All Words & Meanings
-                        </span>
-                    </h1>
-                </div>
-                <div className="flex-col flex justify-center h-full px-2">
-                    <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-lg/relaxed font-maitree">
-                            Discover Morse code words, meanings, examples like SOS & HELP, and how to learn them easily. Great for beginners, ham radio, and emergency use.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div className="editor-container w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center">
-                <div className="editor-window lg:w-4/5 w-full h-[full] bg-white rounded-lg shadow-lg">
-                    <MorseConverter initialText="SOS HELP" textToMorse={true} />
-                </div>
-            </div>
-
             <div className="w-full mx-auto p-4 md:px-10 rounded-lg md:pt-20">
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
@@ -183,6 +185,7 @@ export default function MorseCodeWordsPage() {
             </div>
 
             <FAQSchemaLD markup={faqMarkdownForPage} />
+            <WordGlossary wordsByLetter={wordsByLetter} />
         </div>
     );
 }

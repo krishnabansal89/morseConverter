@@ -13,7 +13,7 @@ const getBlogPosts = async ()=> {
   return slugs
 }
 
-const getWordsPages = async () => {
+export const getWordsPages = async () => {
   await connectDB();
   const words = await Slug.find({ type: 'words' }).sort({ createdAt: -1 });
   if (!words || words.length === 0) {
