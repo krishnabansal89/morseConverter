@@ -20,7 +20,7 @@ export const metadata = {
 
 const mainContentMarkdown = `
 
-##### Morse Code Words Glossary
+# Morse Code Words Glossary
 
 Morse code is a time-tested method of communication using dots and dashes to represent letters, numbers, and punctuation. Beyond just individual characters, Morse code can also be used to represent full words, making it especially valuable in emergency communication, military signaling, amateur (ham) radio, and aviation. In this guide, we dive deep into Morse code words, their meanings, and how they are constructed and used.
 
@@ -166,7 +166,7 @@ export default async function MorseCodeWordsPage() {
             <div className="w-full mx-auto p-4 md:px-10 rounded-lg md:pt-20">
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
-                    h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h1>,
+                    h1: ({ children }) =>  <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight md:px-10"> {children}</h1>,
                     h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
                     h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
                     h5: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight md:px-10"> {children}</h2>,

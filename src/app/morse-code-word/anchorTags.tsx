@@ -8,7 +8,7 @@ const AnchorNavBar: React.FC<{letters: string[]}> = ({ letters }) => (
       <a
         key={letter}
         href={`#${letter}`}
-        className="text-[#456359] hover:underline font-medium"
+        className="text-[#456359] hover:underline font-medium text-lg md:text-xl"
       >
         {letter}
       </a>
@@ -25,16 +25,16 @@ export const WordGlossary: React.FC<{ wordsByLetter: Record<string, string[]> }>
       <AnchorNavBar letters={ALPHABET} />
       {Object.keys(wordsByLetter).map((letter) => (
         <div key={letter} id={letter} className="border-b-2 pb-4 mb-4 border-[#2d2d2d]/5">
-          <h2 className="text-lg font-maitree mb-4 font-semibold">{letter}</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2 ">
+          <h2 className="text-lg md:text-xl font-maitree mb-4 font-semibold">{letter}</h2>
+          <div className="grid grid-cols-2 justify-items-center md:justify-items-normal md:grid-cols-4 gap-x-2 ">
             {wordsByLetter[letter]?.length? (
               wordsByLetter[letter].map((word) => (
                 <a
-                  key={word}
-                  href={`/${letter}/${encodeURIComponent(word)}`}
-                  className="text-[#456359] hover:underline font-poppins"
+                  key={word.toUpperCase()}
+                  href={`/${encodeURIComponent(word.toUpperCase())}-in-morse-code`}
+                  className="text-[#456359] text-center md:text-start md:text-lg hover:underline font-poppins"
                 >
-                  {word}
+                  {word.toUpperCase()}
                 </a>
               ))
             ) : (
