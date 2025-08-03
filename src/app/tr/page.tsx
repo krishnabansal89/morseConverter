@@ -95,7 +95,14 @@ function Features() {
         },
         {
             type: "Ürün",
-            title: "Mors Kodu Üretici",
+            title: "Mors Kodu Çevirici Sesli",
+            description: "Herhangi bir metin için Mors kodu ses sinyallerini dinleyin.",
+            href: "/morse-code-translator-audio",
+            bgColor: "bg-[#31304D]"
+        },
+        {
+            type: "Ürün",
+            title: "Mors Kodu Üreteci",
             description: "Ayarlanabilir oynatma hızıyla mors kod sinyalleri oluşturun.",
             href: "/morse-code-generator",
             bgColor: "bg-[#493628]"

@@ -13,7 +13,7 @@ const getBlogPosts = async ()=> {
   return slugs
 }
 
-const getWordsPages = async () => {
+export const getWordsPages = async () => {
   await connectDB();
   const words = await Slug.find({ type: 'words' }).sort({ createdAt: -1 });
   if (!words || words.length === 0) {
@@ -122,6 +122,12 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
       },
       {
         url: `${baseUrl}/morse-code-translator-audio`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/morse-code-word`,
         lastModified: new Date(),
         changeFrequency: "weekly",
         priority: 0.9,

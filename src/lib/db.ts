@@ -7,7 +7,6 @@ if (!cached) {
 
 const connectDB = async () => {
   if (cached.conn) {
-    console.log('MongoDB already connected');
     return cached.conn;
   }
 
@@ -16,7 +15,6 @@ const connectDB = async () => {
   }
   try {
     cached.conn = await cached.promise;
-    console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);
     process.exit(1);

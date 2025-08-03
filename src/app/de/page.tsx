@@ -97,9 +97,9 @@ function Features() {
         },
         {
             type: "Produkt",
-            title: "Morsecode-Generator",
-            description: "Erstellen Sie Morsecodesignale mit einstellbarer Wiedergabegeschwindigkeit.",
-            href: "/morse-code-generator",
+            title: "Morsecode-Übersetzer Audio",
+            description: "Hören Sie Morsecode-Audiosignale für jeden Text.",
+            href: "/morse-code-translator-audio",
             bgColor: "bg-[#31304D]"
         },
         {
