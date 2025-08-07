@@ -8,7 +8,7 @@ export const TOOL_LINKS = [
     category: "Translator"
   },
   {
-    title: "American Code Translator", 
+    title: "American Code Translator",
     desc: "Translate English to American Morse Code and back with precision.",
     url: "/american-morse-code-translator",
     category: "Translator"
@@ -22,7 +22,7 @@ export const TOOL_LINKS = [
   {
     title: "Morse Code Translator Audio",
     desc: "Listen to Morse code audio signals for any text.",
-    url: "/morse-code-translator-audio", 
+    url: "/morse-code-translator-audio",
     category: "Audio"
   }
 ];
@@ -40,23 +40,72 @@ export const NUMBER_LINKS = Array.from({ length: 10 }, (_, i) => ({
   url: `/morse-code-numbers/number-${i}-in-morse-code`
 }));
 
-
-
 interface Props {
   exclude?: ("tools" | "alphabet" | "numbers" | "words")[];
   currentPage?: string; // To avoid self-linking
 }
 
 export default function InternalLinkingPanel({ exclude = [], currentPage }: Props) {
+  // Count how many sections we're showing
+  const showAlphabet = !exclude.includes("alphabet");
+  const showNumbers = !exclude.includes("numbers");
+  const sectionsCount = (showAlphabet ? 1 : 0) + (showNumbers ? 1 : 0);
+
   return (
     <div className="w-[98%] mx-auto bg-[rgb(236,232,228)]  p-4 py-10 md:px-20">
       <h2 className="md:text-3xl text-2xl bg-gradient-to-r text-center mb-8 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight">
         Explore More Morse Code Resources
       </h2>
-      
-      <div className="flex flex-col gap-8">
-        
 
+      <div className="flex flex-col gap-8">
+        {/* Alphabet & Numbers - Dynamic grid based on sections count */}
+        {(showAlphabet || showNumbers) && (
+          <div className={`grid gap-8 mx-auto ${sectionsCount === 1
+              ? 'grid-cols-1 justify-items-center'
+              : 'md:grid-cols-2'
+            }`}>
+
+            {/* Alphabet Morse Codes */}
+            {showAlphabet && (
+              <section className="">
+                <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
+                  A-Z Morse Code Reference
+                </h3>
+                <div className="flex flex-wrap justify-evenly gap-2">
+                  {ALPHABET_LINKS.map((link) => (
+                    <Link
+                      key={link.label}
+                      href={link.url}
+                      className="inline-block bg-white hover:bg-[#456359] text-[#456359] hover:text-white font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-[#456359]/40 hover:shadow-md"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Number Morse Codes */}
+            {showNumbers && (
+              <section className="">
+                <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
+                  0-9 Morse Code Reference
+                </h3>
+                <div className="flex flex-wrap justify-evenly gap-2">
+                  {NUMBER_LINKS.map((link) => (
+                    <Link
+                      key={link.label}
+                      href={link.url}
+                      className="inline-block bg-white hover:bg-[#456359] text-[#456359] hover:text-white font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-[#456359]/40 hover:shadow-md"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
+        )}
         {/* Morse Code Tools */}
         {!exclude.includes("tools") && (
           <section>
@@ -90,48 +139,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
           </section>
         )}
 
-        {/* Alphabet & Numbers in a combined row for better space usage */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Alphabet Morse Codes */}
-          {!exclude.includes("alphabet") && (
-            <section>
-              <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
-                A-Z Morse Code Reference
-              </h3>
-              <div className="flex flex-wrap justify-evenly gap-2">
-                {ALPHABET_LINKS.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.url}
-                    className="inline-block bg-white hover:bg-[#456359] text-[#456359] hover:text-white font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-[#456359]/40 hover:shadow-md"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
 
-          {/* Number Morse Codes */}
-          {!exclude.includes("numbers") && (
-            <section>
-              <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
-                0-9 Morse Code Reference  
-              </h3>
-              <div className="flex flex-wrap justify-evenly gap-2">
-                {NUMBER_LINKS.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.url}
-                    className="inline-block bg-white hover:bg-[#456359] text-[#456359] hover:text-white font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-[#456359]/40 hover:shadow-md"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
       </div>
     </div>
   );
