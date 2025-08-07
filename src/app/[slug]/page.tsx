@@ -4,7 +4,7 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD"; // Assuming this component exists
-
+import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel"; // Assuming this component exists
 export const dynamicParams = true 
 
 // Morse code mapping (from your provided file)
@@ -251,6 +251,7 @@ Yes. Many web tools and coding platforms allow Morse-based design elements or in
 
 
             <FAQSchemaLD markup={faqMarkdownForPage} /> {/* Pass structured FAQ data */}
+            <InternalLinkingPanel />
         </div>
     );
 }

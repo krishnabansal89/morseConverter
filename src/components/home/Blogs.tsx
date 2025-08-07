@@ -30,7 +30,7 @@ interface BlogPost {
 }
 
 export default async function BlogGrid() {
-  const posts: Array<BlogPost> = await client.fetch(blogNamesWithLimitQuery, { limit: 5 })
+  const posts: Array<BlogPost> = await client.fetch(blogNamesWithLimitQuery, { limit: 8 })
 
   if (!posts || posts.length === 0) {
     return <div className="text-center py-10">No blog posts found.</div>;
