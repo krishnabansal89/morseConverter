@@ -66,9 +66,9 @@ export default function Features() {
         },
         {
             type: "Product",
-            title: "Morse Code Generator",
-            description: "Create Morse signals with adjustable playback speed.",
-            href: "/morse-code-generator",
+            title: "Morse Code Translator Picture",
+            description: "Upload a picture with text. We’ll run OCR in your browser and translate the extracted text into Morse code. Copy, listen, or download as audio.",
+            href: "/morse-code-translator-picture",
             bgColor: "bg-[#493628]"
         },
     ]
