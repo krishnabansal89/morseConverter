@@ -127,8 +127,8 @@ export default function ImageToMorsePage() {
         </div>
       </div>
 
-      <div className="editor-container w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center">
-        <div className="editor-window lg:w-4/5 w-full bg-white rounded-lg shadow-lg">
+      <div className="editor-container w-[98%] md:px-4 mx-auto h-full flex justify-center items-center">
+        <div className="editor-window lg:w-4/5  w-full bg-white rounded-lg shadow-lg">
           <ImageToMorse />
         </div>
       </div>

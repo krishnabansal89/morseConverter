@@ -4,8 +4,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  ArrowLeftRight,
-  ArrowUpDown,
   Check,
   Copy,
   Download,
@@ -17,6 +15,7 @@ import {
   Square,
   Trash2,
   Volume2,
+  Image as ImageIcon,
 } from "lucide-react";
 import {
   Collapsible,
@@ -24,19 +23,66 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
-// ---- Morse mapping ----
+/* =========================
+   Morse map + helpers
+   ========================= */
+
 const characterToMorseMap: Record<string, string> = {
-  "0": "-----", "1": ".----", "2": "..---", "3": "...--", "4": "....-",
-  "5": ".....", "6": "-....", "7": "--...", "8": "---..", "9": "----.",
-  "A": ".-", "B": "-...", "C": "-.-.", "D": "-..", "E": ".", "F": "..-.",
-  "G": "--.", "H": "....", "I": "..", "J": ".---", "K": "-.-", "L": ".-..",
-  "M": "--", "N": "-.", "O": "---", "P": ".--.", "Q": "--.-", "R": ".-.",
-  "S": "...", "T": "-", "U": "..-", "V": "...-", "W": ".--", "X": "-..-",
-  "Y": "-.--", "Z": "--..", ".": ".-.-.-", ",": "--..--", "?": "..--..",
-  "'": ".----.", "!": "-.-.--", "/": "-..-.", "(": "-.--.", ")": "-.--.-",
-  "&": ".-...", ":": "---...", ";": "-.-.-.", "=": "-...-", "+": ".-.-.",
-  "-": "-....-", "_": "..--.-", "\"": ".-..-.", "$": "...-..-", "@": ".--.-.",
-  " ": "" // handled specially
+  "0": "-----",
+  "1": ".----",
+  "2": "..---",
+  "3": "...--",
+  "4": "....-",
+  "5": ".....",
+  "6": "-....",
+  "7": "--...",
+  "8": "---..",
+  "9": "----.",
+  A: ".-",
+  B: "-...",
+  C: "-.-.",
+  D: "-..",
+  E: ".",
+  F: "..-.",
+  G: "--.",
+  H: "....",
+  I: "..",
+  J: ".---",
+  K: "-.-",
+  L: ".-..",
+  M: "--",
+  N: "-.",
+  O: "---",
+  P: ".--.",
+  Q: "--.-",
+  R: ".-.",
+  S: "...",
+  T: "-",
+  U: "..-",
+  V: "...-",
+  W: ".--",
+  X: "-..-",
+  Y: "-.--",
+  Z: "--..",
+  ".": ".-.-.-",
+  ",": "--..--",
+  "?": "..--..",
+  "'": ".----.",
+  "!": "-.-.--",
+  "/": "-..-.",
+  "(": "-.--.",
+  ")": "-.--.-",
+  "&": ".-...",
+  ":": "---...",
+  ";": "-.-.-.",
+  "=": "-...-",
+  "+": ".-.-.",
+  "-": "-....-",
+  _: "..--.-",
+  '"': ".-..-.",
+  $: "...-..-",
+  "@": ".--.-.",
+  " ": "", // handled specially
 };
 
 function textToMorse(raw: string) {
@@ -56,16 +102,14 @@ function textToMorse(raw: string) {
 
 type AlertType = "info" | "success" | "error" | "warning";
 type AlertMsg = { type: AlertType; text: string };
-
 type SoundType = "cw" | "telegraph";
 
-// Calculate standard PARIS timing (ms) from WPM
 const timingsFromWpm = (wpm: number) => {
-  const dit = 1200 / Math.max(1, wpm); // ms
+  const dit = 1200 / Math.max(1, wpm); // ms (PARIS standard)
   return {
     dit,
     dah: dit * 3,
-    intra: dit,       // between elements in a letter
+    intra: dit, // between elements in a letter
     interLetter: dit * 3,
     interWord: dit * 7,
   };
@@ -73,7 +117,7 @@ const timingsFromWpm = (wpm: number) => {
 
 type VisualEffectState = { active: boolean; isDash: boolean };
 
-// Build a WAV from morse for downloads (simple 600Hz tone)
+/* WAV builder for downloads */
 function buildWavFromMorse(
   morse: string,
   opts: { wpm: number; frequency: number; volume: number }
@@ -130,7 +174,9 @@ function buildWavFromMorse(
 
   const buffer = new ArrayBuffer(44 + data.length * 2);
   const view = new DataView(buffer);
-  const writeStr = (o: number, s: string) => { for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i)); };
+  const writeStr = (o: number, s: string) => {
+    for (let i = 0; i < s.length; i++) view.setUint8(o + i, s.charCodeAt(i));
+  };
   writeStr(0, "RIFF");
   view.setUint32(4, 36 + data.length * 2, true);
   writeStr(8, "WAVE");
@@ -152,12 +198,12 @@ function buildWavFromMorse(
   return new Blob([view], { type: "audio/wav" });
 }
 
-// ===== Component =====
+/* =========================
+   Component
+   ========================= */
 
 export default function ImageMorseTranslator() {
-  // --- UI strings mirroring your design ---
   const strings = {
-    swap: "New Image",
     headingText: "Text",
     headingMorseCode: "Morse Code",
     play: "Play",
@@ -175,51 +221,48 @@ export default function ImageMorseTranslator() {
     morseCodeWillAppearHere: "Morse code will appear here.",
   };
 
-  // ---- Refs / state for layout parity ----
+  // refs
   const converterRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  // alert
   const [alertMessage, setAlertMessage] = useState<AlertMsg | null>(null);
 
+  // visual effect
   const [visualEffect, setVisualEffect] = useState<VisualEffectState>({
     active: false,
     isDash: false,
   });
 
-  // ---- OCR + text/morse state ----
+  // image + preview
   const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // OCR + IO
   const [ocrProgress, setOcrProgress] = useState<number>(0);
   const [isOcrRunning, setIsOcrRunning] = useState(false);
-  const [inputText, setInputText] = useState<string>("");       // extracted (editable)
-  const [outputText, setOutputText] = useState<string>("");     // morse
+  const [inputText, setInputText] = useState<string>("");
+  const [outputText, setOutputText] = useState<string>("");
   const [inputError, setInputError] = useState<string | null>(null);
 
   const typingPlaceholder = "Upload an image, then run OCR (editable after).";
-  const initialText = inputText; // aligns with your conditional heights
-  const isSingleLetterMode = false;
+  
   const isInputMorse = false;
   const isOutputMorse = true;
 
-  // ---- Effects selection + playback state ----
+  // effects selection + playback state
   const [audioEffectSelected, setAudioEffectSelected] = useState(true);
   const [visualEffectSelected, setVisualEffectSelected] = useState(true);
-
   const [isInputPlaying, setIsInputPlaying] = useState(false);
   const [isInputVisualPlaying, setIsInputVisualPlaying] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isVisualPlaying, setIsVisualPlaying] = useState(false);
-  const isAnyPlaying = isInputPlaying || isInputVisualPlaying || isPlaying || isVisualPlaying;
-
+  const isAnyPlaying =
+    isInputPlaying || isInputVisualPlaying || isPlaying || isVisualPlaying;
   const [isAnyPaused, setIsAnyPaused] = useState(false);
 
-  const [flashText, setFlashText] = useState<{ button: string; active: boolean; text: string }>({
-    button: "",
-    active: false,
-    text: "",
-  });
-
-  // ---- Audio settings ----
+  // audio settings
   const [audioSettings, setAudioSettings] = useState<{
     wpm: number;
     frequency: number;
@@ -232,46 +275,26 @@ export default function ImageMorseTranslator() {
     soundType: "cw",
   });
 
-  // ---- WebAudio simple scheduler ----
+  // web audio
   const audioCtxRef = useRef<AudioContext | null>(null);
   const oscRef = useRef<OscillatorNode | null>(null);
   const gainRef = useRef<GainNode | null>(null);
   const timeoutsRef = useRef<number[]>([]);
   const resumeIndexRef = useRef<number>(0);
-  const resumeFromInputRef = useRef<boolean>(false);
   const currentMorseRef = useRef<string>("");
+
+  /* ===== Utils ===== */
 
   const showAlert = (text: string, type: AlertType = "info", ms = 2000) => {
     setAlertMessage({ text, type });
     window.setTimeout(() => setAlertMessage(null), ms);
   };
 
-  const buildSequence = useCallback((morse: string) => {
-    const { dit, dah, intra, interLetter, interWord } = timingsFromWpm(audioSettings.wpm);
-    type Seg = { tone: boolean; ms: number; dash?: boolean };
-    const segs: Seg[] = [];
-    const tokens = (morse || "").split(" ").filter(Boolean);
-
-    tokens.forEach((tok, idxTok) => {
-      if (tok === "/") {
-        segs.push({ tone: false, ms: interWord });
-        return;
-      }
-      const chars = tok.split("");
-      chars.forEach((c, i) => {
-        segs.push({ tone: true, ms: c === "." ? dit : dah, dash: c === "-" });
-        if (i < chars.length - 1) segs.push({ tone: false, ms: intra });
-      });
-      if (idxTok < tokens.length - 1 && tokens[idxTok + 1] !== "/") {
-        segs.push({ tone: false, ms: interLetter });
-      }
-    });
-    return segs;
-  }, [audioSettings.wpm]);
 
   const ensureAudio = () => {
     if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
-      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioCtxRef.current = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
       gainRef.current = audioCtxRef.current.createGain();
       gainRef.current.gain.value = audioSettings.volume;
       gainRef.current.connect(audioCtxRef.current.destination);
@@ -294,26 +317,52 @@ export default function ImageMorseTranslator() {
 
   const stopTone = () => {
     if (oscRef.current) {
-      try { oscRef.current.stop(); } catch {}
-      try { oscRef.current.disconnect(); } catch {}
+      try {
+        oscRef.current.stop();
+      } catch { }
+      try {
+        oscRef.current.disconnect();
+      } catch { }
     }
     oscRef.current = null;
   };
 
   const clearTimeouts = () => {
-    timeoutsRef.current.forEach(id => clearTimeout(id));
+    timeoutsRef.current.forEach((id) => clearTimeout(id));
     timeoutsRef.current = [];
-  };
-
-  const setFlash = (button: string, text: string, ms = 900) => {
-    setFlashText({ button, text, active: true });
-    window.setTimeout(() => setFlashText(prev => ({ ...prev, active: false })), ms);
   };
 
   const applyVisual = (active: boolean, isDash: boolean) => {
     if (!visualEffectSelected) return;
     setVisualEffect({ active, isDash });
   };
+
+  const buildSequence = useCallback(
+    (morse: string) => {
+      const { dit, dah, intra, interLetter, interWord } =
+        timingsFromWpm(audioSettings.wpm);
+      type Seg = { tone: boolean; ms: number; dash?: boolean };
+      const segs: Seg[] = [];
+      const tokens = (morse || "").split(" ").filter(Boolean);
+
+      tokens.forEach((tok, idxTok) => {
+        if (tok === "/") {
+          segs.push({ tone: false, ms: interWord });
+          return;
+        }
+        const chars = tok.split("");
+        chars.forEach((c, i) => {
+          segs.push({ tone: true, ms: c === "." ? dit : dah, dash: c === "-" });
+          if (i < chars.length - 1) segs.push({ tone: false, ms: intra });
+        });
+        if (idxTok < tokens.length - 1 && tokens[idxTok + 1] !== "/") {
+          segs.push({ tone: false, ms: interLetter });
+        }
+      });
+      return segs;
+    },
+    [audioSettings.wpm]
+  );
 
   const stopAllEffects = (fromInput: boolean) => {
     stopTone();
@@ -333,20 +382,16 @@ export default function ImageMorseTranslator() {
   };
 
   const pauseSelectedEffects = (fromInput: boolean) => {
-    // Pause between segments (coarse pause)
     stopTone();
     clearTimeouts();
     setIsAnyPaused(true);
     if (fromInput) {
       setIsInputPlaying(false);
       setIsInputVisualPlaying(false);
-      resumeFromInputRef.current = true;
     } else {
       setIsPlaying(false);
       setIsVisualPlaying(false);
-      resumeFromInputRef.current = false;
     }
-    setFlash(fromInput ? "pause-input" : "pause-output", "Paused");
   };
 
   const resumeSelectedEffects = (fromInput: boolean) => {
@@ -355,10 +400,13 @@ export default function ImageMorseTranslator() {
     const morse = currentMorseRef.current;
     const seq = buildSequence(morse);
     playSequence(seq, resumeIndexRef.current, fromInput);
-    setFlash(fromInput ? "pause-input" : "pause-output", "Resumed");
   };
 
-  const playSequence = (seq: { tone: boolean; ms: number; dash?: boolean }[], startIdx: number, fromInput: boolean) => {
+  const playSequence = (
+    seq: { tone: boolean; ms: number; dash?: boolean }[],
+    startIdx: number,
+    fromInput: boolean
+  ) => {
     if (seq.length === 0) return;
 
     if (fromInput) {
@@ -373,7 +421,6 @@ export default function ImageMorseTranslator() {
     const runNext = () => {
       if (idx >= seq.length) {
         stopAllEffects(fromInput);
-        setFlash(fromInput ? "stop-input" : "stop-output", "Done", 700);
         return;
       }
       const seg = seq[idx];
@@ -402,7 +449,7 @@ export default function ImageMorseTranslator() {
     }
     if (isAnyPlaying) return;
 
-    const morse = fromInput ? textToMorse(text) : text; // input => convert to morse; output already morse
+    const morse = fromInput ? textToMorse(text) : text; // input => convert; output already morse
     if (!morse) {
       showAlert("No valid characters for Morse.", "warning");
       return;
@@ -413,69 +460,28 @@ export default function ImageMorseTranslator() {
 
     const seq = buildSequence(morse);
     playSequence(seq, 0, fromInput);
-    setFlash(fromInput ? "play-input" : "play-output", "Playing");
   };
 
-  // ---- Handlers mirroring your design ----
-  const toggleAudioEffect = () => {
-    setAudioEffectSelected(s => !s);
-    setFlash("audioeffect", audioEffectSelected ? "Audio Off" : "Audio On");
-  };
-  const toggleVisualEffect = () => {
-    setVisualEffectSelected(s => !s);
-    setFlash("visualeffect", visualEffectSelected ? "Visual Off" : "Visual On");
-  };
+  /* ===== Image handling ===== */
 
-  const handleCopy = async () => {
-    if (!outputText) return;
-    try {
-      await navigator.clipboard.writeText(outputText);
-      setFlash("copy", "Copied!");
-    } catch {
-      showAlert("Clipboard not available.", "error");
+  const handleChooseFile = (f: File | null) => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setFile(f);
+    if (f) {
+      const url = URL.createObjectURL(f);
+      setPreviewUrl(url);
+    } else {
+      setPreviewUrl(null);
     }
   };
 
-  const handleDownload = () => {
-    if (!outputText) return;
-    const blob = buildWavFromMorse(outputText, {
-      wpm: audioSettings.wpm,
-      frequency: audioSettings.frequency,
-      volume: audioSettings.volume,
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "morse.wav";
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-    setFlash("download", "Downloaded!");
-  };
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
-  const handleHelp = () => {
-    showAlert("Upload image → Extract → Edit text if needed → Play/Download.", "info", 2500);
-    setFlash("help", "How it works");
-  };
-
-  const handleClear = () => {
-    setFile(null);
-    setInputText("");
-    setOutputText("");
-    setInputError(null);
-    stopAllEffects(true);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const v = e.target.value;
-    setInputText(v);
-    setOutputText(textToMorse(v));
-    setInputError(null);
-  };
-
-  const toggleMode = () => {
-    // Repurposed as "New Image" — open file dialog
-    fileInputRef.current?.click();
-  };
+  /* ===== OCR ===== */
 
   const runOCR = async () => {
     if (!file) {
@@ -496,9 +502,8 @@ export default function ImageMorseTranslator() {
       const text = (result?.data?.text || "").trim();
       setInputText(text);
       setOutputText(textToMorse(text));
-      if (!text) {
-        setInputError("No text detected. Try a clearer image.");
-      } else {
+      if (!text) setInputError("No text detected. Try a clearer image.");
+      else {
         setInputError(null);
         showAlert("OCR complete.", "success", 1200);
       }
@@ -510,18 +515,71 @@ export default function ImageMorseTranslator() {
     }
   };
 
-  const isOutputReady = !!outputText;
+  /* ===== IO handlers ===== */
 
+  const handleClear = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(null);
+    setFile(null);
+    setInputText("");
+    setOutputText("");
+    setInputError(null);
+    stopAllEffects(true);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const v = e.target.value;
+    setInputText(v);
+    setOutputText(textToMorse(v));
+    setInputError(null);
+  };
+
+  const toggleAudioEffect = () => {
+    setAudioEffectSelected((s) => !s);
+  };
+
+  const toggleVisualEffect = () => {
+    setVisualEffectSelected((s) => !s);
+  };
+
+  const handleCopy = async () => {
+    if (!outputText) return;
+    try {
+      await navigator.clipboard.writeText(outputText);
+    } catch {
+      showAlert("Clipboard not available.", "error");
+    }
+  };
+
+  const handleDownload = () => {
+    if (!outputText) return;
+    const blob = buildWavFromMorse(outputText, {
+      wpm: audioSettings.wpm,
+      frequency: audioSettings.frequency,
+      volume: audioSettings.volume,
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "morse.wav";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+  };
+
+  /* keep gain synced with volume */
   useEffect(() => {
-    // keep gain synced with volume
     if (gainRef.current) gainRef.current.gain.value = audioSettings.volume;
   }, [audioSettings.volume]);
+
+  const isOutputReady = !!outputText;
+
+  /* ===== Render ===== */
 
   return (
     <div
       ref={converterRef}
       className={`
-        flex flex-col font-lexend rounded-lg text-[#372824] transition-colors duration-500 ease-in-out
+        flex flex-col font-lexend  rounded-lg text-[#372824] transition-colors duration-500 ease-in-out
         ${visualEffect.active ? (visualEffect.isDash ? "bg-[#456359] text-white pulse-dash" : "bg-[#456359] text-white pulse-dot") : ""}
       `}
     >
@@ -553,27 +611,11 @@ export default function ImageMorseTranslator() {
       )}
 
       <div className="w-full mx-auto rounded-lg overflow-hidden border border-gray-200">
-        <div className="grid md:grid-cols-2 relative">
-          {/* Center "swap" — we use to trigger new image */}
-          <div className="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10 md:block hidden">
-            <div className="flex flex-col items-center">
-              <Button
-                onClick={toggleMode}
-                variant="outline"
-                size="icon"
-                className="rounded-full h-12 w-12 border-[#456359] bg-white shadow-md overflow-hidden"
-                title="New Image"
-              >
-                <div className="swap-arrow-container">
-                  <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
-                </div>
-              </Button>
-              <span className="text-xs mt-1 text-[#456359]">{strings.swap}</span>
-            </div>
-          </div>
-
-          {/* INPUT side */}
-          <div className="border-r border-gray-200">
+        {/* key bit: items-stretch so both columns are equal height */}
+        <div className="grid md:grid-cols-2 relative items-stretch">
+          {/* INPUT column */}
+          <div className="border-r border-gray-200 flex flex-col h-full">
+            {/* top bar */}
             <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 md:w-full md:flex-row flex-col gap-y-2">
               <div className="flex items-center">
                 <span className="md:text-lg text-2xl font-bold text-[#456359]">
@@ -581,110 +623,53 @@ export default function ImageMorseTranslator() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-1">
+              {/* picker + conditional Extract */}
+              <div className="flex items-center gap-3">
                 <input
                   type="file"
                   accept="image/*"
                   ref={fileInputRef}
                   className="hidden"
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  onChange={(e) => handleChooseFile(e.target.files?.[0] ?? null)}
                 />
-                <Button
+                <button
+                  type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  variant="ghost"
-                  size="sm"
-                  className="text-[#456359]"
-                  title="Choose Image"
+                  title={file ? "Change Image" : "Choose Image"}
+                  className={`
+                    relative w-20 h-14 rounded-lg border-2 overflow-hidden
+                    ${file ? "border-[#456359]" : "border-dashed border-[#456359]/50 bg-gray-50 hover:bg-gray-100"}
+                    flex items-center justify-center group
+                  `}
                 >
-                  Choose Image
-                </Button>
-                <Button
-                  onClick={runOCR}
-                  variant="ghost"
-                  size="sm"
-                  className={`relative text-[#456359] ${isOcrRunning ? "bg-gray-100" : ""}`}
-                  disabled={!file || isOcrRunning || isAnyPlaying}
-                  title="Extract & Translate"
-                >
-                  {isOcrRunning ? `Extracting ${ocrProgress}%` : "Extract & Translate"}
-                </Button>
-
-                {/* Play input (extracted text) */}
-                {/* <Button
-                  onClick={() => playSelectedEffects(inputText, true)}
-                  variant="ghost"
-                  size="sm"
-                  className={`relative text-[#456359] ${(isInputPlaying || isInputVisualPlaying) ? "bg-gray-100" : ""} flex items-center gap-1`}
-                  disabled={
-                    !inputText ||
-                    (!audioEffectSelected && !visualEffectSelected) ||
-                    isAnyPlaying
-                  }
-                  title="Play Input"
-                >
-                  {flashText.button === "play-input" && flashText.active && (
-                    <span className="flash-text-secondary">{flashText.text}</span>
+                  {!previewUrl ? (
+                    <div className="flex flex-col items-center justify-center text-[#456359]/80">
+                      <ImageIcon className="w-8 h-6 opacity-80" />
+                      <span className="text-[10px] mt-1">Choose</span>
+                    </div>
+                  ) : (
+                    <>
+                      <img src={previewUrl} alt="Selected" className="absolute inset-0 w-full h-full object-cover" />
+                      <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">Change</span>
+                    </>
                   )}
-                  <Play size={18} />
-                  {strings.play}
-                </Button>
+                </button>
 
-                <Button
-                  onClick={() => (isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true))}
-                  variant="ghost"
-                  size="sm"
-                  className={`relative text-[#456359] ${isAnyPaused ? "bg-gray-100" : ""} flex items-center gap-1`}
-                  disabled={!((isInputPlaying || isInputVisualPlaying) || isAnyPaused)}
-                  title={isAnyPaused ? strings.resume : strings.pause}
-                >
-                  <Pause size={18} />
-                  {isAnyPaused ? strings.resume : strings.pause}
-                </Button>
-
-                <Button
-                  onClick={() => stopAllEffects(true)}
-                  variant="ghost"
-                  size="sm"
-                  className="relative text-[#456359] flex items-center gap-1"
-                  disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
-                  title="Stop Input"
-                >
-                  <Square size={18} />
-                  {strings.stop}
-                </Button> */}
-
-                {/* Mobile clear */}
-                {/* <Button
-                  onClick={handleClear}
-                  disabled={!inputText && !file}
-                  variant="ghost"
-                  size="sm"
-                  className="text-[#372824] hover:text-black flex flex-col md:hidden"
-                  title="Clear Input"
-                >
-                  <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
-                  {strings.clear}
-                </Button> */}
+               
               </div>
             </div>
 
-            <div className="relative">
+            {/* middle content: stretch + scroll */}
+            <div className="relative flex-1 min-h-0">
               <Textarea
                 ref={inputRef}
                 value={inputText}
                 onChange={handleInputChange}
-                onClick={() => {
-                  if (!inputText) {
-                    showAlert("Upload & Extract first, then edit text if needed.", "warning", 2200);
-                  }
-                }}
+                onClick={() => { if (!inputText) showAlert("Upload & Extract first, then edit text if needed.", "warning", 2200); }}
                 placeholder={typingPlaceholder}
                 className={`
-                  p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
-                  ${initialText.length === 0 ? "min-h-[200px] md:min-h-[300px]" : "min-h-[100px] md:min-h-[200px]"}
-                  ${isSingleLetterMode && inputText === initialText
-                    ? "text-center pt-14 text-4xl md:text-6xl"
-                    : initialText.length > 1 ? "text-3xl/relaxed" : "text-xl/relaxed"}
+                  h-full p-4 border-0 min-h-[20vw] rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
+                  text-xl/relaxed
                 `}
               />
               {inputError && (
@@ -694,7 +679,8 @@ export default function ImageMorseTranslator() {
               )}
             </div>
 
-            <div className="p-3 md:border-t md:border-0 border-b flex md:justify-between md:w-full justify-center border-gray-200 my-3 md:my-0">
+            {/* bottom bar pinned to bottom */}
+            <div className="p-3 md:border-t md:border-0 border-b flex md:justify-between md:w-full justify-center border-gray-200 my-3 md:my-0 mt-auto">
               <Button
                 onClick={handleClear}
                 variant="ghost"
@@ -705,26 +691,28 @@ export default function ImageMorseTranslator() {
                 <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
                 {strings.clear}
               </Button>
-              <Button
-                onClick={toggleMode}
-                variant="ghost"
-                size="sm"
-                className="md:hidden bg-[#456359] hover:bg-[#456359] text-white hover:text-white flex -mb-7"
-                title="New Image"
-              >
-                <ArrowUpDown className="h-5 w-5 p-0 m-0" />
-                {strings.swap}
-              </Button>
+              <span className="md:hidden text-xs text-gray-500">{file ? "" : "Choose an image to continue"}</span>
+               {file && (
+                  <Button
+                    onClick={runOCR}
+                    variant="ghost"
+                    size="sm"
+                    className={`relative text-[#456359] ${isOcrRunning ? "bg-gray-100" : ""}`}
+                    disabled={isOcrRunning || isAnyPlaying}
+                    title="Extract & Translate"
+                  >
+                    {isOcrRunning ? `Extracting ${ocrProgress}%` : "Extract & Translate"}
+                  </Button>
+                )}
             </div>
           </div>
 
-          {/* OUTPUT side */}
-          <div>
-            <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824] md:w-full md:flex-row flex-col gap-y-2">
+          {/* OUTPUT column */}
+          <div className="flex flex-col h-full">
+            {/* top bar */}
+            <div className="flex md:justify-between justify-around items-center p-4 py-[28px] border-b border-gray-200 text-[#372824] md:w-full md:flex-row flex-col gap-y-2">
               <div className="flex items-center">
-                <span className="md:text-lg text-2xl text-[#456359] font-bold">
-                  {strings.headingMorseCode}
-                </span>
+                <span className="md:text-lg text-2xl text-[#456359] font-bold">{strings.headingMorseCode}</span>
               </div>
 
               <div className="flex items-center gap-1">
@@ -732,21 +720,13 @@ export default function ImageMorseTranslator() {
                   onClick={() => playSelectedEffects(outputText, false)}
                   variant="ghost"
                   size="sm"
-                  className={`relative text-[#456359] ${(isPlaying || isVisualPlaying) ? "bg-gray-100" : ""} flex items-center gap-1`}
-                  disabled={
-                    !isOutputReady ||
-                    (!audioEffectSelected && !visualEffectSelected) ||
-                    (isInputPlaying || isInputVisualPlaying)
-                  }
+                  className={`relative text-[#456359] ${isPlaying || isVisualPlaying ? "bg-gray-100" : ""} flex items-center gap-1`}
+                  disabled={!isOutputReady || (!audioEffectSelected && !visualEffectSelected) || (isInputPlaying || isInputVisualPlaying)}
                   title="Play Output"
                 >
-                  {flashText.button === "play-output" && flashText.active && (
-                    <span className="flash-text-secondary">{flashText.text}</span>
-                  )}
                   <Play size={18} />
                   {strings.play}
                 </Button>
-
                 <Button
                   onClick={() => (isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false))}
                   variant="ghost"
@@ -758,7 +738,6 @@ export default function ImageMorseTranslator() {
                   <Pause size={18} />
                   {isAnyPaused ? strings.resume : strings.pause}
                 </Button>
-
                 <Button
                   onClick={() => stopAllEffects(false)}
                   variant="ghost"
@@ -773,23 +752,17 @@ export default function ImageMorseTranslator() {
               </div>
             </div>
 
-            <div
-              className={`
-                p-4 text-gray-800 whitespace-pre-wrap
-                ${initialText.length === 0 ? "min-h-[200px] md:min-h-[300px]" : "min-h-[100px] md:min-h-[200px]"}
-                ${isSingleLetterMode ? "text-center text-4xl md:text-6xl" : initialText.length > 1 ? "text-3xl/relaxed" : "text-xl/relaxed"}
-              `}
-            >
+            {/* middle content: stretch + scroll */}
+            <div className="flex-1 min-h-0 p-4 text-gray-800 whitespace-pre-wrap overflow-auto">
               {isOutputReady ? (
-                <>
-                  <div className="font-mono break-words">{outputText}</div>
-                </>
+                <div className="font-mono break-words text-3xl/relaxed">{outputText}</div>
               ) : (
                 <span className="text-gray-400 text-md">{strings.morseCodeWillAppearHere}</span>
               )}
             </div>
 
-            <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full items-center gap-y-6 justify-center">
+            {/* bottom bar pinned to bottom */}
+            <div className="p-3 border-t border-gray-200 flex flex-col md:flex-row md:justify-between space-x-2 md:w-full items-center gap-y-6 justify-center mt-auto">
               <div className="flex items-center space-x-2">
                 <Button
                   onClick={toggleAudioEffect}
@@ -799,9 +772,6 @@ export default function ImageMorseTranslator() {
                   title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
                 >
-                  {flashText.button === "audioeffect" && flashText.active && (
-                    <span className={`${audioEffectSelected ? "flash-text" : "flash-text-inactive"}`}>{flashText.text}</span>
-                  )}
                   <Volume2 className="h-5 w-5" />
                   {strings.audio}
                   <Check className={`h-5 w-5 ${audioEffectSelected ? "text-white" : "hidden"}`} />
@@ -815,9 +785,6 @@ export default function ImageMorseTranslator() {
                   title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (!isOutputMorse && !isInputMorse) || (!audioEffectSelected && visualEffectSelected)}
                 >
-                  {flashText.button === "visualeffect" && flashText.active && (
-                    <span className={`${visualEffectSelected ? "flash-text" : "flash-text-inactive"}`}>{flashText.text}</span>
-                  )}
                   <Lightbulb className="h-5 w-5" />
                   {strings.visual}
                   <Check className={`h-5 w-5 ${visualEffectSelected ? "text-white" : "hidden"}`} />
@@ -833,9 +800,6 @@ export default function ImageMorseTranslator() {
                   disabled={!isOutputReady}
                   title={`${strings.copy} Output`}
                 >
-                  {flashText.button === "copy" && flashText.active && (
-                    <span className="flash-text">Copied!</span>
-                  )}
                   <Copy className="h-5 w-5 p-0 m-0 -mb-2" />
                   {strings.copy}
                 </Button>
@@ -848,9 +812,6 @@ export default function ImageMorseTranslator() {
                   disabled={!isOutputReady}
                   title="Download Output"
                 >
-                  {flashText.button === "download" && flashText.active && (
-                    <span className="flash-text">Downloaded!</span>
-                  )}
                   <Download className="h-5 w-5 p-0 m-0 -mb-2" />
                   {strings.download}
                 </Button>
@@ -860,11 +821,10 @@ export default function ImageMorseTranslator() {
                   size="sm"
                   className="relative text-gray-500 hover:text-gray-700 flex flex-col"
                   title="Help"
-                  onClick={handleHelp}
+                  onClick={() => {
+                    showAlert("Upload image → Extract → Edit text if needed → Play/Download.", "info", 2500);
+                  }}
                 >
-                  {flashText.button === "help" && flashText.active && (
-                    <span className="flash-text help-flash-text">{flashText.text}</span>
-                  )}
                   <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
                   {strings.help}
                 </Button>
@@ -890,15 +850,9 @@ export default function ImageMorseTranslator() {
                 <label className="text-sm text-right col-span-1">WPM:</label>
                 <div className="col-span-2">
                   <input
-                    type="range"
-                    min={5}
-                    max={30}
+                    type="range" min={5} max={30}
                     value={audioSettings.wpm}
-                    onChange={(e) => {
-                      const v = Number(e.target.value);
-                      setAudioSettings(s => ({ ...s, wpm: v }));
-                      showAlert(`Playback speed set to ${v} WPM`, "info", 1200);
-                    }}
+                    onChange={(e) => { const v = Number(e.target.value); setAudioSettings((s) => ({ ...s, wpm: v })); showAlert(`Playback speed set to ${v} WPM`, "info", 1200); }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -909,16 +863,9 @@ export default function ImageMorseTranslator() {
                 <label className="text-sm text-right col-span-1">Frequency:</label>
                 <div className="col-span-2">
                   <input
-                    type="range"
-                    min={400}
-                    max={1000}
-                    step={50}
+                    type="range" min={400} max={1000} step={50}
                     value={audioSettings.frequency}
-                    onChange={(e) => {
-                      const v = Number(e.target.value);
-                      setAudioSettings(s => ({ ...s, frequency: v }));
-                      showAlert(`Tone frequency set to ${v} Hz`, "info", 1200);
-                    }}
+                    onChange={(e) => { const v = Number(e.target.value); setAudioSettings((s) => ({ ...s, frequency: v })); showAlert(`Tone frequency set to ${v} Hz`, "info", 1200); }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -929,16 +876,9 @@ export default function ImageMorseTranslator() {
                 <label className="text-sm text-right col-span-1">Volume:</label>
                 <div className="col-span-2">
                   <input
-                    type="range"
-                    min={0}
-                    max={1}
-                    step={0.1}
+                    type="range" min={0} max={1} step={0.1}
                     value={audioSettings.volume}
-                    onChange={(e) => {
-                      const v = Number(e.target.value);
-                      setAudioSettings(s => ({ ...s, volume: v }));
-                      showAlert(`Volume set to ${Math.round(v * 100)}%`, "info", 1200);
-                    }}
+                    onChange={(e) => { const v = Number(e.target.value); setAudioSettings((s) => ({ ...s, volume: v })); showAlert(`Volume set to ${Math.round(v * 100)}%`, "info", 1200); }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -950,31 +890,17 @@ export default function ImageMorseTranslator() {
                 <div className="col-span-3">
                   <div className="flex gap-2">
                     <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="soundType"
-                        value="cw"
+                      <input type="radio" name="soundType" value="cw"
                         checked={audioSettings.soundType === "cw"}
-                        onChange={() => {
-                          setAudioSettings(s => ({ ...s, soundType: "cw" }));
-                          showAlert("Sound type set to CW Radio Tone", "info", 1200);
-                        }}
-                        className="mr-1 accent-[#456359]"
-                      />
+                        onChange={() => { setAudioSettings((s) => ({ ...s, soundType: "cw" })); showAlert("Sound type set to CW Radio Tone", "info", 1200); }}
+                        className="mr-1 accent-[#456359]" />
                       CW Radio Tone
                     </label>
                     <label className="flex items-center">
-                      <input
-                        type="radio"
-                        name="soundType"
-                        value="telegraph"
+                      <input type="radio" name="soundType" value="telegraph"
                         checked={audioSettings.soundType === "telegraph"}
-                        onChange={() => {
-                          setAudioSettings(s => ({ ...s, soundType: "telegraph" }));
-                          showAlert("Sound type set to Telegraph Sounder", "info", 1200);
-                        }}
-                        className="mr-1 accent-[#456359]"
-                      />
+                        onChange={() => { setAudioSettings((s) => ({ ...s, soundType: "telegraph" })); showAlert("Sound type set to Telegraph Sounder", "info", 1200); }}
+                        className="mr-1 accent-[#456359]" />
                       Telegraph Sounder
                     </label>
                   </div>
@@ -985,9 +911,12 @@ export default function ImageMorseTranslator() {
         </Collapsible>
       </div>
 
-      {/* animations (same classes) */}
+      {/* Global animations (same class names as your other tool) */}
       <style jsx global>{`
-        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
         .animate-spin-slow { animation: spin-slow 8s linear infinite; }
 
         @keyframes pulse-dot { 0%,100% { background-color:#456359; } 50% { background-color:#5a7d73; } }

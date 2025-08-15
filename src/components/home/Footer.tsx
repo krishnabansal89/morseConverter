@@ -19,10 +19,10 @@ export default function Footer() {
             <div>
               <h3 className="text-xl font-semibold mb-8 text-gray-50">Pages</h3>
               <ul className="space-y-2 font-maitree">                <li>
-                  <Link href="/morse-code-alphabets"  className="text-white hover:text-gray-900">
-                    Morse Code Alphabets
-                  </Link>
-                </li>
+                <Link href="/morse-code-alphabets" className="text-white hover:text-gray-900">
+                  Morse Code Alphabets
+                </Link>
+              </li>
                 <li>
                   <Link href="/morse-code-numbers" className="text-white hover:text-gray-900">
                     Morse Code Numbers
@@ -38,7 +38,7 @@ export default function Footer() {
                     American Morse Code
                   </Link>
                 </li>
-                                <li>
+                <li>
                   <Link href="/morse-code-machine" className="text-white hover:text-gray-900">
                     Morse Code Machine
                   </Link>
@@ -51,6 +51,11 @@ export default function Footer() {
                 <li>
                   <Link href="/morse-code-translator-audio" className="text-white hover:text-gray-900">
                     Morse Code Translator Audio
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/morse-code-translator-picture" className="text-white hover:text-gray-900">
+                    Morse Code Translator Picture
                   </Link>
                 </li>
               </ul>
@@ -68,6 +73,11 @@ export default function Footer() {
                 <li>
                   <Link href="/morse-code-numbers" className="text-white hover:text-gray-900">
                     0 to 9 Morse Codes
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/morse-code-words" className="text-white hover:text-gray-900">
+                    Morse Code Words
                   </Link>
                 </li>
               </ul>
