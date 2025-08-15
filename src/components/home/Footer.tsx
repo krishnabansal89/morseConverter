@@ -76,7 +76,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/morse-code-words" className="text-white hover:text-gray-900">
+                  <Link href="/morse-code-word" className="text-white hover:text-gray-900">
                     Morse Code Words
                   </Link>
                 </li>

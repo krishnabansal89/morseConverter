@@ -246,7 +246,7 @@ export default function ImageMorseTranslator() {
   const [outputText, setOutputText] = useState<string>("");
   const [inputError, setInputError] = useState<string | null>(null);
 
-  const typingPlaceholder = "Upload an image, then run OCR (editable after).";
+  const typingPlaceholder = "Upload an image to extract text automatically, then edit if needed.";
   
   const isInputMorse = false;
   const isOutputMorse = true;
@@ -464,12 +464,14 @@ export default function ImageMorseTranslator() {
 
   /* ===== Image handling ===== */
 
-  const handleChooseFile = (f: File | null) => {
+  const handleChooseFile = async (f: File | null) => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
     setFile(f);
     if (f) {
       const url = URL.createObjectURL(f);
       setPreviewUrl(url);
+      // Automatically trigger OCR when image is selected
+      await runOCR(f);
     } else {
       setPreviewUrl(null);
     }
@@ -483,8 +485,9 @@ export default function ImageMorseTranslator() {
 
   /* ===== OCR ===== */
 
-  const runOCR = async () => {
-    if (!file) {
+  const runOCR = async (imageFile?: File) => {
+    const fileToProcess = imageFile || file;
+    if (!fileToProcess) {
       showAlert("Choose an image first.", "warning");
       return;
     }
@@ -492,7 +495,7 @@ export default function ImageMorseTranslator() {
     setOcrProgress(0);
     try {
       const Tesseract = (await import("tesseract.js")).default;
-      const result = await Tesseract.recognize(file, "eng", {
+      const result = await Tesseract.recognize(fileToProcess, "eng", {
         logger: (m: any) => {
           if (m.status === "recognizing text" && typeof m.progress === "number") {
             setOcrProgress(Math.round(m.progress * 100));
@@ -636,21 +639,32 @@ export default function ImageMorseTranslator() {
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   title={file ? "Change Image" : "Choose Image"}
+                  disabled={isOcrRunning}
                   className={`
                     relative w-20 h-14 rounded-lg border-2 overflow-hidden
                     ${file ? "border-[#456359]" : "border-dashed border-[#456359]/50 bg-gray-50 hover:bg-gray-100"}
+                    ${isOcrRunning ? "opacity-50 cursor-not-allowed" : ""}
                     flex items-center justify-center group
                   `}
                 >
                   {!previewUrl ? (
                     <div className="flex flex-col items-center justify-center text-[#456359]/80">
                       <ImageIcon className="w-8 h-6 opacity-80" />
-                      <span className="text-[10px] mt-1">Choose</span>
+                      <span className="text-[10px] mt-1">Choose image</span>
                     </div>
                   ) : (
                     <>
                       <img src={previewUrl} alt="Selected" className="absolute inset-0 w-full h-full object-cover" />
-                      <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">Change</span>
+                      {isOcrRunning ? (
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                          <div className="text-white text-[10px] text-center">
+                            <div className="animate-spin-slow w-4 h-4 border-2 border-white border-t-transparent rounded-full mx-auto mb-1"></div>
+                            {ocrProgress}%
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">Change</span>
+                      )}
                     </>
                   )}
                 </button>
@@ -665,7 +679,6 @@ export default function ImageMorseTranslator() {
                 ref={inputRef}
                 value={inputText}
                 onChange={handleInputChange}
-                onClick={() => { if (!inputText) showAlert("Upload & Extract first, then edit text if needed.", "warning", 2200); }}
                 placeholder={typingPlaceholder}
                 className={`
                   h-full p-4 border-0 min-h-[20vw] rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
@@ -692,18 +705,6 @@ export default function ImageMorseTranslator() {
                 {strings.clear}
               </Button>
               <span className="md:hidden text-xs text-gray-500">{file ? "" : "Choose an image to continue"}</span>
-               {file && (
-                  <Button
-                    onClick={runOCR}
-                    variant="ghost"
-                    size="sm"
-                    className={`relative text-[#456359] ${isOcrRunning ? "bg-gray-100" : ""}`}
-                    disabled={isOcrRunning || isAnyPlaying}
-                    title="Extract & Translate"
-                  >
-                    {isOcrRunning ? `Extracting ${ocrProgress}%` : "Extract & Translate"}
-                  </Button>
-                )}
             </div>
           </div>
 
@@ -822,7 +823,7 @@ export default function ImageMorseTranslator() {
                   className="relative text-gray-500 hover:text-gray-700 flex flex-col"
                   title="Help"
                   onClick={() => {
-                    showAlert("Upload image → Extract → Edit text if needed → Play/Download.", "info", 2500);
+                    showAlert("Upload image → Text extracted automatically → Edit if needed → Play/Download.", "info", 2500);
                   }}
                 >
                   <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
