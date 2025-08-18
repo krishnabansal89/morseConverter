@@ -8,19 +8,23 @@ import dynamic from "next/dynamic";
 // Load client component only on the client
 const ImageToMorse = dynamic(() => import("@/components/ImageToMorse"));
 
-export const metadata = {
-  title: "Morse Code Translator Picture Tool – Convert Images to Morse Code Instantly",
-  description:
-    "Use our Morse Code Translator Picture Tool to extract and convert text from images into Morse Code. Fast, accurate, and ideal for learning, decoding, or secret messaging.",
+export async function generateMetadata() {
+  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+
+  return {
+    title: "Morse Code Translator Picture Tool – Convert Images to Morse Code Instantly",
+    description:
+      "Use our Morse Code Translator Picture Tool to extract and convert text from images into Morse Code. Fast, accurate, and ideal for learning, decoding, or secret messaging.",
   openGraph: {
     title: "Morse Code Translator Picture Tool – Convert Images to Morse Code Instantly",
     description:
       "Use our Morse Code Translator Picture Tool to extract and convert text from images into Morse Code. Fast, accurate, and ideal for learning, decoding, or secret messaging.",
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_URL ?? ""}/image-to-morse`,
+    canonical: `${PUBLIC_URL}/morse-code-translator-picture`,
   },
 };
+}
 
 const seoMarkdown = `
 ## **Morse Code Translator Picture Tool – Decode Images into Morse Code with Ease**
@@ -112,9 +116,9 @@ export default function ImageToMorsePage() {
       <div className="w-full h-fit md:my-20 my-10 grid md:px-10 md:grid-cols-[65%_35%] grid-cols-1 justify-center">
         <div className="flex items-center">
           <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed text-3xl/relaxed font-medium text-[#2d2d2d] tracking-tight md:px-4 font-poppins">
-            Morse Code Translator Picture Tool –{" "}
+            Morse Code Translator Picture {" "}
             <span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text xl:text-5xl/relaxed lg:text-4xl/relaxed text-3xl/relaxed">
-              Convert Images to Morse Instantly
+              Images to Morse Instantly
             </span>
           </h1>
         </div>

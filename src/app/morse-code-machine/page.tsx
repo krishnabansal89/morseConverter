@@ -6,6 +6,22 @@ import remarkGfm from 'remark-gfm'
 import MorseCodeMachine from "@/components/ui/machine";
 
 
+export async function generateMetadata() {
+    const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+  
+    return {
+      title: "Morse Code Machine – Free Online Tool to Encode and Decode Morse Code Instantly",
+      description: "Use our free Morse Code Machine to convert text to Morse code and vice versa. Fast, accurate, and easy-to-use Morse code translator for learning, hobby, or communication purposes.",
+      openGraph: {
+        title: "Morse Code Machine – Free Online Tool to Encode and Decode Morse Code Instantly",
+        description: "Use our free Morse Code Machine to convert text to Morse code and vice versa. Fast, accurate, and easy-to-use Morse code translator for learning, hobby, or communication purposes.",
+      },
+      alternates: {
+        canonical: `${PUBLIC_URL}/morse-code-machine`,
+      },
+    };
+  }
+
 const markdownContent = `
 ##### Online Morse Code Machine – Convert Text to Morse and Back in Seconds
 

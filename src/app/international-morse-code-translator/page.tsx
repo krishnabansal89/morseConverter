@@ -11,7 +11,7 @@ export async function generateMetadata() {
       description: "Use our International Morse Code Translator to instantly convert text to Morse code and vice versa. Features audio playback, visual signals, and supports special characters.",
     },
     alternates: {
-      canonical: `${PUBLIC_URL}/international-morse-code`,
+      canonical: `${PUBLIC_URL}/international-morse-code-translator`,
     },
   };
 }
