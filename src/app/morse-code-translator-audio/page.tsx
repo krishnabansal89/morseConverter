@@ -4,10 +4,21 @@ import { FAQSchemaLD } from '@/components/FAQSchemaLD';
 import remarkGfm from 'remark-gfm'
 import MorseCodeAudioPlayer from "@/components/ui/audioTool";
 
-export const metadata = {
-  title: "Morse Code Translator with Audio | Convert Text to Sound Instantly",
-  description: "Use our free online Morse Code Translator with audio playback. Convert text to Morse code and hear the sound in real-time. Perfect for learning, decoding, or fun!"
-};
+export async function generateMetadata() {
+  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+
+  return {
+    title: "Morse Code Audio Translator – Convert Text to Morse Code Audio Instantly",
+    description: "Use our free Morse Code Audio Translator to convert text to Morse code audio. Fast, accurate, and easy-to-use Morse code translator for learning, hobby, or communication purposes.",
+    openGraph: {
+      title: "Morse Code Audio Translator – Convert Text to Morse Code Audio Instantly",
+      description: "Use our free Morse Code Audio Translator to convert text to Morse code audio. Fast, accurate, and easy-to-use Morse code translator for learning, hobby, or communication purposes.",
+    },
+    alternates: {
+      canonical: `${PUBLIC_URL}/morse-code-translator-audio`,
+    },
+  };
+}
 
 const markdownContent = `
 ##### Online Morse Code Translator with Audio Playback

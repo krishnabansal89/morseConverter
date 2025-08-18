@@ -1,4 +1,5 @@
 import MorseConverter from "./Translator";
+import Link from "next/link";
 export default function Hero() {
     return (
         <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
@@ -14,7 +15,7 @@ export default function Hero() {
 
                     <div className="my-4">
                         <button>
-                            <a href="#converter" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Get Started</a>
+                            <Link href="/morse-code-machine" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Morse Machine</Link>
                             <a href="#converter" className="bg-[#456359] text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Visit Store</a>
 
                         </button>

@@ -6,17 +6,21 @@ import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD"; // Assuming this component exists
 
-export const metadata = {
-    title: "Morse Code Words Glossary - From A-Z Explore all words and their meaning in morse",
-    description: "Discover Morse code words, meanings, examples like SOS & HELP, and how to learn them easily. Great for beginners, ham radio, and emergency use.",
-    openGraph: {
+export async function generateMetadata() {
+    const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+
+    return {
+        title: "Morse Code Words Glossary - From A-Z Explore all words and their meaning in morse",
+        description: "Discover Morse code words, meanings, examples like SOS & HELP, and how to learn them easily. Great for beginners, ham radio, and emergency use.",
+        openGraph: {
         title: "Morse Code Words Glossary - From A-Z Explore all words and their meaning in morse",
         description: "Discover Morse code words, meanings, examples like SOS & HELP, and how to learn them easily. Great for beginners, ham radio, and emergency use.",
     },
     alternates: {
-        canonical: `${process.env.NEXT_PUBLIC_URL || ""}/morse-code-words`,
+        canonical: `${PUBLIC_URL}/morse-code-word`,
     },
 };
+}
 
 const mainContentMarkdown = `
 
