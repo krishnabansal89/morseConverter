@@ -33,7 +33,7 @@ In today’s world of visual communication and cryptography, converting text wit
 
 ---
 
-### **What is a Morse Code Translator Picture Tool?**
+## **What is a Morse Code Translator Picture Tool?**
 
 A **Morse Code Translator Picture Tool** is an online utility that uses **Optical Character Recognition (OCR)** to scan text from images and convert it into **Morse code**. This eliminates the need to manually type or decode messages, making it faster and more efficient for both beginners and enthusiasts.
 
@@ -41,7 +41,7 @@ A **Morse Code Translator Picture Tool** is an online utility that uses **Optica
 
 ---
 
-### **How It Works – From Image to Morse Code**
+## **How It Works – From Image to Morse Code**
 
 1. **Upload** your image (JPG, PNG, or even scanned handwritten notes).
 2. The tool **extracts text** using OCR.
@@ -54,7 +54,7 @@ It’s that simple. No manual effort. 100% automated.
 
 ---
 
-### **Why Use an Image-Based Morse Code Translator?**
+## **Why Use an Image-Based Morse Code Translator?**
 
 * **Fast & Automated:** No typing required. Just scan and convert.
 * **Accessible Learning:** Ideal for students learning Morse with visuals.
@@ -65,7 +65,7 @@ This tool is perfect for **hobbyists, educators, coders, and even puzzle creator
 
 ---
 
-### **Best Use Cases for Image to Morse Conversion**
+## **Best Use Cases for Image to Morse Conversion**
 
 * Decoding **textual signs or photos** into Morse.
 * Creating **puzzle challenges** using Morse code from images.
@@ -75,7 +75,7 @@ This tool is perfect for **hobbyists, educators, coders, and even puzzle creator
 
 ---
 
-### **Start Translating Images to Morse Code Now**
+## **Start Translating Images to Morse Code Now**
 
 No signup, no complex setup. Just upload your picture and get the Morse code instantly. This tool supports:
 
@@ -137,30 +137,22 @@ export default function ImageToMorsePage() {
         </div>
       </div>
 
-      <div className="w-full mx-auto p-4 md:px-10 rounded-lg md:pt-20">
+      <div className="max-w-5xl mx-auto mb-20 rounded-lg md:pt-20">
         <Markdown
           remarkPlugins={[remarkGfm]}
           components={{
-            strong: ({ children }) => <strong style={{ fontWeight: "bold" }}>{children}</strong>,
             h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h1>,
             h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
             h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-            h5: ({ children }) => (
-              <div className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium tracking-tight md:px-10">
-                {children}
-              </div>
-            ),
-            p: ({ children }) => <p className="mt-2 font-maitree mx-auto text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+            h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight md:px-10">{children}</h1>,
+            h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium tracking-tight md:px-10"><strong>{children}</strong></h2>,
+            p: ({ children }) => <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
             br: () => <br />,
-            li: ({ children }) => (
-              <li className="text-[#2d2d2d] mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree text-lg/relaxed font-extralight">
-                {children}
-              </li>
-            ),
+            li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree text-lg/relaxed font-extralight">{children}</li>,
             table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
             thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
             tbody: ({ children }) => <tbody>{children}</tbody>,
-            tr: ({ children }) => <tr>{children}</tr>,
+            tr: ({ children }) => <tr className="">{children}</tr>,
             th: ({ children }) => <th className="px-4 py-2">{children}</th>,
             td: ({ children }) => <td className="border px-4 py-2">{children}</td>,
           }}

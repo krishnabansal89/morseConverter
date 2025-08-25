@@ -216,7 +216,7 @@ Yes. Many web tools and coding platforms allow Morse-based design elements or in
                         {popularPhrasesToDisplay.map((p) => (
                             <Link
                                 key={p}
-                                href={`/${p.replace(/\s+/g, '-')}-in-morse-code`} // Adjust path if needed
+                                href={`/${p.toLowerCase().replace(/\s+/g, '-')}-in-morse-code`} // Adjust path if needed
                                 className="border-2 border-gray-300 px-4 py-3 font-semibold text-[#2d2d2d] font-maitree text-center rounded-md hover:bg-gray-100 transition-colors"
                             >
                                 {p} in Morse Code
@@ -228,7 +228,7 @@ Yes. Many web tools and coding platforms allow Morse-based design elements or in
 
                 <div className=" w-full  mx-auto p-4 md:px-10 rounded-lg md:pt-20">
                     <Markdown remarkPlugins={[remarkGfm]} components={{
-                        strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                        // strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
                         h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h1>,
                         h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
                         h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,

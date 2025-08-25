@@ -67,16 +67,20 @@ Using sound helps train your ear to identify Morse signals, which is essential f
 
 ###### Frequently Asked Questions (FAQs)
 
-**Q1: Can I decode Morse code from sound using this tool?**  
+### **1\. Can I decode Morse code from sound using this tool?**  
+
 No, this tool converts text into Morse code *audio*. For decoding from sound, you'll need an audio decoder or spectrum analyzer.
 
-**Q2: Is this Morse Code translator tool free to use?**  
+### **2\. Is this Morse Code translator tool free to use?**  
+
 Yes! Our web tool is 100% free and requires no signup or downloads.
 
-**Q3: What speed does the audio play at?**  
+### **3\. What speed does the audio play at?**  
+
 By default, the speed is around 20 WPM (words per minute), but many tools allow you to adjust the speed for better learning.
 
-**Q4: Can I use this tool on mobile devices?**  
+### **4\. Can I use this tool on mobile devices?**  
+
 Absolutely. This Morse Code audio converter is fully responsive and works on phones, tablets, and desktops.
 `;
 
@@ -116,17 +120,20 @@ export default function Page() {
         </Markdown>
       </div>
       <FAQSchemaLD
-        markup={`
-### **1. Can I decode Morse code from sound using this tool?**  
+        markup={`### **1\. Can I decode Morse code from sound using this tool?**  
+
 No, this tool converts text into Morse code *audio*. For decoding from sound, you'll need an audio decoder or spectrum analyzer.
 
-### **2. Is this Morse Code translator tool free to use?**  
+### **2\. Is this Morse Code translator tool free to use?**  
+
 Yes! Our web tool is 100% free and requires no signup or downloads.
 
-### **3. What speed does the audio play at?**  
+### **3\. What speed does the audio play at?**  
+
 By default, the speed is around 20 WPM (words per minute), but many tools allow you to adjust the speed for better learning.
 
-### **4. Can I use this tool on mobile devices?**  
+### **4\. Can I use this tool on mobile devices?**  
+
 Absolutely. This Morse Code audio converter is fully responsive and works on phones, tablets, and desktops.
         `}
       />

@@ -29,7 +29,7 @@ const markdownContent = `
 
 ## **What is a Morse Code Machine?**
 
-A **Morse Code Machine** is a digital tool designed to encode and decode messages using the Morse code system. Morse code is a method of transmitting textual information through sequences of dots (.) and dashes (-), historically used in telecommunication. This online Morse Code Machine replicates the functionality of traditional telegraphs in a modern, user-friendly format. Whether you're exploring Morse as a hobby, for academic purposes, or as a survival communication method, this tool offers a simple and reliable solution.
+A Morse Code Machine is a digital tool designed to encode and decode messages using the Morse code system. Morse code is a method of transmitting textual information through sequences of dots (.) and dashes (-), historically used in telecommunication. This online Morse Code Machine replicates the functionality of traditional telegraphs in a modern, user-friendly format. Whether you're exploring Morse as a hobby, for academic purposes, or as a survival communication method, this tool offers a simple and reliable solution.
 
 ---
 
@@ -42,7 +42,7 @@ Using this Morse Code Machine is quick and straightforward:
 3. **View instant results** in the output box.
 4. **Copy or share** your message with one click.
 
-This tool supports the **International Morse Code standard** and translates instantly, making it perfect for learners, students, and radio enthusiasts.
+This tool supports the International Morse Code standard and translates instantly, making it perfect for learners, students, and radio enthusiasts.
 
 ---
 
@@ -66,7 +66,7 @@ This Morse Code Machine is ideal for a wide range of users:
 * **Radio operators and preppers** needing a fast and accurate conversion tool.
 * **Cryptography enthusiasts** exploring classic communication systems.
 
-Unlike other Morse code converters, this machine is optimized for **speed, accuracy**, and **ease of use**—no technical knowledge required.
+Unlike other Morse code converters, this machine is optimized for speed, accuracy, and ease of use—no technical knowledge required.
 
 ---
 
