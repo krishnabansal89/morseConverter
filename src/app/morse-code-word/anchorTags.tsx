@@ -31,7 +31,7 @@ export const WordGlossary: React.FC<{ wordsByLetter: Record<string, string[]> }>
               wordsByLetter[letter].map((word) => (
                 <a
                   key={word.toUpperCase()}
-                  href={`/${encodeURIComponent(word.toUpperCase())}-in-morse-code`}
+                  href={`/${encodeURIComponent(word.toLowerCase().replace(/ /g, "-"))}-in-morse-code`}
                   className="text-[#456359] text-center md:text-start md:text-lg hover:underline font-poppins"
                 >
                   {word.toUpperCase()}

@@ -31,7 +31,7 @@ export const ALPHABET_LINKS = Array.from({ length: 26 }, (_, i) => {
   const letter = String.fromCharCode(65 + i);
   return {
     label: letter,
-    url: `/morse-code-alphabets/${letter}-in-morse-code`
+    url: `/morse-code-alphabets/${letter.toLowerCase()}-in-morse-code`
   };
 });
 

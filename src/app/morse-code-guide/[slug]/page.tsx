@@ -235,7 +235,7 @@ Yes. Morse can be adapted using ${signalType}, lights, or sounds. Timing and rhy
 
             <div className="w-full mx-auto p-4 md:px-10 rounded-lg md:pt-20">
                 <Markdown remarkPlugins={[remarkGfm]} components={{
-                    strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
+                    // strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
                     h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h1>,
                     h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
                     h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
