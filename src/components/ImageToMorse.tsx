@@ -78,7 +78,7 @@ const characterToMorseMap: Record<string, string> = {
   "=": "-...-",
   "+": ".-.-.",
   "-": "-....-",
-  _: "..--.-",
+  _: "..--_-",
   '"': ".-..-.",
   $: "...-..-",
   "@": ".--.-.",
@@ -246,8 +246,9 @@ export default function ImageMorseTranslator() {
   const [outputText, setOutputText] = useState<string>("");
   const [inputError, setInputError] = useState<string | null>(null);
 
-  const typingPlaceholder = "Upload an image to extract text automatically, then edit if needed.";
-  
+  const typingPlaceholder =
+    "Upload an image to extract text automatically, then edit if needed.";
+
   const isInputMorse = false;
   const isOutputMorse = true;
 
@@ -290,7 +291,6 @@ export default function ImageMorseTranslator() {
     window.setTimeout(() => setAlertMessage(null), ms);
   };
 
-
   const ensureAudio = () => {
     if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
       audioCtxRef.current = new (window.AudioContext ||
@@ -319,10 +319,10 @@ export default function ImageMorseTranslator() {
     if (oscRef.current) {
       try {
         oscRef.current.stop();
-      } catch { }
+      } catch {}
       try {
         oscRef.current.disconnect();
-      } catch { }
+      } catch {}
     }
     oscRef.current = null;
   };
@@ -442,46 +442,99 @@ export default function ImageMorseTranslator() {
     runNext();
   };
 
+  // Added: playSelectedEffects helper to start playback from input (converted) or output (already morse)
   const playSelectedEffects = (text: string, fromInput: boolean) => {
-    if (!text?.trim()) {
-      showAlert("Nothing to play.", "warning");
+    const t = (text || '').trim();
+    if (!t) {
+      showAlert('Nothing to play.', 'warning');
       return;
     }
     if (isAnyPlaying) return;
 
-    const morse = fromInput ? textToMorse(text) : text; // input => convert; output already morse
+    const morse = fromInput ? textToMorse(t) : t; // convert only when playing input text
     if (!morse) {
-      showAlert("No valid characters for Morse.", "warning");
+      showAlert('No valid characters for Morse.', 'warning');
       return;
     }
+
     currentMorseRef.current = morse;
     resumeIndexRef.current = 0;
     setIsAnyPaused(false);
 
     const seq = buildSequence(morse);
+    if (!seq || seq.length === 0) {
+      showAlert('Nothing to play.', 'warning');
+      return;
+    }
     playSequence(seq, 0, fromInput);
   };
 
-  /* ===== Image handling ===== */
-
-  const handleChooseFile = async (f: File | null) => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setFile(f);
-    if (f) {
-      const url = URL.createObjectURL(f);
-      setPreviewUrl(url);
-      // Automatically trigger OCR when image is selected
-      await runOCR(f);
-    } else {
-      setPreviewUrl(null);
-    }
-  };
+  const handleChooseFile = useCallback(
+    async (f: File | null) => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setFile(f);
+      if (f) {
+        const url = URL.createObjectURL(f);
+        setPreviewUrl(url);
+        // Automatically trigger OCR when image is selected
+        await runOCR(f);
+      } else {
+        setPreviewUrl(null);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [previewUrl]
+  );
 
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
+
+  /* ===== NEW: Paste screenshot support ===== */
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const onPaste = async (e: ClipboardEvent) => {
+      const items = e.clipboardData?.items;
+      if (!items || items.length === 0) return;
+
+      let handled = false;
+      for (const item of Array.from(items)) {
+        if (item.type && item.type.startsWith("image/")) {
+          const f = item.getAsFile();
+          if (f) {
+            e.preventDefault();
+            handled = true;
+            showAlert("Image pasted from clipboard. Running OCR…", "info", 1200);
+            await handleChooseFile(f);
+            break;
+          }
+        }
+      }
+
+      // if not handled, let normal text paste continue
+      if (!handled) return;
+    };
+
+    document.addEventListener("paste", onPaste);
+    return () => document.removeEventListener("paste", onPaste);
+  }, [handleChooseFile]);
+
+  /* ===== Optional: drag & drop support (nice to have) ===== */
+  const handleDragOver = (e: React.DragEvent) => {
+    if (e.dataTransfer?.types?.includes("Files")) {
+      e.preventDefault();
+    }
+  };
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    const f = e.dataTransfer?.files?.[0];
+    if (f && f.type?.startsWith("image/")) {
+      await handleChooseFile(f);
+      showAlert("Image dropped. Running OCR…", "info", 1200);
+    }
+  };
 
   /* ===== OCR ===== */
 
@@ -576,6 +629,9 @@ export default function ImageMorseTranslator() {
 
   const isOutputReady = !!outputText;
 
+  const isMac =
+    typeof navigator !== "undefined" && /Mac|iPhone|iPad|iPod/.test(navigator.platform);
+
   /* ===== Render ===== */
 
   return (
@@ -626,7 +682,7 @@ export default function ImageMorseTranslator() {
                 </span>
               </div>
 
-              {/* picker + conditional Extract */}
+              {/* picker + paste + conditional Extract */}
               <div className="flex items-center gap-3">
                 <input
                   type="file"
@@ -640,6 +696,8 @@ export default function ImageMorseTranslator() {
                   onClick={() => fileInputRef.current?.click()}
                   title={file ? "Change Image" : "Choose Image"}
                   disabled={isOcrRunning}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
                   className={`
                     relative w-20 h-14 rounded-lg border-2 overflow-hidden
                     ${file ? "border-[#456359]" : "border-dashed border-[#456359]/50 bg-gray-50 hover:bg-gray-100"}
@@ -654,7 +712,11 @@ export default function ImageMorseTranslator() {
                     </div>
                   ) : (
                     <>
-                      <img src={previewUrl} alt="Selected" className="absolute inset-0 w-full h-full object-cover" />
+                      <img
+                        src={previewUrl}
+                        alt="Selected"
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
                       {isOcrRunning ? (
                         <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
                           <div className="text-white text-[10px] text-center">
@@ -663,7 +725,9 @@ export default function ImageMorseTranslator() {
                           </div>
                         </div>
                       ) : (
-                        <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">Change</span>
+                        <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">
+                          Change
+                        </span>
                       )}
                     </>
                   )}
@@ -704,7 +768,9 @@ export default function ImageMorseTranslator() {
                 <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
                 {strings.clear}
               </Button>
-              <span className="md:hidden text-xs text-gray-500">{file ? "" : "Choose an image to continue"}</span>
+              <span className="md:hidden text-xs text-gray-500">
+                {file ? "" : `Click choose, drag & drop, or ${isMac ? "⌘" : "Ctrl"}+V to paste`}
+              </span>
             </div>
           </div>
 
@@ -756,7 +822,7 @@ export default function ImageMorseTranslator() {
             {/* middle content: stretch + scroll */}
             <div className="flex-1 min-h-0 p-4 text-gray-800 whitespace-pre-wrap overflow-auto">
               {isOutputReady ? (
-                <div className="font-mono break-words text-3xl/relaxed">{outputText}</div>
+                <div className="font-mono break-words text-2xl/relaxed">{outputText}</div>
               ) : (
                 <span className="text-gray-400 text-md">{strings.morseCodeWillAppearHere}</span>
               )}
@@ -823,7 +889,11 @@ export default function ImageMorseTranslator() {
                   className="relative text-gray-500 hover:text-gray-700 flex flex-col"
                   title="Help"
                   onClick={() => {
-                    showAlert("Upload image → Text extracted automatically → Edit if needed → Play/Download.", "info", 2500);
+                    showAlert(
+                      "Paste screenshot with Ctrl/⌘+V (or use the Paste button), or choose/drag an image → OCR runs automatically → Edit text → Play/Download.",
+                      "info",
+                      3200
+                    );
                   }}
                 >
                   <HelpCircle className="h-5 w-5 p-0 m-0 -mb-2" />
@@ -851,9 +921,15 @@ export default function ImageMorseTranslator() {
                 <label className="text-sm text-right col-span-1">WPM:</label>
                 <div className="col-span-2">
                   <input
-                    type="range" min={5} max={30}
+                    type="range"
+                    min={5}
+                    max={30}
                     value={audioSettings.wpm}
-                    onChange={(e) => { const v = Number(e.target.value); setAudioSettings((s) => ({ ...s, wpm: v })); showAlert(`Playback speed set to ${v} WPM`, "info", 1200); }}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setAudioSettings((s) => ({ ...s, wpm: v }));
+                      showAlert(`Playback speed set to ${v} WPM`, "info", 1200);
+                    }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -864,9 +940,16 @@ export default function ImageMorseTranslator() {
                 <label className="text-sm text-right col-span-1">Frequency:</label>
                 <div className="col-span-2">
                   <input
-                    type="range" min={400} max={1000} step={50}
+                    type="range"
+                    min={400}
+                    max={1000}
+                    step={50}
                     value={audioSettings.frequency}
-                    onChange={(e) => { const v = Number(e.target.value); setAudioSettings((s) => ({ ...s, frequency: v })); showAlert(`Tone frequency set to ${v} Hz`, "info", 1200); }}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setAudioSettings((s) => ({ ...s, frequency: v }));
+                      showAlert(`Tone frequency set to ${v} Hz`, "info", 1200);
+                    }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -877,9 +960,16 @@ export default function ImageMorseTranslator() {
                 <label className="text-sm text-right col-span-1">Volume:</label>
                 <div className="col-span-2">
                   <input
-                    type="range" min={0} max={1} step={0.1}
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.1}
                     value={audioSettings.volume}
-                    onChange={(e) => { const v = Number(e.target.value); setAudioSettings((s) => ({ ...s, volume: v })); showAlert(`Volume set to ${Math.round(v * 100)}%`, "info", 1200); }}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setAudioSettings((s) => ({ ...s, volume: v }));
+                      showAlert(`Volume set to ${Math.round(v * 100)}%`, "info", 1200);
+                    }}
                     className="w-full accent-[#456359]"
                   />
                 </div>
@@ -891,17 +981,31 @@ export default function ImageMorseTranslator() {
                 <div className="col-span-3">
                   <div className="flex gap-2">
                     <label className="flex items-center">
-                      <input type="radio" name="soundType" value="cw"
+                      <input
+                        type="radio"
+                        name="soundType"
+                        value="cw"
                         checked={audioSettings.soundType === "cw"}
-                        onChange={() => { setAudioSettings((s) => ({ ...s, soundType: "cw" })); showAlert("Sound type set to CW Radio Tone", "info", 1200); }}
-                        className="mr-1 accent-[#456359]" />
+                        onChange={() => {
+                          setAudioSettings((s) => ({ ...s, soundType: "cw" }));
+                          showAlert("Sound type set to CW Radio Tone", "info", 1200);
+                        }}
+                        className="mr-1 accent-[#456359]"
+                      />
                       CW Radio Tone
                     </label>
                     <label className="flex items-center">
-                      <input type="radio" name="soundType" value="telegraph"
+                      <input
+                        type="radio"
+                        name="soundType"
+                        value="telegraph"
                         checked={audioSettings.soundType === "telegraph"}
-                        onChange={() => { setAudioSettings((s) => ({ ...s, soundType: "telegraph" })); showAlert("Sound type set to Telegraph Sounder", "info", 1200); }}
-                        className="mr-1 accent-[#456359]" />
+                        onChange={() => {
+                          setAudioSettings((s) => ({ ...s, soundType: "telegraph" }));
+                          showAlert("Sound type set to Telegraph Sounder", "info", 1200);
+                        }}
+                        className="mr-1 accent-[#456359]"
+                      />
                       Telegraph Sounder
                     </label>
                   </div>
