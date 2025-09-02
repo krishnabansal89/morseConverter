@@ -1624,7 +1624,7 @@ export default function MorseConverter({
               onClick={toggleMode}
               variant="outline"
               size="icon"
-              className="rounded-full h-12 w-12 border-[#456359] bg-transparent opacity-50 shadow-md overflow-hidden "
+              className="rounded-full h-12 w-12 border-[#456359] bg-white  shadow-md overflow-hidden "
             >
               <div className="swap-arrow-container">
                 <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
@@ -1835,7 +1835,7 @@ export default function MorseConverter({
           </div>
 
           <div className={`
-              p-4 text-gray-800 whitespace-pre-wrap
+              p-4 text-gray-800 whitespace-pre-wrap pl-8
               ${initialText.length === 0
               ? "min-h-[200px] md:min-h-[300px]"
               : "min-h-[100px] md:min-h-[200px]"}

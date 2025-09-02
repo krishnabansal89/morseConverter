@@ -689,7 +689,7 @@ export default function MorseCodeMachine({
                 onClick={toggleMode}
                 variant="outline"
                 size="icon"
-                className="rounded-full h-12 w-12 border-[#456359] bg-transparent opacity-50 shadow-md overflow-hidden "
+                className="rounded-full h-12 w-12 border-[#456359] bg-white  shadow-md overflow-hidden "
               >
                 <div className="swap-arrow-container">
                   <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
@@ -775,7 +775,7 @@ export default function MorseCodeMachine({
               </div>
             </div>
 
-            <div className="p-4 text-gray-800 whitespace-pre-wrap min-h-[200px] md:min-h-[300px] text-xl">
+            <div className="p-4 text-gray-800 whitespace-pre-wrap min-h-[200px] md:min-h-[300px] text-xl pl-8">
               {outputText || (
                 <span className="text-gray-400 text-md">
                   {mode === "morse-to-text"
