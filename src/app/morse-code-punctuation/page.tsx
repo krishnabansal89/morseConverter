@@ -104,7 +104,7 @@ Learning Morse code punctuation is like adding seasoning to food. Without it, th
 
 ---
 
-# **FAQs**
+##### **FAQs**
 
 ### **1. Did the original Morse code include punctuation?**
 Not at first. The earliest Morse code (developed in the 1830s and 1840s by Samuel Morse and Alfred Vail) focused on letters and numbers. As telegraph use expanded, punctuation was added to improve communication accuracy.
@@ -168,7 +168,7 @@ export default function Page() {
             h1: ({ children }) =><h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h1>,
             h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
             h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-            h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight md:px-10">{children}</h1>,
+            h5: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium tracking-tight md:px-10">{children}</h2>,
             h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium tracking-tight md:px-10"><strong>{children}</strong></h2>,
             p: ({ children }) => <p className="mt-2 font-maitree text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
             br: () => <br />,
