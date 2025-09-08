@@ -239,6 +239,11 @@ export default function ImageMorseTranslator() {
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  // zoom effect state
+  const [isZooming, setIsZooming] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
+  const [zoomLensPosition, setZoomLensPosition] = useState({ x: 0, y: 0 });
+
   // OCR + IO
   const [ocrProgress, setOcrProgress] = useState<number>(0);
   const [isOcrRunning, setIsOcrRunning] = useState(false);
@@ -536,6 +541,35 @@ export default function ImageMorseTranslator() {
     }
   };
 
+  /* ===== Zoom effect handlers ===== */
+  const handleImageMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Calculate zoom position (center the zoom area around cursor)
+    const zoomSize = 100; // Size of the zoom lens
+    const lensX = Math.max(0, Math.min(x - zoomSize / 2, rect.width - zoomSize));
+    const lensY = Math.max(0, Math.min(y - zoomSize / 2, rect.height - zoomSize));
+    
+    // Calculate the magnified area position
+    const zoomX = (x / rect.width) * 100;
+    const zoomY = (y / rect.height) * 100;
+    
+    setZoomLensPosition({ x: lensX, y: lensY });
+    setZoomPosition({ x: zoomX, y: zoomY });
+  };
+
+  const handleImageMouseEnter = () => {
+    if (previewUrl && !isOcrRunning) {
+      setIsZooming(true);
+    }
+  };
+
+  const handleImageMouseLeave = () => {
+    setIsZooming(false);
+  };
+
   /* ===== OCR ===== */
 
   const runOCR = async (imageFile?: File) => {
@@ -691,47 +725,90 @@ export default function ImageMorseTranslator() {
                   className="hidden"
                   onChange={(e) => handleChooseFile(e.target.files?.[0] ?? null)}
                 />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  title={file ? "Change Image" : "Choose Image"}
-                  disabled={isOcrRunning}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  className={`
-                    relative w-20 h-14 rounded-lg border-2 overflow-hidden
-                    ${file ? "border-[#456359]" : "border-dashed border-[#456359]/50 bg-gray-50 hover:bg-gray-100"}
-                    ${isOcrRunning ? "opacity-50 cursor-not-allowed" : ""}
-                    flex items-center justify-center group
-                  `}
-                >
-                  {!previewUrl ? (
-                    <div className="flex flex-col items-center justify-center text-[#456359]/80">
-                      <ImageIcon className="w-8 h-6 opacity-80" />
-                      <span className="text-[10px] mt-1">Choose image</span>
-                    </div>
-                  ) : (
-                    <>
-                      <img
-                        src={previewUrl}
-                        alt="Selected"
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                      {isOcrRunning ? (
-                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                          <div className="text-white text-[10px] text-center">
-                            <div className="animate-spin-slow w-4 h-4 border-2 border-white border-t-transparent rounded-full mx-auto mb-1"></div>
-                            {ocrProgress}%
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    title={file ? "Change Image" : "Choose Image"}
+                    disabled={isOcrRunning}
+                    onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    className={`
+                      relative w-20 h-14 rounded-lg border-2 overflow-hidden
+                      ${file ? "border-[#456359]" : "border-dashed border-[#456359]/50 bg-gray-50 hover:bg-gray-100"}
+                      ${isOcrRunning ? "opacity-50 cursor-not-allowed" : ""}
+                      flex items-center justify-center group
+                    `}
+                    onMouseMove={previewUrl ? handleImageMouseMove : undefined}
+                    onMouseEnter={previewUrl ? handleImageMouseEnter : undefined}
+                    onMouseLeave={previewUrl ? handleImageMouseLeave : undefined}
+                  >
+                    {!previewUrl ? (
+                      <div className="flex flex-col items-center justify-center text-[#456359]/80">
+                        <ImageIcon className="w-8 h-6 opacity-80" />
+                        <span className="text-[10px] mt-1">Choose image</span>
+                      </div>
+                    ) : (
+                      <>
+                        <img
+                          src={previewUrl}
+                          alt="Selected"
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        {isOcrRunning ? (
+                          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                            <div className="text-white text-[10px] text-center">
+                              <div className="animate-spin-slow w-4 h-4 border-2 border-white border-t-transparent rounded-full mx-auto mb-1"></div>
+                              {ocrProgress}%
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">
-                          Change
-                        </span>
-                      )}
-                    </>
+                        ) : (
+                          <>
+                            <span className="absolute bottom-0 left-0 right-0 text-[10px] text-white/90 bg-black/40 px-1 py-0.5 text-center">
+                              Change
+                            </span>
+                            {/* Zoom lens overlay */}
+                            {isZooming && (
+                              <div
+                                className="absolute zoom-lens pointer-events-none rounded-sm"
+                                style={{
+                                  width: '25px',
+                                  height: '25px',
+                                  left: `${zoomLensPosition.x}px`,
+                                  top: `${zoomLensPosition.y}px`,
+                                }}
+                              />
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+                  </button>
+
+                  {/* Magnified image overlay */}
+                  {isZooming && previewUrl && !isOcrRunning && (
+                    <div
+                      className="absolute left-24 top-0 w-48 h-32 border-2 border-[#456359] bg-white rounded-lg overflow-hidden z-50 pointer-events-none zoom-overlay zoom-enter"
+                    >
+                      <div
+                        className="w-full h-full bg-cover bg-no-repeat transition-all duration-75 ease-out"
+                        style={{
+                          backgroundImage: `url(${previewUrl})`,
+                          backgroundPosition: `${zoomPosition.x}% ${zoomPosition.y}%`,
+                          backgroundSize: '300%', // 3x magnification
+                        }}
+                      />
+                      <div className="absolute top-1 right-1 bg-black/70 text-white text-[8px] px-1.5 py-0.5 rounded font-mono">
+                        3x
+                      </div>
+                      {/* Optional: Add crosshairs in the center */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="w-3 h-px bg-red-400 opacity-50"></div>
+                        <div className="absolute w-px h-3 bg-red-400 opacity-50"></div>
+                      </div>
+                    </div>
                   )}
-                </button>
+                </div>
 
                
               </div>
@@ -1033,6 +1110,57 @@ export default function ImageMorseTranslator() {
         @keyframes fadeOut { from { opacity:1; transform: translateY(0); } to { opacity:0; transform: translateY(-10px); } }
         .animate-fadeIn { animation: fadeIn .3s ease-in-out; }
         .animate-fadeOut { animation: fadeOut .3s ease-in-out forwards; }
+
+        /* Zoom effect animations */
+        @keyframes zoomIn {
+          from { 
+            opacity: 0; 
+            transform: scale(0.8) translateX(-10px); 
+          }
+          to { 
+            opacity: 1; 
+            transform: scale(1) translateX(0); 
+          }
+        }
+        
+        @keyframes zoomOut {
+          from { 
+            opacity: 1; 
+            transform: scale(1) translateX(0); 
+          }
+          to { 
+            opacity: 0; 
+            transform: scale(0.8) translateX(-10px); 
+          }
+        }
+
+        .zoom-enter { animation: zoomIn 0.2s ease-out forwards; }
+        .zoom-exit { animation: zoomOut 0.15s ease-in forwards; }
+
+        /* Enhanced zoom lens effect */
+        .zoom-lens {
+          backdrop-filter: blur(1px);
+          box-shadow: 
+            0 0 0 2px rgba(255, 255, 255, 0.8),
+            0 0 0 3px rgba(69, 99, 89, 0.6),
+            0 4px 12px rgba(0, 0, 0, 0.15);
+          transition: all 0.1s ease-out;
+        }
+
+        .zoom-lens:hover {
+          box-shadow: 
+            0 0 0 2px rgba(255, 255, 255, 0.9),
+            0 0 0 4px rgba(69, 99, 89, 0.8),
+            0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Magnified overlay styles */
+        .zoom-overlay {
+          backdrop-filter: blur(2px);
+          box-shadow: 
+            0 10px 25px rgba(0, 0, 0, 0.15),
+            0 0 0 1px rgba(69, 99, 89, 0.1);
+        }
 
         .flash-text,
         .flash-text-secondary,
