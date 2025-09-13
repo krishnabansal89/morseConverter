@@ -1,10 +1,11 @@
 // app/morse-code-tattoo/page.tsx
-import Image from "next/image";
 import Markdown from "react-markdown";
 import Breadcrumb from "@/components/breadcrumb";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 import remarkGfm from "remark-gfm";
 import MorseTattooGallery from "@/components/ui/morse-tattoo-gallery";
+import Link from "next/link";
+import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel";
 
 export async function generateMetadata() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
@@ -191,8 +192,11 @@ export default function Page() {
                 );
               if (txt === "Also Add the Morse Chart below the images")
                 return (
-                  <div className="my-6">
-                    <Image src="/charts/international-morse-code.jpg" alt="Morse Chart" width={1000} height={1000} />
+                  <div className="my-6 mx-auto flex justify-center items-center">
+                    <button className="flex gap-x-6">
+                        <a href="https://in.pinterest.com/sweatin2deuce/morse-code/" className="bg-[#456359] text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Visit More</a>
+                        <Link href="/morse-code-chart" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Morse Chart</Link>
+                    </button>
                   </div>
                 );
 
@@ -208,6 +212,7 @@ export default function Page() {
 
       {/* JSON-LD from the exact FAQ text (no extra content). */}
       <FAQSchemaLD markup={faqMarkup} />
+      <InternalLinkingPanel  />
     </div>
   );
 }

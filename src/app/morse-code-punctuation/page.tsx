@@ -3,6 +3,7 @@ import Markdown from "react-markdown";
 import Breadcrumb from "@/components/breadcrumb";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 import remarkGfm from "remark-gfm";
+import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel";
 
 export async function generateMetadata() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
@@ -192,6 +193,8 @@ export default function Page() {
 
       {/* JSON-LD FAQ */}
       <FAQSchemaLD markup={faqMarkup} />
+      <InternalLinkingPanel  />
+
     </div>
   );
 }
