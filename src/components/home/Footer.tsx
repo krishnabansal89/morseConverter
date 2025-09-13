@@ -63,6 +63,11 @@ export default function Footer() {
                       Morse Code Punctuation
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/morse-code-tattoo" className="text-white hover:text-gray-900">
+                      Morse Code Tattoo
+                    </Link>
+                  </li>
               </ul>
             </div>
 

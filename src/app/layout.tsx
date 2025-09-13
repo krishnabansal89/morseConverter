@@ -34,7 +34,7 @@ const maitree = Maitree({
 const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 
 export const metadata: Metadata = {
-  title: "Morse Code Translator - Convert & Decode English to Morse Code Instantly",
+  title: "Morse Code Translator & Generator \- Convert & Decode English to Morse Code Instantly",
   description: "Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.",
   alternates: {
     canonical: `${PUBLIC_URL}/`,
