@@ -46,27 +46,27 @@ export function Navbar() {
 
   return (
     <>
-      <header className="flex h-20 bg-white w-[98%] mx-auto items-center justify-between md:px-18 px-4 font-poppins z-50 relative">
+      <header className="flex h-20 bg-background-secondary w-[98%] mx-auto items-center justify-between md:px-18 px-4 font-poppins z-50 relative text-foreground">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.png" width={50} height={50} alt="Morse Code" />
-          <span className="text-[#3D3939] text-lg">
+          <span className="text-foreground text-lg">
             <span className="font-semibold">Morse Code</span>
           </span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link href="/morse-code-alphabets" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+          <Link href="/morse-code-alphabets" className="text-foreground text-sm hover:underline transition-colors">
             Alphabets
           </Link>
-          <Link href="/morse-code-numbers" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+          <Link href="/morse-code-numbers" className="text-foreground text-sm hover:underline transition-colors">
             Numbers
           </Link>
-          <Link href="/morse-code-chart" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+          <Link href="/morse-code-chart" className="text-foreground text-sm hover:underline transition-colors">
             Morse Chart
           </Link>
-          <Link href="/about-us" className="text-[#3D3939] text-sm hover:text-black transition-colors">
+          <Link href="/about-us" className="text-foreground text-sm hover:underline transition-colors">
             About
           </Link>
         </nav>
@@ -80,16 +80,16 @@ export function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
-            <span className={`block w-6 h-0.5 bg-[#3D3939] transition-all duration-300 ease-in-out ${isOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
-            <span className={`block w-6 h-0.5 bg-[#3D3939] my-1 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0' : ''}`}></span>
-            <span className={`block w-6 h-0.5 bg-[#3D3939] transition-all duration-300 ease-in-out ${isOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-foreground transition-all duration-300 ease-in-out ${isOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-foreground my-1 transition-all duration-300 ease-in-out ${isOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-foreground transition-all duration-300 ease-in-out ${isOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
           </button>
         </div>
       </header>
 
       {/* Mobile Sidebar */}
       <div 
-        className={`fixed top-0 right-0 h-full w-[250px] bg-white shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+        className={`fixed top-0 right-0 h-full w-[250px] bg-background text-foreground shadow-lg z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <div className="flex flex-col h-full px-4 py-6">
           {/* Close Button */}
@@ -108,28 +108,28 @@ export function Navbar() {
           <nav className="flex flex-col gap-6 mt-8 font-poppins ">
             <Link 
               href="/morse-code-alphabets" 
-              className="text-[#3D3939] text-lg hover:text-black transition-colors"
+              className="text-foreground text-lg hover:underline transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Alphabets
             </Link>
             <Link 
               href="/morse-code-numbers" 
-              className="text-[#3D3939] text-lg hover:text-black transition-colors"
+              className="text-foreground text-lg hover:underline transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Numbers
             </Link>
             <Link 
               href="/morse-code-chart" 
-              className="text-[#3D3939] text-lg hover:text-black transition-colors"
+              className="text-foreground text-lg hover:underline transition-colors"
               onClick={() => setIsOpen(false)}
             >
               Charts
             </Link>
             <Link 
               href="/#" 
-              className="text-[#3D3939] text-lg hover:text-black transition-colors"
+              className="text-foreground text-lg hover:underline transition-colors"
               onClick={() => setIsOpen(false)}
             >
               About
@@ -143,7 +143,7 @@ export function Navbar() {
       {/* Overlay */}
       {isOpen && (
         <div 
-          className="fixed inset-0  bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out"
+          className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300 ease-in-out"
           onClick={() => setIsOpen(false)}
         ></div>
       )}

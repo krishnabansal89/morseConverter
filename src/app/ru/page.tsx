@@ -5,27 +5,27 @@ import { FAQSchemaLD } from "@/components/FAQSchemaLD";
 
 function Hero() {
     return (
-        <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
+        <div className="hero bg-background w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
             <div className="w-full h-fit md:my-20 my-10 grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
                 <div className="flex  items-center  ">
-                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">Переводчик Азбуки Морзе <br></br> Мгновенное<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Преобразование и Расшифровка. </span></h1>
+                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-foreground  tracking-tight md:px-4 font-poppins">Переводчик Азбуки Морзе <br></br> Мгновенное<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Преобразование и Расшифровка. </span></h1>
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 mt-4 md:mt-0 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Мгновенно переводите русский текст в азбуку Морзе и обратно с помощью бесплатного онлайн-переводчика. Генерируйте сигналы Морзе с озвучкой и функцией обмена.
+                        <p className="text-foreground tracking-tight w-[100%] font-medium text-justify  text-lg font-maitree ">Мгновенно переводите русский текст в азбуку Морзе и обратно с помощью бесплатного онлайн-переводчика. Генерируйте сигналы Морзе с озвучкой и функцией обмена.
                         </p>
                     </div>
 
                     <div className="my-4">
                         <button>
-                            <a href="#converter" className="bg-[#456359] mr-6 text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Начать</a>
-                            <a href="#converter" className="bg-[#456359] text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]">Посетить магазин</a>
+                            <a href="#converter" className="bg-primary mr-6 text-primary-foreground px-4 py-2 rounded-lg font-poppins hover:opacity-90">Начать</a>
+                            <a href="#converter" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-poppins hover:opacity-90">Посетить магазин</a>
                         </button>
                     </div>
                 </div>
 
             </div>
-            <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">                <div className="editor-window w-full h-full bg-white rounded-lg shadow-lg">
+            <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">                <div className="editor-window w-full h-full bg-card rounded-lg shadow-lg">
                     <MorseConverter language="ru" />
                 </div>
             </div>
@@ -51,7 +51,7 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
         <div className={`rounded-3xl p-8  ${bgColor}  h-full`}>
             <div className="flex flex-col h-full">
                 <div className="mb-6">
-                    <span className="inline-block px-3 py-1 text-sm font-medium bg-white rounded-full">{type}</span>
+                    <span className="inline-block px-3 py-1 text-sm font-medium bg-card rounded-full">{type}</span>
                 </div>
 
 
@@ -117,14 +117,14 @@ function Features() {
     ]
 
     return (
-        <section id="features" className="bg-[rgb(236,232,228)] w-[98%]  md:px-20 mx-auto p-4 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col font-poppins">
+        <section id="features" className="bg-background w-[98%]  md:px-20 mx-auto p-4 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col font-poppins">
             <div className="container mx-auto px-4 md:mt-20 mt-10">
                 <div className=" mx-auto">
                     <div className="text-center mb-12">
                         <h2 className=" md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-bold  mb-4">
                             Испытайте наши бесплатные инструменты азбуки Морзе
                         </h2>
-                        <p className="text-neutral-600 font-maitree">
+                        <p className="text-muted-foreground font-maitree">
                             Откройте для себя наши инструменты и сервисы азбуки Морзе
                         </p>
                     </div>
@@ -157,13 +157,13 @@ function FeatureBlock({ title, description }: { title: string, description: stri
 
 function Benefits() {
     return (
-        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col">
+        <div className="bg-background w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col">
 
             <div className="w-full h-fit md:my-20 my-10 justify-center  ">
                 <div className="flex flex-col justify-center items-center text-center ">
                     <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium  mb-4 tracking-tight md:px-10 font-poppins">Почему выбирают наш Переводчик Азбуки Морзе?
                     </h2>
-                    <p className="text-neutral-600 font-maitree">
+                    <p className="text-muted-foreground font-maitree">
                         Откройте для себя особенности нашей азбуки Морзе
                     </p>
                 </div>
@@ -177,12 +177,12 @@ function Benefits() {
                         <div className="flex justify-center items-center rounded-2xl bg-[#456359]  text-white">
                             <FeatureBlock title="Мгновенное и Точное Преобразование" description="Переводите английский в азбуку Морзе и обратно без задержек." />
                         </div>
-                        <div className="flex-col flex  bg-[#f5f5f5] text-[#2d2d2d] rounded-2xl ">
+                        <div className="flex-col flex  bg-card text-foreground rounded-2xl ">
                             <FeatureBlock title="Простой и Удобный Интерфейс" description="Не требует технических навыков — просто введите текст и нажмите «Перевести»." />
                         </div>
                     </div>
                     <div className="sm:grid sm:grid-cols-[40%_60%] flex flex-col-reverse sm:space-x-4 space-y-4 sm:space-y-0">
-                        <div className="flex justify-center items-center bg-[#f5f5f5] text-[#2d2d2d] rounded-2xl">
+                        <div className="flex justify-center items-center bg-card text-foreground rounded-2xl">
                             <FeatureBlock title="Поддержка Всех Вариантов Морзе" description="Используются международные стандарты для максимальной точности." />
                         </div>
 
@@ -204,10 +204,10 @@ function Benefits() {
 
 function HowToUse() {
     return (
-      <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col">
+      <div className="bg-background w-[98%] mx-auto p-4 md:px-20 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col">
         <div className="md:mt-20 mt-10 flex flex-col items-center justify-center text-center ">
         <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium  mb-4 tracking-tight md:px-10 font-poppins">Как использовать Переводчик Азбуки Морзе</h2>
-        <p className="text-neutral-600 font-maitree">
+        <p className="text-muted-foreground font-maitree">
           Посмотрите видео о работе с инструментами азбуки Морзе
         </p>
         <div style={{ position: 'relative', boxSizing: 'content-box', maxHeight: '80vh', width: '100%', aspectRatio: '2.1052631578947367', padding: '40px 0' }}>
@@ -259,19 +259,19 @@ function Content() {
 * **Привет:** …. . .-.. .-.. ---  
 * **SOS:** … --- …  
 * **Любовь:** .-.. --- …- .  
-* **Да:** \-.-- . …  
+* **Да:** \.-- . …  
 * **Нет:** \-. \---
 
 `;
   return (
-    <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg md:pt-20 pt-10 rounded-b-none rounded-t-none shadow-lg  font-poppins">
+    <div className="bg-background w-[98%] mx-auto p-4 md:px-20 rounded-lg md:pt-20 pt-10 rounded-b-none rounded-t-none shadow-lg  font-poppins">
       <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center md:mb-12 mb-8 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 ">Азбука Морзе — проще простого</h2>
       <Markdown components={{
-        h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
-        h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] ml-4 text-lg/relaxed font-extralight">{children}</p>,
+        h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-foreground font-medium  my-6   ">{children}</h2>,
+        h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-foreground">{children}</h3>,
+        p: ({ children }) => <p className="mt-2 font-maitree  text-foreground ml-4 text-lg/relaxed font-extralight">{children}</p>,
         br: () => <br />,
-        li: ({ children }) => <li className="text-[#2d2d2d] list-disc ml-10 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
+        li: ({ children }) => <li className="text-foreground list-disc ml-10 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
       }} >{content}</Markdown>
     </div>
   );
@@ -298,15 +298,14 @@ function Faq() {
 ### **5. Можно ли вручную декодировать азбуку Морзе?**
 
 Да, но для этого требуется запомнить символы Морзе для каждой буквы и цифры. Наш **декодер азбуки Морзе** упрощает этот процесс, мгновенно преобразуя символы в текст.
-
 `;
   return (
-    <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg md:py-20 py-10 rounded-b-none rounded-t-none shadow-lg  font-poppins">
+    <div className="bg-background w-[98%] mx-auto p-4 md:px-20 rounded-lg md:py-20 py-10 rounded-b-none rounded-t-none shadow-lg  font-poppins">
       <FAQSchemaLD markup={content} />
       <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center mb-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 ">Часто задаваемые вопросы</h2>
       <Markdown components={{
-        h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
-        p: ({ children }) => <p className="mt-2 text-[#2d2d2d]  font-maitree">{children}</p>,
+        h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-foreground">{children}</h3>,
+        p: ({ children }) => <p className="mt-2 text-foreground  font-maitree">{children}</p>,
         br: () => <br />,
       }} >{content}</Markdown>
     </div>
@@ -316,7 +315,7 @@ function Faq() {
 
 export default function Page() {
     return(
-        <div className="bg-white h-full w-full m-0 p-0 ">
+        <div className="bg-background text-foreground h-full w-full m-0 p-0 ">
         <div className="hidden ">
           <Breadcrumb />
         </div>

@@ -38,31 +38,31 @@ Morse code assigns each letter of the alphabet a unique combination of dots and 
 
 Despite being over 180 years old, Morse code letters are still used in several practical and technological fields today:
 
-### **1\. Amateur Radio (Ham Radio)**
+### **1. Amateur Radio (Ham Radio)**
 
 Ham radio operators use Morse code for low-bandwidth, long-distance communication. Morse code is efficient even when signals are weak or noisy, making it a reliable choice in emergency situations.
 
-### **2\. Military and Intelligence Operations**
+### **2. Military and Intelligence Operations**
 
 Certain military forces continue to train personnel in Morse code to ensure secure, covert communication that remains effective even in electronic warfare scenarios.
 
-### **3\. Aviation and Maritime Signaling**
+### **3. Aviation and Maritime Signaling**
 
 Many navigational beacons still identify themselves using Morse code letters. Pilots and sailors use Morse code identifiers to verify locations and ensure safe travel.
 
-### **4\. Space Communication**
+### **4. Space Communication**
 
 NASA has incorporated Morse code in some missions, such as the Mars rover Curiosity, which transmitted "JPL" (Jet Propulsion Laboratory) in Morse code as a tribute to its creators.
 
-### **5\. Emergency and Survival Situations**
+### **5. Emergency and Survival Situations**
 
 Morse code remains a valuable skill in survival situations. The SOS distress signal (...---...) is internationally recognized and has saved countless lives.
 
-### **6\. Assistive Technology**
+### **6. Assistive Technology**
 
 Morse code helps individuals with disabilities communicate. Special devices translate Morse inputs (via blink detection, breath control, or finger taps) into spoken or written language.
 
-### **7\. Pop Culture and Hidden Messages**
+### **7. Pop Culture and Hidden Messages**
 
 Morse code appears in movies, video games, and music as an Easter egg or cryptic message. Enthusiasts enjoy decoding hidden references in entertainment media.
 
@@ -78,46 +78,32 @@ Learning Morse code alphabets can be fun and rewarding. Here are some tips:
 
 ###### **FAQs**
 
-### **1\. What is the most common letter in Morse code?**
+### **1. What is the most common letter in Morse code?**
 
 The letter ‘E’ (.) is the most common letter, as it is the most frequently used in the English language.
 
-### **2\. Why are some letters in Morse code longer than others?**
+### **2. Why are some letters in Morse code longer than others?**
 
 Morse code letters are based on their frequency of use, with shorter symbols assigned to common letters to make transmission more efficient.
 
-### **3\. Is Morse code still taught in schools?**
+### **3. Is Morse code still taught in schools?**
 
 While not a standard part of most curricula, Morse code is taught in military training, aviation schools, and some specialized courses for amateur radio enthusiasts.
 
-### **4\. How long does it take to learn Morse code alphabets?**
+### **4. How long does it take to learn Morse code alphabets?**
 
 It varies, but with regular practice, a person can learn Morse code letters in a few weeks and become proficient within a few months.
 
 `
 
     return (
-        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
-            {/* <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
-                <div className="flex  items-center  ">
-                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">Morse Code Translator  <br></br> Instant<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Encoding & Decoding. </span></h1>
-                </div>
-
-
-            </div> */}
+        <div className="bg-background w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
             <div className="max-w-5xl mx-auto">
                 <Breadcrumb />
-                {/* <div className="w-full h-fit my-20  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
-                <div className="flex  items-center  ">
-                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">Morse Code Translator  <br></br> Instant<span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text"> Encoding & Decoding. </span></h1>
-                </div>
-
-
-            </div> */}
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     h1: ({ }) => <MorseCodeTranslator />,
-                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-foreground font-medium  my-6   ">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-foreground">{children}</h3>,
                     h4: ({ }) => <Image
                         src={"/charts/alphabet-chart.jpg"}
                         alt="Alphabet Chart"
@@ -129,11 +115,11 @@ It varies, but with regular practice, a person can learn Morse code letters in a
                     h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h1>,
                     h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
 
-                    p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                    p: ({ children }) => <p className="mt-2 font-maitree  text-foreground md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
-                    li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
+                    li: ({ children }) => <li className="text-foreground list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                     table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
-                    thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
+                    thead: ({ children }) => <thead className="bg-primary text-primary-foreground">{children}</thead>,
                     tbody: ({ children }) => <tbody>{children}</tbody>,
                     tr: ({ children }) => <tr className="  ">{children}</tr>,
                     th: ({ children }) => <th className="px-4 py-2">{children}</th>,
@@ -141,19 +127,19 @@ It varies, but with regular practice, a person can learn Morse code letters in a
 
                 }} >{overviewContent}</Markdown>
             </div>
-            <FAQSchemaLD markup={`### **1\. What is the most common letter in Morse code?**
+            <FAQSchemaLD markup={`### **1. What is the most common letter in Morse code?**
 
 The letter ‘E’ (.) is the most common letter, as it is the most frequently used in the English language.
 
-### **2\. Why are some letters in Morse code longer than others?**
+### **2. Why are some letters in Morse code longer than others?**
 
 Morse code letters are based on their frequency of use, with shorter symbols assigned to common letters to make transmission more efficient.
 
-### **3\. Is Morse code still taught in schools?**
+### **3. Is Morse code still taught in schools?**
 
 While not a standard part of most curricula, Morse code is taught in military training, aviation schools, and some specialized courses for amateur radio enthusiasts.
 
-### **4\. How long does it take to learn Morse code alphabets?**
+### **4. How long does it take to learn Morse code alphabets?**
 
 It varies, but with regular practice, a person can learn Morse code letters in a few weeks and become proficient within a few months.
 `} />

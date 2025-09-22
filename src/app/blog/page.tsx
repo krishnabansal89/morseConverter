@@ -81,7 +81,7 @@ export default async function BlogListingPage({
     }
 
     return (
-        <section className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20 rounded-lg shadow-lg min-h-screen">
+        <section className="bg-background text-foreground w-[98%] mx-auto p-4 md:px-20 rounded-lg shadow-lg min-h-screen">
             <div className="max-w-7xl mx-auto">
                 <Breadcrumb                />
                 <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center mb-12 tracking-tight md:px-10 font-poppins pt-8">
@@ -94,7 +94,7 @@ export default async function BlogListingPage({
                         const authorImageUrl = post.author?.image ? urlFor(post.author.image)?.width(40)?.height(40)?.url() : "/placeholder-author.jpg";
 
                         return (
-                            <Card key={post._id} className="overflow-hidden bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col">
+                            <Card key={post._id} className="overflow-hidden bg-card rounded-lg shadow-lg flex flex-col">
                                 <Link href={`/blog/${post.slug.current}`}>
                                     <div className="relative h-56 w-full -mt-10">
                                         <Image
@@ -109,7 +109,7 @@ export default async function BlogListingPage({
                                 <CardHeader className="space-y-2 flex-grow">
                                     <Link
                                         href={`/blog/${post.slug.current}`}
-                                        className="text-lg font-semibold text-[#456359] hover:text-[#324740] line-clamp-2"
+                                        className="text-lg font-semibold text-primary hover:underline line-clamp-2"
                                     >
                                         {post.title}
                                     </Link>
@@ -141,7 +141,7 @@ export default async function BlogListingPage({
                                                 />
                                             </div>
                                         )}
-                                        <span className="text-sm font-medium text-[#456359]">
+                                        <span className="text-sm font-medium text-primary">
                                             {post.author?.name || "Anonymous"}
                                         </span>
                                     </Link>
@@ -157,8 +157,8 @@ export default async function BlogListingPage({
                         <Link
                             href={`/blog?page=${currentPage > 1 ? currentPage - 1 : 1}`}
                             className={`flex items-center p-2 border rounded-md ${currentPage === 1
-                                    ? 'text-gray-400 cursor-not-allowed border-gray-300'
-                                    : 'border-[#456359] text-[#456359] hover:bg-[#45635920]'
+                                    ? 'text-muted-foreground cursor-not-allowed border-border'
+                                    : 'border-primary text-primary hover:bg-primary/10'
                                 }`}
                             aria-disabled={currentPage === 1}
                             tabIndex={currentPage === 1 ? -1 : undefined}
@@ -172,8 +172,8 @@ export default async function BlogListingPage({
                                     key={page}
                                     href={`/blog?page=${page}`}
                                     className={`inline-flex items-center justify-center h-10 w-10 rounded-md border ${currentPage === page
-                                            ? 'bg-[#456359] text-white border-[#456359]'
-                                            : 'border-[#456359] text-[#456359] hover:bg-[#45635920]'
+                                            ? 'bg-primary text-primary-foreground border-primary'
+                                            : 'border-primary text-primary hover:bg-primary/10'
                                         }`}
                                 >
                                     {page}
@@ -184,8 +184,8 @@ export default async function BlogListingPage({
                         <Link
                             href={`/blog?page=${currentPage < totalPages ? currentPage + 1 : totalPages}`}
                             className={`flex items-center p-2 border rounded-md ${currentPage === totalPages
-                                    ? 'text-gray-400 cursor-not-allowed border-gray-300'
-                                    : 'border-[#456359] text-[#456359] hover:bg-[#45635920]'
+                                    ? 'text-muted-foreground cursor-not-allowed border-border'
+                                    : 'border-primary text-primary hover:bg-primary/10'
                                 }`}
                             aria-disabled={currentPage === totalPages}
                             tabIndex={currentPage === totalPages ? -1 : undefined}

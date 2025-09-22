@@ -36,16 +36,16 @@ const MorseCodeTranslator = () => {
 
   return (   
     <div className="w-full md:max-w-4xl mx-auto md:p-6 pt-6 rounded-lg">
-      <div className="grid grid-cols-1 md:gap-6 gap-2 bg-[#f5f5f5]/60 rounded-2xl md:p-8 p-2 font-poppins">
+      <div className="grid grid-cols-1 md:gap-6 gap-2 bg-muted/60 rounded-2xl md:p-8 p-2 font-poppins">
       
         {morseCodeNumbers.map((item) => (
               item && (
                 <Link 
                   key={item.number} 
                   href={`/morse-code-numbers/number-${item.number}-in-morse-code`}
-                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors duration-200"
+                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-muted/80 transition-colors duration-200"
                 >
-                  <span className="text-[#2d2d2d] text-xl mr-2 md:text-2xl font-semibold mb-2">
+                  <span className="text-foreground text-xl mr-2 md:text-2xl font-semibold mb-2">
                     {item.number}
                   </span>
                   <div className="flex flex-row items-center justify-start">

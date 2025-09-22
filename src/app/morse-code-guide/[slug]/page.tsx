@@ -205,13 +205,13 @@ Yes. Morse can be adapted using ${signalType}, lights, or sounds. Timing and rhy
 
 
     return (
-        <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none h-fit flex flex-col">
+        <div className="hero bg-background w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none h-fit flex flex-col">
             <div className="md:px-14 flex items-start">
                 <Breadcrumb /> {/* Dynamic breadcrumb */}
             </div>
             <div className="w-full h-fit md:my-20 my-10 grid md:px-10 md:grid-cols-[65%_35%] grid-cols-1 justify-center">
                 <div className="flex items-center">
-                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed text-3xl/relaxed font-medium text-[#2d2d2d] tracking-tight md:px-4 font-poppins">
+                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed text-3xl/relaxed font-medium text-foreground tracking-tight md:px-4 font-poppins">
                         What Does {capitalizedQuery} Mean in Morse Code? <br />
                         <span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text xl:text-4xl/relaxed lg:text-3xl/relaxed text-2xl/relaxed">
                             Morse Code Signals Explained
@@ -220,7 +220,7 @@ Yes. Morse can be adapted using ${signalType}, lights, or sounds. Timing and rhy
                 </div>
                 <div className="flex-col flex justify-center h-full px-2">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium text-lg/relaxed font-maitree">
+                        <p className="text-foreground tracking-tight w-[100%] font-medium text-lg/relaxed font-maitree">
                             Wondering what {query} signifies in Morse code? Discover the possible meanings, historical context, and emergency usage of {signalDescriptor} in Morse code communication.
                         </p>
                     </div>
@@ -228,7 +228,7 @@ Yes. Morse can be adapted using ${signalType}, lights, or sounds. Timing and rhy
             </div>
 
             <div className="editor-container w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center">
-                <div className="editor-window lg:w-4/5 w-full h-[full] bg-white rounded-lg shadow-lg">
+                <div className="editor-window lg:w-4/5 w-full h-[full] bg-card rounded-lg shadow-lg">
                     <MorseConverter initialText={sequence || '.'.repeat(num || 1)} textToMorse={false} /> {/* Show converter with sequence */}
                 </div>
             </div>
@@ -236,15 +236,15 @@ Yes. Morse can be adapted using ${signalType}, lights, or sounds. Timing and rhy
             <div className="w-full mx-auto p-4 md:px-10 rounded-lg md:pt-20">
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     // strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
-                    h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h1>,
-                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed text-foreground font-medium my-6">{children}</h1>,
+                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-foreground font-medium my-6">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-foreground">{children}</h3>,
                     h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold   tracking-tight md:px-10 "> {children}</h1>,
-                    p: ({ children }) => <p className="mt-2 font-maitree mx-auto text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                    p: ({ children }) => <p className="mt-2 font-maitree mx-auto text-foreground md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
-                    li: ({ children }) => <li className="text-[#2d2d2d] mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree text-lg/relaxed font-extralight">{children}</li>,
+                    li: ({ children }) => <li className="text-foreground mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree text-lg/relaxed font-extralight">{children}</li>,
                     table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
-                    thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
+                    thead: ({ children }) => <thead className="bg-primary text-primary-foreground">{children}</thead>,
                     tbody: ({ children }) => <tbody>{children}</tbody>,
                     tr: ({ children }) => <tr>{children}</tr>,
                     th: ({ children }) => <th className="px-4 py-2">{children}</th>,

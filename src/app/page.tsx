@@ -11,7 +11,7 @@ export const revalidate = 86400; //24hrs
 
 export default function Home() {
   return (
-    <div className="bg-white h-full w-full m-0 p-0 ">
+    <div className="bg-background-secondary text-foreground h-full w-full m-0 p-0 ">
       <div className="hidden ">
         <Breadcrumb />
       </div>

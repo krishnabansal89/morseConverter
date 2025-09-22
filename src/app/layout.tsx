@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 import { Navbar } from "../components/home/Navbar";
 import Footer from "../components/home/Footer";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -102,12 +103,19 @@ export default function RootLayout({
         ))}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased bg-background-secondary`}
       >
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <GoogleAnalytics gaId="G-FVT0DZM79K" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <GoogleAnalytics gaId="G-FVT0DZM79K" />
+        </ThemeProvider>
       </body>
     </html>
   );

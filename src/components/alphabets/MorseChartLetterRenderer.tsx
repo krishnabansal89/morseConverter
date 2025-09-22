@@ -34,7 +34,7 @@ const MorseCodeTranslator = () => {
 
   // Create pairs of letters (A,N), (B,O), (C,P), etc.
   const createPairs = () => {
-    const pairs = [];
+    const pairs:any[] = [];
     const half = Math.ceil(morseCodeAlphabet.length / 2);
     
     for (let i = 0; i < half; i++) {
@@ -53,7 +53,7 @@ const MorseCodeTranslator = () => {
     return (
       <div 
         key={index} 
-        className={`${isShort ? 'h-6 w-6' : 'h-6 md:w-10 w-6'} flex items-center  text-[#2d2d2d] justify-center text-lg md:text-2xl  mb-1`}
+        className={`${isShort ? 'h-6 w-6' : 'h-6 md:w-10 w-6'} flex items-center  text-foreground justify-center text-lg md:text-2xl  mb-1`}
       >
         {symbol}
       </div>
@@ -65,7 +65,7 @@ const MorseCodeTranslator = () => {
 
   return (   
     <div className="w-full md:max-w-4xl mx-auto md:p-6 pt-6 rounded-lg">
-      <div className="grid grid-cols-1 md:gap-6 gap-2 bg-[#f5f5f5]/60 rounded-2xl md:p-8 p-2 font-poppins">
+      <div className="grid grid-cols-1 md:gap-6 gap-2 bg-muted/60 rounded-2xl md:p-8 p-2 font-poppins">
         {letterPairs.map((pair, pairIndex) => (
           <div key={pairIndex} className="grid grid-cols-2  md:gap-10">
             {pair.map((item) => (
@@ -73,9 +73,9 @@ const MorseCodeTranslator = () => {
                 <Link 
                   key={item.letter} 
                   href={`/morse-code-alphabets/${item.letter.toLowerCase()}-in-morse-code`}
-                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors duration-200"
+                  className="flex flex-row md:space-x-6 items-start p-3 rounded-lg cursor-pointer hover:bg-muted transition-colors duration-200"
                 >
-                  <span className="text-[#2d2d2d] text-xl mr-2 md:text-2xl font-semibold mb-2">
+                  <span className="text-foreground text-xl mr-2 md:text-2xl font-semibold mb-2">
                     {item.letter}
                   </span>
                   <div className="flex flex-row items-center justify-start">

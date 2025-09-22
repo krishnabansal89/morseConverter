@@ -37,10 +37,10 @@ export default async function BlogGrid() {
   }
 
   return (
-    <section className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-20  rounded-lg rounded-b-none rounded-t-none shadow-lg">
+    <section className="bg-background w-[98%] mx-auto p-4 md:px-20  rounded-lg rounded-b-none rounded-t-none shadow-lg">
       <div className="max-w-7xl mx-auto flex flex-col mt-10 md:mt-0">
         <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center mb-4 tracking-tight md:px-10 font-poppins">Our Blogs</h2>
-        <p className="text-neutral-600 font-maitree mb-12 mx-auto ">
+        <p className="text-muted-foreground font-maitree mb-12 mx-auto ">
           Explore our Blogs and guides on Morse Code
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -49,7 +49,7 @@ export default async function BlogGrid() {
             const authorImageUrl = post.author?.image ? urlFor(post.author.image)?.width(40)?.height(40)?.url() : "/placeholder-author.jpg";
 
             return (
-              <Card key={post._id} className="overflow-hidden bg-[#f5f5f5] rounded-lg shadow-lg flex flex-col">
+              <Card key={post._id} className="overflow-hidden bg-card rounded-lg shadow-lg flex flex-col">
                 <Link href={`/blog/${post.slug.current}`}>
                 
                   <div className="relative h-56 w-full -mt-10 ">
@@ -65,7 +65,7 @@ export default async function BlogGrid() {
                 <CardHeader className="space-y-2 flex-grow">
                   <Link
                     href={`/blog/${post.slug.current}`}
-                    className="text-lg font-semibold text-[#456359] hover:text-[#324740] line-clamp-2"
+                    className="text-lg font-semibold text-primary hover:underline line-clamp-2"
                   >
                     {post.title}
                   </Link>
@@ -97,7 +97,7 @@ export default async function BlogGrid() {
                         />
                       </div>
                     )}
-                    <span className="text-sm font-medium text-[#456359]">
+                    <span className="text-sm font-medium text-primary">
                       {post.author?.name || "Anonymous"}
                     </span>
                   </Link>
@@ -109,8 +109,7 @@ export default async function BlogGrid() {
 
         <div className="text-center">
           <Button
-            variant="outline"
-            className="bg-[#456359]  text-white px-4 py-2 rounded-lg font-poppins hover:bg-[#324740]"
+            variant="default"
             asChild
           >
             <Link href="/blog">View All Blogs</Link>

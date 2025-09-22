@@ -149,13 +149,13 @@ Yes, due to its **irregular spacing and variable-length dashes**, American Morse
 `
 
     return (
-        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
+        <div className="bg-background w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
             <div className="max-w-5xl mx-auto">
                 <Breadcrumb />
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     h1: ({ }) => <AmericanMorseCodeTranslator />,
-                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-foreground font-medium  my-6   ">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-foreground">{children}</h3>,
                     h4: ({ }) => <Image
                         src={"/charts/american-morse-code.jpg"}
                         alt="American Morse Code Chart"
@@ -165,18 +165,18 @@ Yes, due to its **irregular spacing and variable-length dashes**, American Morse
                     />
                     ,
                     h5: ({ children }) => <div className=""> <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children} </h1>
-                        <div className="editor-window md:w-full w-[90%] mx-auto h-full bg-white rounded-lg shadow-lg my-20">
+                        <div className="editor-window md:w-full w-[90%] mx-auto h-full bg-card rounded-lg shadow-lg my-20">
                             <MorseConverter isAmericanMorseCode={true} />
                         </div>
 
                     </div>,
                     h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</h2>,
 
-                    p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                    p: ({ children }) => <p className="mt-2 font-maitree  text-foreground md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
-                    li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
+                    li: ({ children }) => <li className="text-foreground list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                     table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
-                    thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
+                    thead: ({ children }) => <thead className="bg-primary text-primary-foreground">{children}</thead>,
                     tbody: ({ children }) => <tbody>{children}</tbody>,
                     tr: ({ children }) => <tr className="  ">{children}</tr>,
                     th: ({ children }) => <th className="px-4 py-2">{children}</th>,
