@@ -12,13 +12,14 @@ export default function AlphabetOverview() {
 
 Morse code is a system of communication that represents letters, numbers, and symbols through sequences of short and long signals, commonly referred to as dots (.) and dashes (-). This system has played a critical role in telegraphy, military communications, and emergency signaling.
 #### 
-Understanding the Morse code alphabet is essential for anyone interested in its historical significance or practical uses today. In this article, we will explore the Morse code alphabet in detail, its history, and how it continues to be relevant in modern applications.
+Understanding the Morse code english alphabet is essential for anyone interested in its historical significance or practical uses today. In this article, we will explore the Morse code alphabet in detail, its history, and how it continues to be relevant in modern applications.
 
 # charts
 
 ## **The Origin of Morse Code Alphabets**
 
 The Morse code alphabet was developed by Samuel Morse and his assistant Alfred Vail in the 1830s as a way to transmit messages efficiently over long distances using electrical telegraphy. Initially, Morse’s system used only numbers, but Vail expanded it to include letters and punctuation, making it more practical for general communication.
+
 
 The original Morse code was based on the frequency of letter usage in the English language, assigning shorter codes to commonly used letters. For example, ‘E’ (the most frequently used letter in English) is represented by a single dot (.), while ‘T’ is a single dash (-).
 

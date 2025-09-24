@@ -9,23 +9,28 @@ export default function NumberOverview() {
 
     const overviewContent = `##### **Introduction to Morse Code Numbers**
 
-Morse code, a system of encoding text through sequences of dots and dashes, has played a crucial role in global communication. While the alphabetic characters are well known, Morse code numbers are equally significant, enabling the transmission of numerical data in critical scenarios. 
+**Morse code numbers** are a vital part of one of the world’s most iconic communication systems. While many people associate Morse code mainly with letters, the numerical side has been just as important. Morse code numbers enabled operators to quickly transmit dates, monetary values, and coordinates—making long-distance communication more accurate and reliable. This article explores the history, development, and ongoing uses of Morse code numbers, highlighting their continued relevance in modern times.
 # 
-This article explores the historical evolution and contemporary applications of Morse code numbers, uncovering lesser-known facts about their impact.
-
-#### 
 
 ## **The Origin of Morse Code Numbers**
 
-Developed in the 1830s and 1840s by Samuel Morse and Alfred Vail, Morse code was designed for the telegraph system. Alongside letters, numbers were an essential part of the code, allowing for efficient communication of dates, monetary values, and coordinates. The numerical system in Morse code follows a simple yet effective structure:
+Developed in the 1830s and 1840s by Samuel Morse and Alfred Vail, Morse code was designed for telegraphic communication. Alongside letters, **morse code numbers** were introduced to make the system practical for real-world use. They allowed operators to transmit essential numerical data efficiently.
 
-This intuitive pattern allows for quick recognition and transmission, essential for telegraphic communication in the 19th and 20th centuries.
+The sequence of Morse code numbers follows a logical pattern:
 
-## **The Future of Morse Code Numbers**
+#### 
 
-Despite advancements in digital communication, Morse code continues to hold value in specialized fields. Amateur radio operators, military personnel, and emergency responders still train in Morse code for redundancy. Additionally, with the rise of minimalist communication and interest in retro technology, Morse code is being explored for new applications, including wearable tech and microcontroller-based projects.
+This structured design made **morse code numbers** easy to memorize and transmit quickly, ensuring efficiency during the peak of telegraphy.
 
----
+##  **The Modern and Future Uses of Morse Code Numbers**
+
+Even with advanced technology, **morse code numbers** remain valuable today. Amateur radio operators, military personnel, and emergency responders still use them as a reliable backup communication method.
+
+In aviation, navigation aids such as VOR stations broadcast identifiers that include Morse code numbers, allowing pilots to confirm locations accurately. In cybersecurity, morse code numbers have even been used to encode data, demonstrating their versatility in the digital era.
+
+With the resurgence of retro technologies and DIY electronics, morse code numbers are also being incorporated into wearable tech, microcontroller projects, and educational tools.
+
+
 
 ###### **FAQs**
 

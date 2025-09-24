@@ -94,7 +94,7 @@
 .dark {
   /* Dark theme tuned to brand */
   --background: #0f1210; /* deep near-black with green tint */
-  --foreground: #e6e6e6;
+  --foreground: #9ca3af;
 
   --card: #171b19;
   --card-foreground: #e6e6e6;
