@@ -18,7 +18,7 @@ export async function generateMetadata() {
 
 export default function InternationalMorseCodePage() {
   return (
-    <div className="bg-white h-full w-full m-0 p-0">
+    <div className="bg-background text-foreground h-full w-full m-0 p-0">
       <InternationalMorseCode />
     </div>
   );

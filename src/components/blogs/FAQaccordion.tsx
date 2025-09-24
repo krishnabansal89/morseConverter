@@ -20,7 +20,7 @@ const clientPtComponents = {
       <h3 className="text-md font-bold my-2">{children}</h3>
     ),
     blockquote: ({ children }: { children: React.ReactNode }) => (
-      <blockquote className="border-l-4 border-gray-300 pl-4 italic my-4">{children}</blockquote>
+      <blockquote className="border-l-4 border-border pl-4 italic my-4 text-muted-foreground">{children}</blockquote>
     ),
     normal: ({ children }: { children: React.ReactNode }) => <p className="my-2">{children}</p>,
   },
@@ -40,7 +40,7 @@ const clientPtComponents = {
     link: ({ children, value }: { children: React.ReactNode; value: { href: string } }) => {
       const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined;
       return (
-        <a href={value.href} rel={rel} className="text-blue-600 hover:underline">
+        <a href={value.href} rel={rel} className="text-primary hover:underline">
           {children}
         </a>
       );
@@ -55,10 +55,10 @@ const FAQAccordion = ({ faqs }: { faqs: any[] }) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  let FaqMarkup:string;
+  let FaqMarkup: string = "";
 
-  faqs.map(faq=>{
-    FaqMarkup+= "### **1\. " + faq.question + "**  "+  "\n\n" + faq.answer[0].children[0].text + "\n\n"
+  faqs.map(faq => {
+    FaqMarkup += "### **1. " + faq.question + "**  " +  "\n\n" + (faq?.answer?.[0]?.children?.[0]?.text || "") + "\n\n"
   })
 
   
@@ -70,16 +70,16 @@ const FAQAccordion = ({ faqs }: { faqs: any[] }) => {
         {faqs.map((faq, index) => (
           <div
             key={faq._key || index}
-            className="border border-gray-200 rounded-lg overflow-hidden"
+            className="border border-border rounded-lg overflow-hidden bg-card text-foreground"
           >
             <button
               onClick={() => toggleFAQ(index)}
-              className="flex justify-between items-center w-full p-4 text-left bg-gray-50 hover:bg-gray-100 transition-colors duration-200"
+              className="flex justify-between items-center w-full p-4 text-left bg-muted hover:bg-muted/80 transition-colors duration-200"
             >
               <h3 className="text-lg font-semibold">{faq.question}</h3>
               <ChevronDown
-                className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
-                  openIndex === index ? 'transform rotate-180' : ''
+                className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${
+                  openIndex === index ? 'rotate-180' : ''
                 }`}
               />
             </button>
@@ -89,7 +89,7 @@ const FAQAccordion = ({ faqs }: { faqs: any[] }) => {
                 openIndex === index ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
               }`}
             >
-              <div className="p-4 bg-white prose prose-sm max-w-none text-gray-700">
+              <div className="p-4 bg-card prose prose-sm dark:prose-invert max-w-none text-foreground">
                 {/* @ts-expect-error: Unresolved */}
                 <PortableText value={faq.answer} components={clientPtComponents} />
               </div>

@@ -1709,7 +1709,7 @@ export default function MorseConverter({
             disabled={!inputText}
             variant="ghost"
             size="sm"
-            className="text-[#372824] hover:text-black flex flex-col md:hidden"
+            className="text-[#372824] dark:text-[#9ca3af] hover:text-black flex flex-col md:hidden"
             title="Clear Input"
           >                <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
             {strings.clear}
@@ -1727,7 +1727,7 @@ export default function MorseConverter({
               }}
               placeholder={typingPlaceholder}
               className={`
-                  p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
+                  p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0 dark:text-gray-100
                   ${initialText.length === 0
                   ? "min-h-[200px] md:min-h-[300px]"
                   : "min-h-[100px] md:min-h-[200px]"}
@@ -1750,7 +1750,7 @@ export default function MorseConverter({
               onClick={handleClear}
               variant="ghost"
               size="sm"
-              className="text-[#372824] hover:text-black md:flex flex-col hidden"
+              className="text-[#372824] dark:text-[#9ca3af] hover:text-black md:flex flex-col hidden"
               title="Clear Input"
             >
               <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
@@ -1835,7 +1835,7 @@ export default function MorseConverter({
           </div>
 
           <div className={`
-              p-4 text-gray-800 whitespace-pre-wrap pl-8
+              p-4 text-gray-800 dark:text-gray-100 whitespace-pre-wrap pl-8
               ${initialText.length === 0
               ? "min-h-[200px] md:min-h-[300px]"
               : "min-h-[100px] md:min-h-[200px]"}
@@ -1843,7 +1843,7 @@ export default function MorseConverter({
               ? "text-center text-4xl md:text-6xl"
               : initialText.length > 1 ? "text-3xl/relaxed" : "text-xl/relaxed"}
             `}>
-            {outputText || (<span className="text-gray-400 text-md">
+            {outputText || (<span className="text-gray-400 dark:text-[#9ca3af] text-md">
               {mode === "morse-to-text"
                 ? strings.convertedTextWillAppearHere
                 : strings.morseCodeWillAppearHere
@@ -1924,7 +1924,7 @@ export default function MorseConverter({
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+                className="relative text-gray-500 hover:text-gray-700 flex flex-col dark:text-[#9ca3af]"
                 title="Help"
                 onClick={handleHelp}
               >
@@ -1957,7 +1957,7 @@ export default function MorseConverter({
         </div>
 
         <CollapsibleContent>
-          <div className="p-4 border-t border-gray-100 grid gap-4">
+          <div className="p-4 border-t border-gray-100 grid gap-4 dark:text-[#9ca3af]">
             <div className="grid grid-cols-4 items-center gap-4">
               <label className="text-sm text-right col-span-1">
                 WPM:

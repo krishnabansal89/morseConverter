@@ -21,11 +21,11 @@ interface BreadcrumbProps {
 
 const defaultProps = {
   homeElement: <Home size={16} />,
-  separator: <ChevronRight size={16} className="mx-2 text-gray-400" />,
+  separator: <ChevronRight size={16} className="mx-2 text-muted-foreground" />,
   containerClasses: "flex py-4 text-sm",
   listClasses: "flex items-center",
-  activeItemClasses: "text-[#456359] font-medium",
-  inactiveItemClasses: "text-gray-500 hover:text-[#324740] transition-colors",
+  activeItemClasses: "text-primary font-medium",
+  inactiveItemClasses: "text-muted-foreground hover:text-foreground transition-colors",
   customLabels: {},
   excludePaths: [],
   transformLabel: true,

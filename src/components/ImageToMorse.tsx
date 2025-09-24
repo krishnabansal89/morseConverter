@@ -734,7 +734,7 @@ export default function ImageMorseTranslator() {
                     onDragOver={handleDragOver}
                     onDrop={handleDrop}
                     className={`
-                      relative w-20 h-14 rounded-lg border-2 overflow-hidden
+                      relative w-20 h-14 rounded-lg border-2 overflow-hidden dark:bg-card
                       ${file ? "border-[#456359]" : "border-dashed border-[#456359]/50 bg-gray-50 hover:bg-gray-100"}
                       ${isOcrRunning ? "opacity-50 cursor-not-allowed" : ""}
                       flex items-center justify-center group
@@ -823,7 +823,7 @@ export default function ImageMorseTranslator() {
                 placeholder={typingPlaceholder}
                 className={`
                   h-full p-4 border-0 min-h-[20vw] rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0
-                  text-xl/relaxed
+                  text-xl/relaxed dark:text-gray-100
                 `}
               />
               {inputError && (
@@ -839,7 +839,7 @@ export default function ImageMorseTranslator() {
                 onClick={handleClear}
                 variant="ghost"
                 size="sm"
-                className="text-[#372824] hover:text-black md:flex flex-col hidden"
+                className="text-[#372824] dark:text-[#9ca3af] hover:text-black md:flex flex-col hidden"
                 title="Clear Input"
               >
                 <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
@@ -897,7 +897,7 @@ export default function ImageMorseTranslator() {
             </div>
 
             {/* middle content: stretch + scroll */}
-            <div className="flex-1 min-h-0 p-4 text-gray-800 whitespace-pre-wrap overflow-auto">
+            <div className="flex-1 min-h-0 p-4 text-gray-800 whitespace-pre-wrap overflow-auto dark:text-gray-100">
               {isOutputReady ? (
                 <div className="font-mono break-words text-2xl/relaxed">{outputText}</div>
               ) : (
@@ -963,7 +963,7 @@ export default function ImageMorseTranslator() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+                  className="relative text-gray-500 hover:text-gray-700 flex flex-col dark:text-[#9ca3af]"
                   title="Help"
                   onClick={() => {
                     showAlert(
@@ -993,7 +993,7 @@ export default function ImageMorseTranslator() {
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent>
-            <div className="p-4 border-t border-gray-100 grid gap-4">
+            <div className="p-4 border-t border-gray-100 grid gap-4 dark:text-[#9ca3af]">
               <div className="grid grid-cols-4 items-center gap-4">
                 <label className="text-sm text-right col-span-1">WPM:</label>
                 <div className="col-span-2">

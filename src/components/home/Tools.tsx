@@ -15,7 +15,7 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
         <div className={`rounded-3xl p-8  ${bgColor}  h-full`}>
             <div className="flex flex-col h-full">
                 <div className="mb-6">
-                    <span className="inline-block px-3 py-1 text-sm font-medium bg-white rounded-full">{type}</span>
+                    <span className="inline-block px-3 py-1 text-sm font-medium bg-card rounded-full">{type}</span>
                 </div>  
 
 
@@ -74,14 +74,14 @@ export default function Features() {
     ]
 
     return (
-        <section id="features" className="bg-[rgb(236,232,228)] w-[98%]  md:px-20 mx-auto p-4 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col font-poppins">
+        <section id="features" className="bg-background w-[98%]  md:px-20 mx-auto p-4 rounded-lg rounded-b-none rounded-t-none shadow-lg h-fit flex flex-col font-poppins">
             <div className="container mx-auto px-4 md:mt-20 mt-10">
                 <div className=" mx-auto">
                     <div className="text-center mb-12">
                         <h2 className=" md:text-5xl/snug text-4xl/snug bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text font-bold  mb-4">
                             Try our Free Morse Tools 
                         </h2>
-                        <p className="text-neutral-600 font-maitree">
+                        <p className="text-muted-foreground font-maitree">
                             Explore our Morse code tools and services
                         </p>
                     </div>

@@ -52,7 +52,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
   const sectionsCount = (showAlphabet ? 1 : 0) + (showNumbers ? 1 : 0);
 
   return (
-    <div className="w-[98%] mx-auto bg-[rgb(236,232,228)]  p-4 py-10 md:px-20">
+    <div className="w-[98%] mx-auto bg-background  p-4 py-10 md:px-20">
       <h2 className="md:text-3xl text-2xl bg-gradient-to-r text-center mb-8 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight">
         Explore More Morse Code Resources
       </h2>
@@ -68,7 +68,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
             {/* Alphabet Morse Codes */}
             {showAlphabet && (
               <section className="">
-                <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
+                <h3 className="text-xl text-center font-semibold mb-4 text-foreground font-maitree">
                   A-Z Morse Code Reference
                 </h3>
                 <div className="flex flex-wrap justify-evenly gap-2">
@@ -76,7 +76,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
                     <Link
                       key={link.label}
                       href={link.url}
-                      className="inline-block bg-white hover:bg-[#456359] text-[#456359] hover:text-white font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-[#456359]/40 hover:shadow-md"
+                      className="inline-block bg-card hover:bg-primary text-primary hover:text-primary-foreground font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-primary/40 hover:shadow-md"
                     >
                       {link.label}
                     </Link>
@@ -88,7 +88,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
             {/* Number Morse Codes */}
             {showNumbers && (
               <section className="">
-                <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
+                <h3 className="text-xl text-center font-semibold mb-4 text-foreground font-maitree">
                   0-9 Morse Code Reference
                 </h3>
                 <div className="flex flex-wrap justify-evenly gap-2">
@@ -96,7 +96,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
                     <Link
                       key={link.label}
                       href={link.url}
-                      className="inline-block bg-white hover:bg-[#456359] text-[#456359] hover:text-white font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-[#456359]/40 hover:shadow-md"
+                      className="inline-block bg-card hover:bg-primary text-primary hover:text-primary-foreground font-bold rounded-lg px-3 py-2 transition-all duration-200 border border-primary/40 hover:shadow-md"
                     >
                       {link.label}
                     </Link>
@@ -109,7 +109,7 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
         {/* Morse Code Tools */}
         {!exclude.includes("tools") && (
           <section>
-            <h3 className="text-xl text-center font-semibold mb-4 text-[#2d2d2d] font-maitree">
+            <h3 className="text-xl text-center font-semibold mb-4 text-foreground font-maitree">
               Morse Code Tools & Generators
             </h3>
             <div className="grid md:grid-cols-2 gap-4">
@@ -117,20 +117,20 @@ export default function InternalLinkingPanel({ exclude = [], currentPage }: Prop
                 <Link
                   href={tool.url}
                   key={tool.title}
-                  className="bg-white hover:bg-gray-50 rounded-xl p-5 py-8 shadow-sm hover:shadow-md border border-gray-200 transition-all duration-200 group"
+                  className="bg-card hover:bg-muted/80 rounded-xl p-5 py-8 shadow-sm hover:shadow-md border border-border transition-all duration-200 group"
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <span className="text-xs font-medium px-2 py-1 bg-[#456359] text-white rounded-full">
+                    <span className="text-xs font-medium px-2 py-1 bg-primary text-primary-foreground rounded-full">
                       {tool.category}
                     </span>
-                    <span className="text-[#456359] group-hover:translate-x-1 transition-transform">
+                    <span className="text-primary group-hover:translate-x-1 transition-transform">
                       →
                     </span>
                   </div>
-                  <h4 className="font-bold text-lg text-[#2d2d2d] mb-2 group-hover:text-[#456359] transition-colors">
+                  <h4 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors">
                     {tool.title}
                   </h4>
-                  <p className="text-sm text-gray-600 font-maitree font-extralight">
+                  <p className="text-sm text-muted-foreground font-maitree font-extralight">
                     {tool.desc}
                   </p>
                 </Link>

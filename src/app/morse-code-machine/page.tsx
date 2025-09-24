@@ -90,7 +90,7 @@ Yes. No data is stored or shared. All conversions happen instantly in your brows
 export default function Page() {
 
     return (
-        <div className="bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
+        <div className="bg-background text-foreground w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none  h-fit flex flex-col ">
 
 
             <div className="max-w-5xl mx-auto mb-20">
@@ -98,45 +98,45 @@ export default function Page() {
 
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     h1: ({ }) => <div />,
-                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-foreground font-medium  my-6   ">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-foreground">{children}</h3>,
                     h4: ({ }) =>
-                        <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">                <div className="editor-window w-full h-full bg-white rounded-lg shadow-lg mb-10">
+                        <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">                <div className="editor-window w-full h-full bg-card rounded-lg shadow-lg mb-10">
                             <MorseCodeMachine />                                    </div>
                         </div>,
                     h5: ({ children }) => <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold   tracking-tight md:px-10 "> {children}</h1>,
                     h6: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> <strong> {children} </strong></h2>,
 
-                    p: ({ children }) => <p className="mt-2 font-maitree  text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                    p: ({ children }) => <p className="mt-2 font-maitree  text-foreground md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
-                    li: ({ children }) => <li className="text-[#2d2d2d] list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
+                    li: ({ children }) => <li className="text-foreground list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                     table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
-                    thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
+                    thead: ({ children }) => <thead className="bg-primary text-primary-foreground">{children}</thead>,
                     tbody: ({ children }) => <tbody>{children}</tbody>,
                     tr: ({ children }) => <tr className="  ">{children}</tr>,
                     th: ({ children }) => <th className="px-4 py-2">{children}</th>,
                     td: ({ children }) => <td className="border px-4 py-2">{children}</td>,
-                    strong: ({ children }) => <strong className="font-bold text-[#2d2d2d]">{children}</strong>,
+                    strong: ({ children }) => <strong className="font-bold text-foreground">{children}</strong>,
 
                 }} >{markdownContent}</Markdown>
             </div>
-            <FAQSchemaLD markup={`### **1\. What does a Morse Code Machine do?**  
+            <FAQSchemaLD markup={`### **1. What does a Morse Code Machine do?**  
 
 A Morse Code Machine translates text into Morse code and vice versa. It uses dots and dashes to represent letters, numbers, and symbols, enabling message conversion in both directions.
 
-### **2\. Is this Morse Code Machine accurate?**  
+### **2. Is this Morse Code Machine accurate?**  
 
 Yes, it follows the International Morse Code standards and ensures accurate encoding and decoding. It's regularly tested for precision across multiple browsers and devices.
 
-### **3\. Can I use this Morse Code Machine on mobile?**  
+### **3. Can I use this Morse Code Machine on mobile?**  
 
 Absolutely. The tool is fully mobile-responsive and works flawlessly on smartphones and tablets, as well as desktops.
 
-### **4\. Does the Morse Code Machine support special characters?** 
+### **4. Does the Morse Code Machine support special characters?** 
  
 It supports most common letters, numbers, and basic punctuation. Characters not in the Morse code system are ignored to maintain output accuracy.
 
-### **5\. Is this Morse Code Machine safe and private?**  
+### **5. Is this Morse Code Machine safe and private?**  
 
 Yes. No data is stored or shared. All conversions happen instantly in your browser for complete privacy and security.
 `} />

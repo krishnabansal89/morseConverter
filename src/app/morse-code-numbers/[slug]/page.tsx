@@ -116,10 +116,6 @@ function generateMorseMarkdown(character: string, morse: string): string {
     // Get uppercase version of the character to match the keys in our reverse map
     const upperChar = character;
 
-    // Find the morse code for this character
-
-
-
     // Create a readable version replacing dots and dashes with proper symbols
     const readableMorse = morse.replace(/\./g, '·').replace(/\-/g, '−');
 
@@ -171,11 +167,11 @@ The simplicity of **${letter}** in Morse code makes it one of the easiest letter
 ##### **FAQs**
 
 
- **1\. How do you say ${letter} in Morse code out loud?**  
+ **1. How do you say ${letter} in Morse code out loud?**  
 
 **${letter}** is pronounced as ${((morseTraslation.replaceAll(".", "di ")).replaceAll("-", "dah "))} ,  with "di" representing the dot and "dah" for the dash.
 
- **2\. How do I remember ${letter} in Morse code easily?**  
+ **2. How do I remember ${letter} in Morse code easily?**  
  
 A simple trick is to think of the letter ${letter} as an  ${morseTraslation.split('').map((signal, i) => {
         let data;
@@ -188,9 +184,9 @@ A simple trick is to think of the letter ${letter} as an  ${morseTraslation.spli
         return data;
     })} 
 
- **3\. Can Morse code for ${letter} be used in flashing lights?**  
+ **3. Can Morse code for ${letter} be used in flashing lights?**  
 
-Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.split('').map((signal, i) => {
+Yes! You can communicate **${letter}** using a flashlight— ${morseTraslation.split('').map((signal, i) => {
         let data;
         if (signal === '.') {
             data = " A short blink";
@@ -203,12 +199,12 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
 
 ` 
     const FaqMarkup = `
-    ### **1\. How do you say ${letter} in Morse code out loud?**  
+    ### **1. How do you say ${letter} in Morse code out loud?**  
 
 
     **${letter}** is pronounced as ${((morseTraslation.replaceAll(".", "di ")).replaceAll("-", "dah "))} ,  with "di" representing the dot and "dah" for the dash.
         
-      ### **2\. How do I remember ${letter} in Morse code easily?**  
+      ### **2. How do I remember ${letter} in Morse code easily?**  
 
       
         A simple trick is to think of the letter ${letter} as an  ${morseTraslation.split('').map((signal, i) => {
@@ -222,10 +218,10 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
                 return data;
             })} 
         
-        ### **3\. Can Morse code for ${letter} be used in flashing lights?**  
+        ### **3. Can Morse code for ${letter} be used in flashing lights?**  
 
 
-        Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.split('').map((signal, i) => {
+        Yes! You can communicate **${letter}** using a flashlight— ${morseTraslation.split('').map((signal, i) => {
                 let data;
                 if (signal === '.') {
                     data = " A short blink";
@@ -241,16 +237,17 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
 
 
 
+
     return (
-        <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg  rounded-b-none  h-fit flex flex-col ">
+        <div className="hero bg-background w-[98%] mx-auto p-4 md:px-10 rounded-lg  rounded-b-none  h-fit flex flex-col ">
             <div className=" md:px-14 flex items-start "><Breadcrumb />            </div>
             <div className="w-full h-fit md:my-20 my-10  grid md:px-10  md:grid-cols-[65%_35%] grid-cols-1 justify-center ">
                 <div className="flex  items-center  ">
-                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-[#2d2d2d]  tracking-tight md:px-4 font-poppins">What is {letter} in Morse Code ?   <br></br> <span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text xl:text-4xl/relaxed lg:text-3xl/relaxed  text-2xl/relaxed "> Meaning, Representation & Uses </span></h1>
+                    <h1 className="xl:text-5xl/relaxed lg:text-4xl/relaxed  text-3xl/relaxed  font-medium text-foreground  tracking-tight md:px-4 font-poppins">What is {letter} in Morse Code ?   <br></br> <span className="bg-gradient-to-r from-green-500 to-teal-900 text-transparent bg-clip-text xl:text-4xl/relaxed lg:text-3xl/relaxed  text-2xl/relaxed "> Meaning, Representation & Uses </span></h1>
                 </div>
                 <div className=" flex-col flex justify-center h-full px-2 ">
                     <div className="my-4">
-                        <p className="text-[#2d2d2d] tracking-tight w-[100%] font-medium   text-lg/relaxed font-maitree ">Discover what &apos;{letter}&apos; in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
+                        <p className="text-foreground tracking-tight w-[100%] font-medium   text-lg/relaxed font-maitree ">Discover what &apos;{letter}&apos; in Morse code is, its meaning, representation , and practical uses in communication, emergency signals, and technology. Learn how to decode and use Morse code effectively.
 
                         </p>
                     </div>
@@ -260,7 +257,7 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
 
             </div>
             <div className="editor-container  w-[98%] md:px-4 mx-auto h-fit flex justify-center items-center ">
-                <div className="editor-window lg:w-4/5 w-full h-[full] bg-white rounded-lg shadow-lg">
+                <div className="editor-window lg:w-4/5 w-full h-[full] bg-card rounded-lg shadow-lg">
                     <MorseConverter initialText={letter} textToMorse={true} />
                 </div>
             </div>
@@ -268,7 +265,7 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
                 <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r mx-auto from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center md:mb-12 mb-8   tracking-tight md:px-10 font-poppins"> Explore popular letter</h2>
                 <div className="grid grid-cols-3 w-[98%] p-4 md:px-10 mx-auto gap-y-4 ">
                     {popularLetters.map((letter) => (
-                        <Link key={letter} href={`/morse-code-numbers/number-${letter}-in-morse-code`} className="border-2 border-gray-300 px-4 py-2 font-semibold text-[#2d2d2d] font-maitree "> {letter} in Morse Code </Link>
+                        <Link key={letter} href={`/morse-code-numbers/number-${letter}-in-morse-code`} className="border-2 border-border px-4 py-2 font-semibold text-foreground font-maitree "> {letter} in Morse Code </Link>
                     ))}
 
 
@@ -277,17 +274,17 @@ Yes\! You can communicate **${letter}** using a flashlight— ${morseTraslation.
                     <Markdown remarkPlugins={[remarkGfm]} components={{
                         strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
 
-                        h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h1>,
-                        h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-[#2d2d2d] font-medium  my-6   ">{children}</h2>,
-                        h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                        h1: ({ children }) => <h1 className="md:text-2xl/relaxed text-xl/relaxed  text-foreground font-medium  my-6   ">{children}</h1>,
+                        h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed  text-foreground font-medium  my-6   ">{children}</h2>,
+                        h3: ({ children }) => <h3 className="text-xl  font-medium my-4 text-foreground">{children}</h3>,
 
                         h5: ({ children }) => <div className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-medium   tracking-tight md:px-10 "> {children}</div>,
 
-                        p: ({ children }) => <p className="mt-2 font-maitree  mx-auto text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                        p: ({ children }) => <p className="mt-2 font-maitree  mx-auto text-foreground md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                         br: () => <br />,
-                        li: ({ children }) => <li className="text-[#2d2d2d]  mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
+                        li: ({ children }) => <li className="text-foreground  mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree  text-lg/relaxed font-extralight">{children}</li>,
                         table: ({ children }) => <table className="table-auto md:w-2/3 w-[90%] mx-auto my-10">{children}</table>,
-                        thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
+                        thead: ({ children }) => <thead className="bg-primary text-primary-foreground">{children}</thead>,
                         tbody: ({ children }) => <tbody>{children}</tbody>,
                         tr: ({ children }) => <tr className="  ">{children}</tr>,
                         th: ({ children }) => <th className="px-4 py-2">{children}</th>,

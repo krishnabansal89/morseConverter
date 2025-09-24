@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 import { Navbar } from "../components/home/Navbar";
 import Footer from "../components/home/Footer";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,8 +35,8 @@ const maitree = Maitree({
 const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
 
 export const metadata: Metadata = {
-  title: "Morse Code Translator & Generator \- Convert & Decode English to Morse Code Instantly",
-  description: "Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate Morse signals easily with audio playback and sharing options.",
+  title: "Morse Code Translator & Generator - Convert & Decode English to Morse Code Instantly",
+  description: "Translate English to Morse code and vice versa instantly with our free Morse Code Translator. Convert, decode, and generate & make Morse signals easily with audio playback and sharing options.",
   alternates: {
     canonical: `${PUBLIC_URL}/`,
   }
@@ -102,12 +103,19 @@ export default function RootLayout({
         ))}
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${maitree.variable} antialiased bg-background-secondary`}
       >
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
-        <GoogleAnalytics gaId="G-FVT0DZM79K" />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <GoogleAnalytics gaId="G-FVT0DZM79K" />
+        </ThemeProvider>
       </body>
     </html>
   );

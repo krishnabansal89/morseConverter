@@ -381,7 +381,7 @@ export default function MorseCodeTranslator({
                 value={inputText}
                 onChange={handleInputChange}
                 placeholder={typingPlaceholder}
-                className="p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[200px] md:min-h-[200px] text-xl/relaxed"
+                className="p-4 border-0 rounded-none resize-none focus-visible:ring-0 focus-visible:ring-offset-0 min-h-[200px] md:min-h-[200px] text-xl/relaxed dark:text-gray-100"
               />
             </div>
 
@@ -418,7 +418,7 @@ export default function MorseCodeTranslator({
                   onClick={handleClear}
                   variant="ghost"
                   size="sm"
-                  className="text-[#372824] hover:text-black flex flex-col"
+                  className="text-[#372824] dark:text-[#9ca3af] hover:text-black flex flex-col"
                   title="Clear Input"
                 >
                   <Trash2 className="h-5 w-5 p-0 m-0 -mb-2" />
@@ -428,7 +428,7 @@ export default function MorseCodeTranslator({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="relative text-gray-500 hover:text-gray-700 flex flex-col"
+                  className="relative text-gray-500 hover:text-gray-700 flex flex-col dark:text-[#9ca3af]"
                   title="Help"
                   onClick={handleHelp}
                 >
@@ -460,7 +460,7 @@ export default function MorseCodeTranslator({
           </div>
 
           <CollapsibleContent>
-            <div className="p-4 border-t border-gray-100 grid gap-4">
+            <div className="p-4 border-t border-gray-100 grid gap-4 dark:text-[#9ca3af]">
               <div className="grid grid-cols-4 items-center gap-4">
                 <label className="text-sm text-right col-span-1">
                   WPM:

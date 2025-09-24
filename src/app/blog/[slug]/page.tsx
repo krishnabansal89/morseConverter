@@ -59,7 +59,7 @@ const ptComponents = {
                         style={{ maxWidth: '100%', height: 'auto' }}
                     />
                     {value.caption && (
-                        <figcaption className="text-center text-sm text-gray-600 mt-2">
+                        <figcaption className="text-center text-sm text-muted-foreground mt-2">
                             {value.caption}
                         </figcaption>
                     )}
@@ -71,7 +71,7 @@ const ptComponents = {
         link: ({ children, value }: { children: React.ReactNode; value: { href: string } }) => {
             const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined;
             return (
-                <a href={value.href} rel={rel} className="text-blue-600 hover:underline">
+                <a href={value.href} rel={rel} className="text-primary hover:underline">
                     {children}
                 </a>
             );
@@ -88,7 +88,7 @@ const ptComponents = {
             <h3 className="text-2xl font-bold mt-6 mb-3 font-poppins">{children}</h3>
         ),
         blockquote: ({ children }: { children: React.ReactNode }) => (
-            <blockquote className="border-l-4 border-gray-300 pl-4 italic my-6 text-gray-700">
+            <blockquote className="border-l-4 border-border pl-4 italic my-6 text-muted-foreground">
                 {children}
             </blockquote>
         ),
@@ -137,9 +137,9 @@ export default async function BlogPostPage(
     const authorImageUrl = author?.image ? urlFor(author.image)?.width(80).height(80).auto('format').url() : null;
 
     return (
-        <article className="container mx-auto px-4 py-8  bg-[rgb(236,232,228)] rounded-lg">
+        <article className="container mx-auto px-4 py-8  bg-background rounded-lg text-foreground">
 
-            <div className='max-w-3xl mx-auto text-[#2d2d2d] '>
+            <div className='max-w-3xl mx-auto'>
             <Breadcrumb />
 
 
@@ -149,7 +149,7 @@ export default async function BlogPostPage(
                 <h1 className="text-3xl md:text-4xl font-bold mb-4 mt-10">{title}</h1>
 
                 {/* Post Metadata */}
-                <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-gray-600">
+                <div className="mb-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
                     {publishedAt && (
                         <div className="flex items-center gap-1.5">
                             <Calendar size={16} />
@@ -203,12 +203,12 @@ export default async function BlogPostPage(
                         <div>
                             <Link
                                 href={`/author/${author.slug.current}`}
-                                className="font-medium text-lg hover:text-blue-600"
+                                className="font-medium text-lg hover:underline text-primary"
                             >
                                 {author.name}
                             </Link>
                             {author.shortBio && (
-                                <p className="text-sm text-gray-600 mt-1 line-clamp-2">{author.shortBio}</p>
+                                <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{author.shortBio}</p>
                             )}
                         </div>
                     </div>
@@ -221,7 +221,7 @@ export default async function BlogPostPage(
                             <Link
                                 key={tag}
                                 href={`/blog/tag/${tag}`}
-                                className="inline-flex items-center gap-1 px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full hover:bg-gray-200"
+                                className="inline-flex items-center gap-1 px-3 py-1 text-sm bg-muted text-foreground rounded-full hover:bg-muted/80"
                             >
                                 <Tag size={14} />
                                 {tag}
@@ -232,7 +232,7 @@ export default async function BlogPostPage(
 
                 {/* Main Content */}
                 {body && (
-                    <div className="prose prose-lg max-w-none font-maitree">
+                    <div className="prose prose-lg max-w-none font-maitree prose-invert:dark">
                         {/* @ts-expect-error: Solve Later */}
                         <PortableText value={body} components={ptComponents} />
                     </div>
@@ -271,19 +271,19 @@ export default async function BlogPostPage(
                                         <div className="p-4">
                                             <Link
                                                 href={`/blog/${relatedPost.slug.current}`}
-                                                className="text-lg font-medium hover:text-blue-600 line-clamp-2"
+                                                className="text-lg font-medium hover:underline text-primary line-clamp-2"
                                             >
                                                 {relatedPost.title}
                                             </Link>
                                             {relatedPost.description && (
-                                                <p className="text-gray-600 mt-2 line-clamp-2">{relatedPost.description}</p>
+                                                <p className="text-muted-foreground mt-2 line-clamp-2">{relatedPost.description}</p>
                                             )}
                                             <div className="mt-3 flex justify-between text-sm">
                                                 {relatedPost.author && (
-                                                    <span className="text-gray-600">By {relatedPost.author.name}</span>
+                                                    <span className="text-muted-foreground">By {relatedPost.author.name}</span>
                                                 )}
                                                 {relatedPost.readingTimeInMinutes && (
-                                                    <span className="text-gray-500">{relatedPost.readingTimeInMinutes} min read</span>
+                                                    <span className="text-muted-foreground">{relatedPost.readingTimeInMinutes} min read</span>
                                                 )}
                                             </div>
                                         </div>

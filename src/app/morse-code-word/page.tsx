@@ -139,7 +139,7 @@ Effective learning tools include **mobile apps** (like Morse Trainer), **online 
 
 ### **6. Can I use Morse code words for personal messages?**
 
-Yes! Many people use Morse code words in **jewelry**, **tattoos**, **art**, and **personal notes**. Popular choices include "LOVE," names, or meaningful phrases converted to dots and dashes.
+Yes! Many people use Morse code words in **jewelry**, **tattoos**, **art**, and **personal notes**. Popular choices include "LOVE," names, or meaningful phrases.
 `;
 
 export default async function MorseCodeWordsPage() {
@@ -163,7 +163,7 @@ export default async function MorseCodeWordsPage() {
     );
 
     return (
-        <div className="hero bg-[rgb(236,232,228)] w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none h-fit flex flex-col">
+        <div className="hero bg-background w-[98%] mx-auto p-4 md:px-10 rounded-lg rounded-b-none h-fit flex flex-col">
             <div className="md:px-14 flex items-start">
                 <Breadcrumb />
             </div>
@@ -171,18 +171,18 @@ export default async function MorseCodeWordsPage() {
                 <Markdown remarkPlugins={[remarkGfm]} components={{
                     strong: ({ children }) => <strong style={{ fontWeight: 'bold' }}>{children}</strong>,
                     h1: ({ children }) =>  <h1 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight md:px-10"> {children}</h1>,
-                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-[#2d2d2d] font-medium my-6">{children}</h2>,
-                    h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-[#2d2d2d]">{children}</h3>,
+                    h2: ({ children }) => <h2 className="md:text-2xl/relaxed text-xl/relaxed text-foreground font-medium my-6">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-xl font-medium my-4 text-foreground">{children}</h3>,
                     h5: ({ children }) => <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r text-center my-12 from-green-500 to-teal-900 text-transparent bg-clip-text font-bold tracking-tight md:px-10"> {children}</h2>,
-                    p: ({ children }) => <p className="mt-2 font-maitree mx-auto text-[#2d2d2d] md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
+                    p: ({ children }) => <p className="mt-2 font-maitree mx-auto text-foreground md:ml-4 ml-2 text-lg/relaxed font-extralight">{children}</p>,
                     br: () => <br />,
-                    li: ({ children }) => <li className="text-[#2d2d2d] mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree text-lg/relaxed font-extralight">{children}</li>,
-                    table: ({ children }) => <div className="overflow-x-auto my-10"><table className="table-auto w-full md:w-2/3 mx-auto border-collapse border border-gray-300 text-sm md:text-base">{children}</table></div>,
-                    thead: ({ children }) => <thead className="bg-[#456359] text-white">{children}</thead>,
+                    li: ({ children }) => <li className="text-foreground mx-auto list-disc md:ml-10 ml-4 my-2 font-maitree text-lg/relaxed font-extralight">{children}</li>,
+                    table: ({ children }) => <div className="overflow-x-auto my-10"><table className="table-auto w-full md:w-2/3 mx-auto border-collapse border border-border text-sm md:text-base">{children}</table></div>,
+                    thead: ({ children }) => <thead className="bg-primary text-primary-foreground">{children}</thead>,
                     tbody: ({ children }) => <tbody>{children}</tbody>,
-                    tr: ({ children }) => <tr className="border-b border-gray-200 hover:bg-gray-50">{children}</tr>,
+                    tr: ({ children }) => <tr className="border-b border-border hover:bg-muted/50">{children}</tr>,
                     th: ({ children }) => <th className="px-2 md:px-4 py-2 md:py-3 text-left font-medium text-xs md:text-sm">{children}</th>,
-                    td: ({ children }) => <td className="border px-2 md:px-4 py-1 md:py-2 text-[#2d2d2d] font-maitree text-xs md:text-lg">{children}</td>,
+                    td: ({ children }) => <td className="border px-2 md:px-4 py-1 md:py-2 text-foreground font-maitree text-xs md:text-lg">{children}</td>,
                 }}>
                     {mainContentMarkdown + faqMarkdownForPage}
                 </Markdown>
