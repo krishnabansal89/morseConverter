@@ -94,7 +94,7 @@
 .dark {
   /* Dark theme tuned to brand */
   --background: #0f1210; /* deep near-black with green tint */
-  --foreground: #9ca3af;
+  --foreground: #ffffff;
 
   --card: #171b19;
   --card-foreground: #e6e6e6;
@@ -102,14 +102,14 @@
   --popover: #171b19;
   --popover-foreground: #e6e6e6;
 
-  --primary: #5e8e80; /* lifted brand for contrast on dark */
+  --primary: #478c59; /* lifted brand for contrast on dark */
   --primary-foreground: #0f1210;
 
   --secondary: #2a1f1b;
   --secondary-foreground: #e6e6e6;
 
   --muted: #1c211f;
-  --muted-foreground: #9ca3af;
+  --muted-foreground: #ffffff;
 
   --accent: #1c211f;
   --accent-foreground: #e6e6e6;

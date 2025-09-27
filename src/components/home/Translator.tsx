@@ -1627,10 +1627,10 @@ export default function MorseConverter({
               className="rounded-full h-12 w-12 border-[#456359] bg-white  shadow-md overflow-hidden "
             >
               <div className="swap-arrow-container">
-                <ArrowLeftRight className="h-6 w-6 text-[#456359]" />
+                <ArrowLeftRight className="h-6 w-6 text-primary" />
               </div>
             </Button>
-            <span className="text-xs mt-1 text-[#456359]">{strings.swap}</span>
+            <span className="text-xs mt-1 text-primary">{strings.swap}</span>
           </div>
         </div>
 
@@ -1638,7 +1638,7 @@ export default function MorseConverter({
         <div className="border-r border-gray-200">
           <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200  md:w-full md:flex-row flex-col gap-y-2">
             <div className="flex items-center">
-              <span className="md:text-lg text-2xl font-bold text-[#456359]">
+              <span className="md:text-lg text-2xl font-bold text-primary">
                 {mode === "morse-to-text" ? strings.headingMorseCode : strings.headingText}
               </span>
             </div>
@@ -1650,7 +1650,7 @@ export default function MorseConverter({
                 onClick={() => playSelectedEffects(inputText, true)}
                 variant="ghost"
                 size="sm"
-                className={`relative text-[#456359] ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row  gap-1`}
+                className={`relative text-primary ${isInputPlaying || isInputVisualPlaying ? 'bg-gray-100' : ''} flex items-center md:flex-row  gap-1`}
                 disabled={
                   !inputText ||
                   (!audioEffectSelected && !visualEffectSelected) ||
@@ -1671,7 +1671,7 @@ export default function MorseConverter({
                 onClick={() => isAnyPaused ? resumeSelectedEffects(true) : pauseSelectedEffects(true)}
                 variant="ghost"
                 size="sm"
-                className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
+                className={`relative text-primary ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
                 disabled={
                   !((isInputPlaying || isInputVisualPlaying) || isAnyPaused) ||
                   (visualEffectSelected && !audioEffectSelected && !isInputMorse)
@@ -1690,7 +1690,7 @@ export default function MorseConverter({
                 onClick={() => stopAllEffects(true)}
                 variant="ghost"
                 size="sm"
-                className="relative text-[#456359] flex items-center gap-1 md:flex-row "
+                className="relative text-primary flex items-center gap-1 md:flex-row "
                 disabled={!(isInputPlaying || isInputVisualPlaying || isAnyPaused)}
                 title="Stop Input"
               >
@@ -1772,7 +1772,7 @@ export default function MorseConverter({
         <div>
           <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 text-[#372824] 200 md:w-full   md:flex-row flex-col gap-y-2 " >
             <div className="flex items-center">
-              <span className="md:text-lg text-2xl text-[#456359] font-bold">
+              <span className="md:text-lg text-2xl text-primary font-bold">
                 {mode === "morse-to-text" ? strings.headingText : strings.headingMorseCode}
               </span>
             </div>                {/* Playback control buttons */}
@@ -1781,7 +1781,7 @@ export default function MorseConverter({
                 onClick={() => playSelectedEffects(outputText, false)}
                 variant="ghost"
                 size="sm"
-                className={`relative text-[#456359] ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
+                className={`relative text-primary ${isPlaying || isVisualPlaying ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
                 disabled={
                   !outputText ||
                   (!audioEffectSelected && !visualEffectSelected) ||
@@ -1802,7 +1802,7 @@ export default function MorseConverter({
                 onClick={() => isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false)}
                 variant="ghost"
                 size="sm"
-                className={`relative text-[#456359] ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
+                className={`relative text-primary ${isAnyPaused ? 'bg-gray-100' : ''} flex items-center gap-1 md:flex-row `}
                 disabled={
                   !((isPlaying || isVisualPlaying) || isAnyPaused) ||
                   (visualEffectSelected && !audioEffectSelected && !isOutputMorse)
@@ -1821,7 +1821,7 @@ export default function MorseConverter({
                 onClick={() => stopAllEffects(false)}
                 variant="ghost"
                 size="sm"
-                className="relative text-[#456359] flex items-center gap-1 md:flex-row "
+                className="relative text-primary flex items-center gap-1 md:flex-row "
                 disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
                 title="Stop Output"
               >
@@ -1856,7 +1856,7 @@ export default function MorseConverter({
             onClick={toggleAudioEffect}
             variant="ghost"
             size="sm"
-            className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+            className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-primary hover:bg-background '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
             title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
             disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
           >
@@ -1871,7 +1871,7 @@ export default function MorseConverter({
               onClick={toggleVisualEffect}
               variant="ghost"
               size="sm"
-              className={`relative ${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+              className={`relative ${visualEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-primary hover:bg-background '} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
               title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
               disabled={isAnyPlaying || isAnyPaused || (!isInputMorse && !isOutputMorse) || (!audioEffectSelected && visualEffectSelected)}
             >
@@ -1943,12 +1943,12 @@ export default function MorseConverter({
       {/* Audio Settings at the bottom */}
       <Collapsible className="border-t border-gray-200">
         <div className="flex justify-between items-center px-4 py-2">
-          <span className="text-sm font-medium text-[#456359]">{strings.settings}</span>
+          <span className="text-sm font-medium text-primary">{strings.settings}</span>
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
               size="sm"
-              className="text-[#456359]"
+              className="text-primary"
             >
               <Settings className="h-5 w-5" />
               <span className="sr-only">Toggle {strings.settings.toLowerCase()}</span>

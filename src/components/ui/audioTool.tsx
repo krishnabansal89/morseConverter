@@ -369,7 +369,7 @@ export default function MorseCodeTranslator({
           <div>
             <div className="flex justify-between items-center p-4 border-b border-gray-200">
               <div className="flex items-center">
-                <span className="text-lg font-bold text-[#456359]">
+                <span className="text-lg font-bold text-primary">
                   {strings.headingText}
                 </span>
               </div>
@@ -401,7 +401,7 @@ export default function MorseCodeTranslator({
                   onClick={toggleAudioEffect}
                   variant="ghost"
                   size="sm"
-                  className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-[#456359] hover:bg-white'} flex items-center gap-1 py-10 md:py-0`}
+                  className={`relative ${audioEffectSelected ? 'bg-[#456359] hover:bg-[#456359] text-white hover:text-white' : 'text-primary hover:bg-white'} flex items-center gap-1 py-10 md:py-0`}
                   title={audioEffectSelected ? "Audio Enabled" : "Enable Audio"}
                 >
                   {flashText.button === "audioeffect" && flashText.active && (
@@ -446,12 +446,12 @@ export default function MorseCodeTranslator({
         {/* Audio Settings at the bottom */}
         <Collapsible className="border-t border-gray-200">
           <div className="flex justify-between items-center px-4 py-2">
-            <span className="text-sm font-medium text-[#456359]">{strings.settings}</span>
+            <span className="text-sm font-medium text-primary">{strings.settings}</span>
             <CollapsibleTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-[#456359]"
+                className="text-primary"
               >
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Toggle {strings.settings.toLowerCase()}</span>
