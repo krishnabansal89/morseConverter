@@ -711,7 +711,7 @@ export default function ImageMorseTranslator() {
             {/* top bar */}
             <div className="flex md:justify-between justify-around items-center p-4 border-b border-gray-200 md:w-full md:flex-row flex-col gap-y-2">
               <div className="flex items-center">
-                <span className="md:text-lg text-2xl font-bold text-[#456359]">
+                <span className="md:text-lg text-2xl font-bold text-primary">
                   Image & {strings.headingText}
                 </span>
               </div>
@@ -744,7 +744,7 @@ export default function ImageMorseTranslator() {
                     onMouseLeave={previewUrl ? handleImageMouseLeave : undefined}
                   >
                     {!previewUrl ? (
-                      <div className="flex flex-col items-center justify-center text-[#456359]/80">
+                      <div className="flex flex-col items-center justify-center text-primary/80">
                         <ImageIcon className="w-8 h-6 opacity-80" />
                         <span className="text-[10px] mt-1">Choose image</span>
                       </div>
@@ -856,7 +856,7 @@ export default function ImageMorseTranslator() {
             {/* top bar */}
             <div className="flex md:justify-between justify-around items-center p-4 py-[28px] border-b border-gray-200 text-[#372824] md:w-full md:flex-row flex-col gap-y-2">
               <div className="flex items-center">
-                <span className="md:text-lg text-2xl text-[#456359] font-bold">{strings.headingMorseCode}</span>
+                <span className="md:text-lg text-2xl text-primary font-bold">{strings.headingMorseCode}</span>
               </div>
 
               <div className="flex items-center gap-1">
@@ -864,7 +864,7 @@ export default function ImageMorseTranslator() {
                   onClick={() => playSelectedEffects(outputText, false)}
                   variant="ghost"
                   size="sm"
-                  className={`relative text-[#456359] ${isPlaying || isVisualPlaying ? "bg-gray-100" : ""} flex items-center gap-1`}
+                  className={`relative text-primary ${isPlaying || isVisualPlaying ? "bg-gray-100" : ""} flex items-center gap-1`}
                   disabled={!isOutputReady || (!audioEffectSelected && !visualEffectSelected) || (isInputPlaying || isInputVisualPlaying)}
                   title="Play Output"
                 >
@@ -875,7 +875,7 @@ export default function ImageMorseTranslator() {
                   onClick={() => (isAnyPaused ? resumeSelectedEffects(false) : pauseSelectedEffects(false))}
                   variant="ghost"
                   size="sm"
-                  className={`relative text-[#456359] ${isAnyPaused ? "bg-gray-100" : ""} flex items-center gap-1`}
+                  className={`relative text-primary ${isAnyPaused ? "bg-gray-100" : ""} flex items-center gap-1`}
                   disabled={!((isPlaying || isVisualPlaying) || isAnyPaused)}
                   title={isAnyPaused ? `${strings.resume} Output` : `${strings.pause} Output`}
                 >
@@ -886,7 +886,7 @@ export default function ImageMorseTranslator() {
                   onClick={() => stopAllEffects(false)}
                   variant="ghost"
                   size="sm"
-                  className="relative text-[#456359] flex items-center gap-1"
+                  className="relative text-primary flex items-center gap-1"
                   disabled={!(isPlaying || isVisualPlaying || isAnyPaused)}
                   title="Stop Output"
                 >
@@ -912,7 +912,7 @@ export default function ImageMorseTranslator() {
                   onClick={toggleAudioEffect}
                   variant="ghost"
                   size="sm"
-                  className={`relative ${audioEffectSelected ? "bg-[#456359] hover:bg-[#456359] text-white hover:text-white" : "text-[#456359] hover:bg-white"} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+                  className={`relative ${audioEffectSelected ? "bg-[#456359] hover:bg-[#456359] text-white hover:text-white" : "text-primary hover:bg-background"} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
                   title={audioEffectSelected ? "Audio Effect Selected" : "Select Audio Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (audioEffectSelected && !visualEffectSelected)}
                 >
@@ -925,7 +925,7 @@ export default function ImageMorseTranslator() {
                   onClick={toggleVisualEffect}
                   variant="ghost"
                   size="sm"
-                  className={`relative ${visualEffectSelected ? "bg-[#456359] hover:bg-[#456359] text-white hover:text-white" : "text-[#456359] hover:bg-white"} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
+                  className={`relative ${visualEffectSelected ? "bg-[#456359] hover:bg-[#456359] text-white hover:text-white" : "text-primary hover:bg-background"} flex items-center gap-1 md:flex-row flex-col py-10 md:py-0`}
                   title={visualEffectSelected ? "Visual Effect Selected" : "Select Visual Effect"}
                   disabled={isAnyPlaying || isAnyPaused || (!isOutputMorse && !isInputMorse) || (!audioEffectSelected && visualEffectSelected)}
                 >
@@ -984,9 +984,9 @@ export default function ImageMorseTranslator() {
         {/* Audio Settings */}
         <Collapsible className="border-t border-gray-200">
           <div className="flex justify-between items-center px-4 py-2">
-            <span className="text-sm font-medium text-[#456359]">{strings.settings}</span>
+            <span className="text-sm font-medium text-primary">{strings.settings}</span>
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm" className="text-[#456359]">
+              <Button variant="ghost" size="sm" className="text-primary">
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Toggle {strings.settings.toLowerCase()}</span>
               </Button>

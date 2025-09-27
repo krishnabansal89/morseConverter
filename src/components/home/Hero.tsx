@@ -15,8 +15,8 @@ export default function Hero() {
 
                     <div className="my-4">
                         <button>
-                            <Link href="/morse-code-machine" className="bg-primary mr-6 text-primary-foreground px-4 py-2 rounded-lg font-poppins hover:opacity-90">Morse Machine</Link>
-                            <a href="#converter" className="bg-primary text-primary-foreground px-4 py-2 rounded-lg font-poppins hover:opacity-90">Visit Store</a>
+                            <Link href="/morse-code-machine" className="bg-primary mr-6 text-white px-4 py-2 rounded-lg font-poppins hover:opacity-90">Morse Machine</Link>
+                            <a href="#converter" className="bg-primary text-white px-4 py-2 rounded-lg font-poppins hover:opacity-90">Visit Store</a>
 
                         </button>
                         

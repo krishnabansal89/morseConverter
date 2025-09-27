@@ -27,7 +27,7 @@ function FeatureCard({ type, title, description, href, bgColor }: FeatureCardPro
                 </div>
                     
 
-                <p className="text-[#ffffff]/70 text-lg font-maitree">{description}</p>
+                <p className="text-[#ffffff]/70 dark:text-foreground/80 text-lg font-maitree">{description}</p>
             </div>
         </div>
     )

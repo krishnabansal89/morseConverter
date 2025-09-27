@@ -31,7 +31,7 @@ export default function Benefits() {
       <div className="flex md:flex-row flex-col gap-4">
         <div className="md:w-[75%]   flex flex-col gap-4">
           <div className="grid sm:grid-cols-[60%_40%] grid-cols-1 sm:space-x-4 space-y-4 sm:space-y-0">
-            <div className="flex justify-center items-center rounded-2xl bg-[#456359]  text-white">
+            <div className="flex justify-center items-center rounded-2xl bg-primary  text-white">
               <FeatureBlock title="Instant & Accurate Conversion " description="Easily translate English to Morse Code and back with precision." />
             </div>
 
@@ -44,13 +44,13 @@ export default function Benefits() {
               <FeatureBlock title="Supports All Morse Code Variants" description="Includes international Morse code standards for accuracy." />
             </div>
 
-            <div className="flex-col  flex bg-[#456359]  text-white rounded-2xl ">
+            <div className="flex-col  flex bg-primary  text-white rounded-2xl ">
               <FeatureBlock title="100% Secured & Accessible" description="  Use our Morse code generator with 100% security and it's completely accessible to all" />
             </div>
           </div>
 
         </div>
-        <div className="md:w-[25%]  space-x-6  bg-[#456359]  text-white  rounded-2xl ">
+        <div className="md:w-[25%]  space-x-6  bg-primary  text-white  rounded-2xl ">
           <FeatureBlock title="Mobile-Friendly & Fast" description="Works flawlessly on all devices, ensuring accessibility anywhere." />
         </div>
 
