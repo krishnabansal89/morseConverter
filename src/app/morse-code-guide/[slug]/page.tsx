@@ -3,8 +3,10 @@ import Breadcrumb from "@/components/breadcrumb"; // Assuming this component exi
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD"; // Assuming this component exists
+import { getGuidePages } from "@/app/sitemap";
+import { notFound } from "next/navigation";
 
-export const dynamicParams = true;
+export const dynamicParams = false; // Only allow pages defined in generateStaticParams
 
 // Morse code mapping (reused)
 const characterToMorseMap: Record<string, string> = {
@@ -57,7 +59,11 @@ export async function generateMetadata({ params }: { params: tParams }) {
 }
 
 export async function generateStaticParams() {
-    return [];
+    // Only generate params for allowed guide pages from the database
+    const guidePages = await getGuidePages();
+    return guidePages.map(guide => ({
+        slug: guide.slug
+    }));
 }
 
 // Parse the slug to extract query, num, sequence, type, descriptor
@@ -138,7 +144,14 @@ function findMatches(num?: number, sequence?: string): { primaryMatch?: string; 
 
 export default async function SignalsInMorseCodePage({ params }: { params: tParams }) {
     const { slug } = await params;
-    const fullSlug = (slug as unknown as string).toLowerCase();
+    const slugString = slug as unknown as string;
+    
+    // Check if the slug is lowercase, if not return 404
+    if (slugString !== slugString.toLowerCase()) {
+        notFound();
+    }
+    
+    const fullSlug = slugString.toLowerCase();
     const { query, num, sequence, signalType = 'signals', signalDescriptor } = parseSlug(fullSlug);
     const capitalizedQuery = query.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     const { primaryMatch, primaryCode, additionalNotes } = findMatches(num, sequence);

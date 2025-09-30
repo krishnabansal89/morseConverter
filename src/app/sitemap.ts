@@ -13,6 +13,7 @@ const getBlogPosts = async ()=> {
   return slugs
 }
 
+// Export helper function to get allowed words page slugs
 export const getWordsPages = async () => {
   await connectDB();
   const words = await Slug.find({ type: 'words' }).sort({ createdAt: -1 });
@@ -28,7 +29,8 @@ export const getWordsPages = async () => {
   return pages;
 }
 
-const getGuidePages = async () => {
+// Export helper function to get allowed guide page slugs
+export const getGuidePages = async () => {
   await connectDB();
   const guides = await Slug.find({ type: 'morse-code-guide' }).sort({ createdAt: -1 });
   if (!guides || guides.length === 0) {

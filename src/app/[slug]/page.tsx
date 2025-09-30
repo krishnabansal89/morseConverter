@@ -5,7 +5,10 @@ import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD"; // Assuming this component exists
 import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel"; // Assuming this component exists
-export const dynamicParams = true 
+import { getWordsPages } from "@/app/sitemap";
+import { notFound } from "next/navigation";
+
+export const dynamicParams = false // Only allow pages defined in generateStaticParams 
 
 // Morse code mapping (from your provided file)
 const characterToMorseMap: Record<string, string> = {
@@ -52,7 +55,11 @@ export async function generateMetadata({ params }: { params: tParams }) {
 }
 
 export async function generateStaticParams() {
-    return []
+    // Only generate params for allowed words pages from the database
+    const wordsPages = await getWordsPages();
+    return wordsPages.map(word => ({
+        slug: word.slug
+    }));
 }
 
 
@@ -117,7 +124,14 @@ function getPopularPhrases(allPhrases: string[], currentPhrase: string, count: n
 
 export default async function PhraseInMorseCodePage({ params }: { params: tParams }) {
     const { slug } = (await params);
-    const phrase = (slug as unknown as string).replace(/-in-morse-code$/, '').replace(/-/g, ' ');
+    const slugString = slug as unknown as string;
+    
+    // Check if the slug is lowercase, if not return 404
+    if (slugString !== slugString.toLowerCase()) {
+        notFound();
+    }
+    
+    const phrase = slugString.replace(/-in-morse-code$/, '').replace(/-/g, ' ');
     const capitalizedPhrase = phrase.charAt(0).toUpperCase() + phrase.slice(1);
 
     const { morseString, characterBreakdownMarkdown, soundString } = getMorseAndSoundForPhrase(phrase, characterToMorseMap);
