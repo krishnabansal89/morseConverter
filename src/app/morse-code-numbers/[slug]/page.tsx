@@ -4,6 +4,9 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
+import { notFound } from "next/navigation";
+
+export const dynamicParams = false; // Only allow pages defined in generateStaticParams
 function getPopularLetters(parentArray: Array<number>, currentNumber: number): number[] {
     const currentIndex = parentArray.indexOf(currentNumber);
 
@@ -107,7 +110,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
 export async function generateStaticParams() {
     const numbers = '0123456789'.split('');
     return numbers.map(number => ({
-        number: `number-${number}-in-morse-code`
+        slug: `number-${number}-in-morse-code`
     }));
 }
 
@@ -140,6 +143,12 @@ type tParams = Promise<{ slug: string }>;
 
 export default async function LetterInMorseCode({ params }: { params: tParams }) {
     const { slug } = await params;
+    
+    // Check if the slug is lowercase, if not return 404
+    if (slug !== slug.toLowerCase()) {
+        notFound();
+    }
+    
     const letter = slug.split("-")[1]
     const currentNumber = parseInt(letter, 10);
     const alphabetsUppercase = Array.from({ length: 10 }, (_, i) => i );

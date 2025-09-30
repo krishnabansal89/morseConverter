@@ -4,6 +4,11 @@ import Link from "next/link";
 import Markdown from "react-markdown";
 import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD";
+import { notFound } from "next/navigation";
+
+export const dynamicParams = false; // Only allow pages defined in generateStaticParams
+
+type tParams = Promise<{ slug: string }>;
 
 function getPopularLetters(parentArray: Array<string>, currentLetter: string) {
     const currentIndex = parentArray.indexOf(currentLetter)
@@ -19,7 +24,7 @@ function getPopularLetters(parentArray: Array<string>, currentLetter: string) {
 export async function generateMetadata({ params }: { params: tParams }) {
     const { slug } = await params;
     
-    const letter = slug[0].replace('-in-morse-code', '');
+    const letter = slug.replace('-in-morse-code', '');
     const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
 
     return {
@@ -39,7 +44,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
 export async function generateStaticParams() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     return letters.map(letter => ({
-        letter: `${letter.toLowerCase()}-in-morse-code`
+        slug: `${letter.toLowerCase()}-in-morse-code`
     }));
 }
 
@@ -126,14 +131,19 @@ function generateMorseMarkdown(character: string, morse: string): string {
     return `In Morse code, the letter **'${upperChar}'** is represented as **${readableMorse}** (${morse.replace(/\./g, 'dot').replace(/\-/g, 'dash')}). This means:\n${signalsList}`;
 }
 
-type tParams = Promise<{ slug: string[] }>;
-
 export default async function LetterInMorseCode({ params }: { params: tParams }) {
     const { slug } = await params;
-    const letter = slug[0].split("-")[0].toUpperCase()
+    const letterFromSlug = slug.split("-")[0];
+    
+    // Check if the letter in the URL is lowercase, if not return 404
+    if (letterFromSlug !== letterFromSlug.toLowerCase()) {
+        notFound();
+    }
+    
+    const letter = letterFromSlug.toUpperCase();
     const alphabetsUppercase = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
-    const popularLetters = getPopularLetters(alphabetsUppercase, letter)
-    const morseTraslation = characterToMorseMap[letter.toUpperCase()]
+    const popularLetters = getPopularLetters(alphabetsUppercase, letter);
+    const morseTraslation = characterToMorseMap[letter.toUpperCase()];
 
     const content = `
 ## What is '${letter}' in morse code?
@@ -250,7 +260,7 @@ Yes! You can communicate **${letter}** using a flashlight— ${morseTraslation.s
                 <h2 className="md:text-5xl/snug text-4xl/snug bg-gradient-to-r mx-auto from-green-500 to-teal-900 text-transparent bg-clip-text font-medium text-center md:mb-12 mb-8 tracking-tight md:px-10 font-poppins"> Explore popular letter</h2>
                 <div className="grid grid-cols-3 w-[98%] p-4 md:px-10 mx-auto gap-y-4 ">
                     {popularLetters.map((letter) => (
-                        <Link key={letter} href={`/morse-code-alphabets/${letter}-in-morse-code`} className="border-2 border-border px-4 py-2 font-semibold text-foreground font-maitree "> {letter} in Morse Code </Link>
+                        <Link key={letter} href={`/morse-code-alphabets/${letter.toLowerCase()}-in-morse-code`} className="border-2 border-border px-4 py-2 font-semibold text-foreground font-maitree "> {letter} in Morse Code </Link>
                     ))}
 
 
