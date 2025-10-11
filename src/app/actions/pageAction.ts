@@ -4,7 +4,7 @@ import db from "@/lib/db";
 import PageData from "@/lib/models/pageData";
 import Slug from "@/lib/models/slugsModel";
 import { PageDataType, SlugType } from "@/types/modelsTypes";
-const BASE_URL = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
+const BASE_URL = https://morsecodeholistic.com || "http://localhost:3000";
 
 const getPath = (type: string) => {
     if (!type) {

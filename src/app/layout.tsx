@@ -32,7 +32,7 @@ const maitree = Maitree({
   preload: true,
 });
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
+const PUBLIC_URL = "https://morsecodeholistic.com";
 
 export const metadata: Metadata = {
   title: "Morse Code Translator & Generator - Convert & Decode English to Morse Code Instantly",
@@ -91,7 +91,7 @@ export default function RootLayout({
         <link
           rel="canonical"
           hrefLang="en"
-          href={`${process.env.NEXT_PUBLIC_URL}`}
+          href={`${https://morsecodeholistic.com}`}
         />
         {alternateLinks.map((link) => (
           <link

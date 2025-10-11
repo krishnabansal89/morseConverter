@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
+  const PUBLIC_URL = https://morsecodeholistic.com;
 
   return {
     title:

@@ -89,7 +89,7 @@ const characterToMorseMap: Record<string, string> = {
 export async function generateMetadata({ params }: { params: tParams }) {
     const { slug } = await params;
     const number = slug.split("-")[1]
-    const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+    const PUBLIC_URL = https://morsecodeholistic.com
 
     return {
         title: `What is ${number.toUpperCase()} in Morse Code? Meaning, Representation & Easy Memorization`,

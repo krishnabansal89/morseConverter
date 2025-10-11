@@ -1,7 +1,7 @@
 import InternationalMorseCode from "../../components/international/InternationalMorseCode";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+  const PUBLIC_URL = https://morsecodeholistic.com
 
   return {
     title: "International Morse Code Translator | Convert Text to Morse Code",

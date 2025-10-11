@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
 
     const phrase = (slug as unknown as string).replace(/-in-morse-code$/, '').replace(/-/g, ' ');
     const capitalizedPhrase = phrase.charAt(0).toUpperCase() + phrase.slice(1);
-    const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "";
+    const PUBLIC_URL = https://morsecodeholistic.com || "";
 
     // Using the title and description format from your markdown example
     const title = `${capitalizedPhrase} in Morse Code – Simple Guide for Beginners`;

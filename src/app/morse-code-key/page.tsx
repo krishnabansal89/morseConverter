@@ -7,7 +7,7 @@ import MorseCodeKeyer from "@/components/ui/keyer";
 
 
 export async function generateMetadata() {
-    const PUBLIC_URL = process.env.NEXT_PUBLIC_URL
+    const PUBLIC_URL = https://morsecodeholistic.com
   
     return {
       title: "Morse Code Keyer and Sounder: Complete Guide, Uses, and Modern Applications",

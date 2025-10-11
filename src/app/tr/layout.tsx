@@ -32,7 +32,7 @@ const maitree = Maitree({
 });
 
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
+const PUBLIC_URL = https://morsecodeholistic.com;
 
 export const metadata: Metadata = {
   title: "Mors Alfabesi Çeviri - İngilizceyi Anında Mors Koduna Dönüştürün ve Çözün",

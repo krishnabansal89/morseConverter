@@ -8,7 +8,7 @@ import Link from "next/link";
 import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = process.env.NEXT_PUBLIC_URL;
+  const PUBLIC_URL = https://morsecodeholistic.com;
   return {
     title: "Morse Code Tattoo – Hidden Message Ideas, FAQs & Chart",
     description:

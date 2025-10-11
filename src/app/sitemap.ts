@@ -45,7 +45,7 @@ export const getGuidePages = async () => {
   return pages;
 }
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_URL || "https://www.morsecodeholistic.com"
+const PUBLIC_URL = https://morsecodeholistic.com || "https://www.morsecodeholistic.com"
 export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
     const baseUrl = PUBLIC_URL;
     
