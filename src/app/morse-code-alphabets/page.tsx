@@ -1,8 +1,9 @@
 import AlphabetOverview from "../../components/alphabets/AlphabetOverview";
 import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel";
+import { getPublicUrl } from "@/lib/env";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = https://morsecodeholistic.com
+  const PUBLIC_URL = getPublicUrl()
   return {
     title: "Morse Code Alphabet: A Deep Dive into Letters, History, and Modern Uses",
     description: "Explore the Morse code alphabets, their history, structure, and modern-day applications. Learn how Morse code letters are used in communication, technology, and beyond.",

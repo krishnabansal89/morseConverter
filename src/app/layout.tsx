@@ -5,6 +5,8 @@ import { Navbar } from "../components/home/Navbar";
 import Footer from "../components/home/Footer";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import VercelBacklinkBanner from "@/components/VercelBacklinkBanner";
+import { getPublicUrl } from "@/lib/env";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +34,7 @@ const maitree = Maitree({
   preload: true,
 });
 
-const PUBLIC_URL = "https://morsecodeholistic.com";
+const PUBLIC_URL = getPublicUrl();
 
 export const metadata: Metadata = {
   title: "Morse Code Translator & Generator - Convert & Decode English to Morse Code Instantly",
@@ -91,7 +93,7 @@ export default function RootLayout({
         <link
           rel="canonical"
           hrefLang="en"
-          href={`${https://morsecodeholistic.com}`}
+          href={`${PUBLIC_URL}`}
         />
         {alternateLinks.map((link) => (
           <link
@@ -111,6 +113,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <VercelBacklinkBanner />
           <Navbar />
           <main>{children}</main>
           <Footer />

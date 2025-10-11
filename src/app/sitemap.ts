@@ -5,6 +5,7 @@ import { client } from "@/sanity/client"
 import PageData from '@/lib/models/pageData';
 import Slug from '@/lib/models/slugsModel';
 import connectDB from '@/lib/db';
+import { getPublicUrl } from '@/lib/env';
 
 export const revalidate = 86400; // 24 hours
 
@@ -45,7 +46,7 @@ export const getGuidePages = async () => {
   return pages;
 }
 
-const PUBLIC_URL = https://morsecodeholistic.com || "https://www.morsecodeholistic.com"
+const PUBLIC_URL = getPublicUrl()
 export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
     const baseUrl = PUBLIC_URL;
     

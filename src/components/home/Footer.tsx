@@ -2,6 +2,7 @@ import Link from "next/link"
 import { SocialIcon } from 'react-social-icons'
 import LangSwitcher from "@/components/langSwitcher"
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { MAIN_DOMAIN } from "@/lib/env";
 export default function Footer() {
   return (
     <div className="bg-background-secondary w-[98%] mx-auto   rounded-lg rounded-b-none rounded-t-none shadow-lg font-poppins">
@@ -159,8 +160,8 @@ export default function Footer() {
 
           {/* Footer Credits */}
           <div className="text-center text-white font-maitree">
-
-            <p>© 2025 Morse Code Translator. All rights reserved</p>
+            <p>© 2025 <Link href={MAIN_DOMAIN} className="hover:underline" rel="noopener">Morse Code Translator</Link>. All rights reserved</p>
+            <p className="text-sm mt-2">Official website: <Link href={MAIN_DOMAIN} className="hover:underline font-semibold" rel="noopener">{MAIN_DOMAIN.replace('https://', '')}</Link></p>
           </div>
           <div className="text-center text-white font-maitree mt-4 flex justify-center items-center gap-x-4">
             <LangSwitcher />

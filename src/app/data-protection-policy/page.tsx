@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 //make pages self-canonical
 
 export const generateMetadata  = async (): Promise<Metadata> => {
-  const PUBLIC_URL = https://morsecodeholistic.com || '';
+  const PUBLIC_URL = "https://morsecodeholistic.com";
 
   return {
     title: 'Data Protection Policy | Morsecodeholistic.com',

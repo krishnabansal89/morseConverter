@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 const ImageToMorse = dynamic(() => import("@/components/ImageToMorse"));
 
 export async function generateMetadata() {
-  const PUBLIC_URL = https://morsecodeholistic.com
+  const PUBLIC_URL = "https://morsecodeholistic.com"
 
   return {
     title: "Morse Code Translator Picture Tool – Convert Images to Morse Code Instantly",

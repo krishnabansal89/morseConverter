@@ -1,7 +1,8 @@
 import AmericanMorseCode from "../../components/american/AmericanMorseCode";
+import { getPublicUrl } from "@/lib/env";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = https://morsecodeholistic.com
+  const PUBLIC_URL = getPublicUrl()
 
   return {
     title: "American Morse Code Translator – Accurate Railroad Morse Converter Tool",

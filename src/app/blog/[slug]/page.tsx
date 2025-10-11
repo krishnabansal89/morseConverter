@@ -25,7 +25,7 @@ export async function generateMetadata({
         authors: post?.author ? [{ name: post.author.name }] : undefined,
         keywords: post?.tags,
         alternates: {
-            canonical: `${https://morsecodeholistic.com}/blog/${post?.slug.current}`,
+            canonical: `https://morsecodeholistic.com/blog/${post?.slug.current}`,
         },
     };
 }

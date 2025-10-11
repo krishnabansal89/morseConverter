@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
+import { getPublicUrl } from '@/lib/env'
 
-const PUBLIC_URL = https://morsecodeholistic.com || "https://www.morsecodeholistic.com"
+const PUBLIC_URL = getPublicUrl()
 
 export default function robots(): MetadataRoute.Robots {
     return {

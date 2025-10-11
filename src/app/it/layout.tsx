@@ -2,6 +2,7 @@
 import { Metadata } from "next";
 
 import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
+import { getPublicUrl } from "@/lib/env";
 
 
 import "../globals.css";
@@ -33,7 +34,7 @@ const maitree = Maitree({
 });
 
 
-const PUBLIC_URL = https://morsecodeholistic.com;
+const PUBLIC_URL = getPublicUrl();
 
 export const metadata: Metadata = {
   title: "Codice Morse Traduttor - Converti e Decodifica Inglese in Codice Morse Istantaneamente",

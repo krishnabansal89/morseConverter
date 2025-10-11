@@ -5,7 +5,7 @@ import remarkGfm from 'remark-gfm'
 import MorseCodeAudioPlayer from "@/components/ui/audioTool";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = https://morsecodeholistic.com
+  const PUBLIC_URL = "https://morsecodeholistic.com"
 
   return {
     title: "Morse Code Audio Translator – Convert Text to Morse Code Audio Instantly",

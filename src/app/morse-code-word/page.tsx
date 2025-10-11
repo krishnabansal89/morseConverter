@@ -7,7 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { FAQSchemaLD } from "@/components/FAQSchemaLD"; // Assuming this component exists
 
 export async function generateMetadata() {
-    const PUBLIC_URL = https://morsecodeholistic.com
+    const PUBLIC_URL = "https://morsecodeholistic.com"
 
     return {
         title: "Morse Code Words Glossary - From A-Z Explore all words and their meaning in morse",

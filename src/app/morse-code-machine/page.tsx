@@ -7,7 +7,7 @@ import MorseCodeMachine from "@/components/ui/machine";
 
 
 export async function generateMetadata() {
-    const PUBLIC_URL = https://morsecodeholistic.com
+    const PUBLIC_URL = "https://morsecodeholistic.com"
   
     return {
       title: "Morse Code Machine – Free Online Tool to Encode and Decode Morse Code Instantly",

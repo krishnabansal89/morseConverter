@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
             description,
         },
         alternates: {
-            canonical: `${https://morsecodeholistic.com || ""}/${fullSlug}`,
+            canonical: `https://morsecodeholistic.com/${fullSlug}`,
         },
     };
 }

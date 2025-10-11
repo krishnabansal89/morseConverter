@@ -2,7 +2,7 @@ import NumberOverview from "../../components/numbers/NumbersOverview";
 import InternalLinkingPanel from "@/components/ui/InternalLinkingPanel";
 
 export async function generateMetadata() {
-  const PUBLIC_URL = https://morsecodeholistic.com
+  const PUBLIC_URL = "https://morsecodeholistic.com"
 
   return {
     title: "Morse Code Numbers: Evolution, History, and Modern Uses",

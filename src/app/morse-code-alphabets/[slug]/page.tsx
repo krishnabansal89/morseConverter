@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: tParams }) {
     const { slug } = await params;
     
     const letter = slug.replace('-in-morse-code', '');
-    const PUBLIC_URL = https://morsecodeholistic.com
+    const PUBLIC_URL = "https://morsecodeholistic.com"
 
     return {
         title: `What is ${letter.toUpperCase()} in Morse Code? Meaning, Representation & Uses`,
