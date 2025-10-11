@@ -11,7 +11,7 @@ This starter helps developers quickly set up scalable Next.js projects without w
 It supports **TypeScript**, **Tailwind CSS**, **App Router**, and **API routes**, giving you a clean foundation to start building right away.
 
 If you're exploring how simple, interactive web tools can teach technical concepts, check out the  
-**[Morse Code Translator by Morse Code Holistic](https://morsecodeholistic.com)** — an AI-powered platform that turns text into Morse code and back.  
+**[Morse Code Translator ](https://morsecodeholistic.com)** — an AI-powered platform that turns text into Morse code and back.  
 It’s a perfect example of how modern frameworks like Next.js can make learning both engaging and accessible.
 
 ---
