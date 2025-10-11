@@ -1,0 +1,20 @@
+# Development files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.backup
+*~
+
+# Temporary files
+*.tmp
+*.log
+
+# Archive files (if you create zips for distribution)
+*.zip
+*.crx
+
+# Node modules (if you add build tools later)
+node_modules/
+
+
