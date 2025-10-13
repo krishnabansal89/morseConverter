@@ -1,7 +1,7 @@
 import { groq } from 'next-sanity'
 // *** BLOGS ***
 export const blogNamesWithLimitQuery = groq`
-*[_type == "blog"][0...$limit] | order(publishedAt desc) {
+*[_type == "blog"] | order(publishedAt desc, _updatedAt desc) [0...$limit] {
 	_id,
 	title,
 	description,
