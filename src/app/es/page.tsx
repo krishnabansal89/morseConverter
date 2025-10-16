@@ -100,6 +100,13 @@ function Features() {
             href: "/morse-code-translator-audio",
             bgColor: "bg-[#31304D]"
         },
+        {
+            type: "Producto",
+            title: "Manipulador y Resonador de Código Morse",
+            description: "Explora la historia, función y usos modernos de los manipuladores y resonadores de código Morse. Aprende cómo moldearon la comunicación, cómo funcionan y su relevancia hoy en radioafición, aprendizaje y proyectos de hobby",
+            href: "/morse-code-keyer",
+            bgColor: "bg-[#493628]"
+        },
     ]
 
     return (

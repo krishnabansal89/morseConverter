@@ -98,6 +98,13 @@ function Features() {
             title: "Gerador de Código Morse",
             description: "Crie sinais de código Morse com velocidade de reprodução ajustável.",
             href: "/morse-code-generator",
+            bgColor: "bg-[#31304D]"
+        },
+        {
+            type: "Produto",
+            title: "Manipulador e Ressoador de Código Morse",
+            description: "Explore a história, função e usos modernos de manipuladores e ressoadores de código Morse. Aprenda como moldaram a comunicação, como funcionam e sua relevância hoje no rádio amador, aprendizado e projetos de hobby",
+            href: "/morse-code-keyer",
             bgColor: "bg-[#493628]"
         },
     ]

@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
       {
         source: '/morse-code-key',
         destination: '/morse-code-keyer',
-        statusCode: 301,
+        permanent: true,
       },
     ];
   },

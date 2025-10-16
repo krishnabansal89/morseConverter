@@ -98,7 +98,14 @@ function Features() {
             title: "Traducteur de Code Morse Audio",
             description: "Écoutez les signaux audio du code Morse pour n'importe quel texte.",
             href: "/morse-code-translator-audio",
-            bgColor: "bg-[#31304D]"
+            bgColor: "bg-[31304D]"
+        },
+        {
+            type: "Produit",
+            title: "Manipulateur et Résonateur de Code Morse",
+            description: "Explorez l'histoire, la fonction et les usages modernes des manipulateurs et résonateurs de code Morse. Découvrez comment ils ont façonné la communication, leur fonctionnement et leur pertinence aujourd'hui dans la radioamateur, l'apprentissage et les projets de loisir",
+            href: "/morse-code-keyer",
+            bgColor: "bg-[#493628]"
         },
     ]
 

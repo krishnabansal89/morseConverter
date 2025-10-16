@@ -55,6 +55,7 @@ export default function MorseCodeKeyer() {
     charactersCount: 0,
     wordsCount: 0
   })
+  const [armed, setArmed] = useState(false)
 
   const [flashText, setFlashText] = useState<{
     button: string;
@@ -364,27 +365,55 @@ export default function MorseCodeKeyer() {
   // Keyboard support
   useEffect(() => {
     const handleKeyboardDown = (e: KeyboardEvent) => {
-      if (e.code === 'Space' && !e.repeat) {
+      // Let typing in inputs/textarea/contenteditable behave normally
+      const target = e.target as HTMLElement | null
+      if (target && (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          (target as any).isContentEditable
+        )) return
+
+      // Optional: disarm with Escape
+      if (armed && e.key === "Escape") {
+        setArmed(false)
+        return
+      }
+
+      // Consume Space only when armed, on all keydowns (including repeats) to prevent scrolling
+      if (armed && (e.code === "Space" || e.key === " ")) {
         e.preventDefault()
-        handleKeyDown()
+        e.stopPropagation()
+        if (!e.repeat) {
+          handleKeyDown()
+        }
       }
     }
     
     const handleKeyboardUp = (e: KeyboardEvent) => {
-      if (e.code === 'Space') {
+      // Let typing in inputs/textarea/contenteditable behave normally
+      const target = e.target as HTMLElement | null
+      if (target && (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          (target as any).isContentEditable
+        )) return
+
+      if (armed && (e.code === "Space" || e.key === " ")) {
         e.preventDefault()
+        e.stopPropagation()
         handleKeyUp()
       }
     }
     
-    window.addEventListener('keydown', handleKeyboardDown)
-    window.addEventListener('keyup', handleKeyboardUp)
+    // Capture phase helps beat other handlers
+    window.addEventListener('keydown', handleKeyboardDown, true)
+    window.addEventListener('keyup', handleKeyboardUp, true)
     
     return () => {
-      window.removeEventListener('keydown', handleKeyboardDown)
-      window.removeEventListener('keyup', handleKeyboardUp)
+      window.removeEventListener('keydown', handleKeyboardDown, true)
+      window.removeEventListener('keyup', handleKeyboardUp, true)
     }
-  }, [isKeyPressed, keyPressStart, currentSymbol, settings])
+  }, [armed, isKeyPressed, keyPressStart, currentSymbol, settings])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -425,10 +454,15 @@ export default function MorseCodeKeyer() {
   return (
     <div
       ref={keyerContainerRef}
+      tabIndex={0}
+      onFocus={() => setArmed(true)}
+      onBlur={() => setArmed(false)}
       className={`
-        flex flex-col font-lexend rounded-lg transition-colors duration-500 ease-in-out max-w-7xl mx-auto
+        flex flex-col font-lexend rounded-lg transition-colors duration-500 ease-in-out max-w-7xl mx-auto outline-none
         ${visualEffect.active ? 'bg-[#456359] text-white pulse-dot' : 'bg-background-secondary text-[#372824] dark:text-gray-100'}
       `}
+      aria-label="Morse Code Keyer"
+      title={armed ? "Keyer active: Space sends. Esc to release." : "Click to focus, then Space sends."}
     >
       {/* Alert Message Component */}
       {alertMessage && (
