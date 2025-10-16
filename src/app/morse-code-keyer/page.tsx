@@ -17,7 +17,7 @@ export async function generateMetadata() {
         description: "Explore the history, function, and modern uses of Morse code keyers and sounders. Learn how they shaped communication, how they work, and their relevance today in ham radio, learning, and hobby projects",
       },
       alternates: {
-        canonical: `${PUBLIC_URL}/morse-code-machine`,
+        canonical: `${PUBLIC_URL}/morse-code-keyer`,
       },
     };
   }
