@@ -98,6 +98,13 @@ function Features() {
             title: "Bộ Tạo Mã Morse",
             description: "Tạo tín hiệu mã Morse với tốc độ phát lại có thể điều chỉnh.",
             href: "/morse-code-generator",
+            bgColor: "bg-[#31304D]"
+        },
+        {
+            type: "Sản phẩm",
+            title: "Máy Phát Mã Morse và Bộ Tạo Âm",
+            description: "Khám phá lịch sử, chức năng và ứng dụng hiện đại của máy phát mã Morse và bộ tạo âm. Tìm hiểu cách chúng đã định hình giao tiếp, cách hoạt động và tầm quan trọng ngày nay trong radio nghiệp dư, học tập và các dự án sở thích",
+            href: "/morse-code-keyer",
             bgColor: "bg-[#493628]"
         },
     ]

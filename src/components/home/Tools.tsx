@@ -71,6 +71,13 @@ export default function Features() {
             href: "/morse-code-translator-picture",
             bgColor: "bg-[#493628]"
         },
+        {
+            type: "Product",
+            title: "Morse Code Keyer and Sounder",
+            description: "Explore the history, function, and modern uses of Morse code keyers and sounders. Learn how they shaped communication, how they work, and their relevance today in ham radio, learning, and hobby projects",
+            href: "/morse-code-keyer",
+            bgColor: "bg-[#493628]"
+        },
     ]
 
     return (

@@ -70,7 +70,7 @@ export default function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/morse-code-key" className="text-white hover:text-gray-900 dark:hover:text-gray-200">
+                    <Link href="/morse-code-keyer" className="text-white hover:text-gray-900 dark:hover:text-gray-200">
                       Morse Code Keyer
                     </Link>
                   </li>

@@ -102,9 +102,9 @@ function Features() {
         },
         {
             type: "Prodotto",
-            title: "Generatore di Codice Morse",
-            description: "Crea segnali di codice Morse con velocità di riproduzione regolabile.",
-            href: "/morse-code-generator",
+            title: "Tasto e Risuonatore di Codice Morse",
+            description: "Esplora la storia, la funzione e gli usi moderni dei tasti e risuonatori di codice Morse. Scopri come hanno plasmato la comunicazione, come funzionano e la loro rilevanza oggi nella radioamatore, nell'apprendimento e nei progetti hobbistici",
+            href: "/morse-code-keyer",
             bgColor: "bg-[#493628]"
         },
     ]

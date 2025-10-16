@@ -104,9 +104,9 @@ function Features() {
         },
         {
             type: "Produkt",
-            title: "Morsecode-Generator",
-            description: "Erstellen Sie Morsecodesignale mit einstellbarer Wiedergabegeschwindigkeit.",
-            href: "/morse-code-generator",
+            title: "Morsecode-Taste und Tongeber",
+            description: "Entdecken Sie die Geschichte, Funktion und moderne Nutzung von Morsecode-Tasten und Tongeneratoren. Erfahren Sie, wie sie die Kommunikation geprägt haben, wie sie funktionieren und ihre Relevanz heute im Amateurfunk, beim Lernen und in Hobbyprojekten",
+            href: "/morse-code-keyer",
             bgColor: "bg-[#493628]"
         },
     ]

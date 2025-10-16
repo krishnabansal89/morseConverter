@@ -102,9 +102,9 @@ function Features() {
         },
         {
             type: "Ürün",
-            title: "Mors Kodu Üreteci",
-            description: "Ayarlanabilir oynatma hızıyla mors kod sinyalleri oluşturun.",
-            href: "/morse-code-generator",
+            title: "Mors Kodu Anahtarı ve Ses Üretici",
+            description: "Mors kodu anahtarlarının ve ses üreticilerinin tarihini, işlevini ve modern kullanımlarını keşfedin. İletişimi nasıl şekillendirdiklerini, nasıl çalıştıklarını ve bugün amatör telsiz, öğrenme ve hobi projelerindeki önemlerini öğrenin",
+            href: "/morse-code-keyer",
             bgColor: "bg-[#493628]"
         },
     ]

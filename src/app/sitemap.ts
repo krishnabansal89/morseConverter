@@ -147,7 +147,7 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
         priority: 0.9,
       },
       {
-        url: `${baseUrl}/morse-code-key`,
+        url: `${baseUrl}/morse-code-keyer`,
         lastModified: new Date(),
         changeFrequency: "weekly",
         priority: 0.9,
