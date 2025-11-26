@@ -235,10 +235,10 @@ export default function MorseCodeGame() {
           Morse Code Game
         </h2>
         <div className="flex gap-2 md:gap-4 text-xs md:text-sm font-medium w-full md:w-auto justify-center">
-          <div className="bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-full flex-1 md:flex-none text-center">
+          <div className="bg-gray-100 dark:bg-[#1c211f] px-3 py-2 rounded-full flex-1 md:flex-none text-center">
             Tries: <span className="text-primary font-bold">{gameState.tries}</span>
           </div>
-          <div className="bg-gray-100 dark:bg-gray-800 px-3 py-2 rounded-full flex-1 md:flex-none text-center">
+          <div className="bg-gray-100 dark:bg-[#1c211f] px-3 py-2 rounded-full flex-1 md:flex-none text-center">
             Speed: <span className="text-primary font-bold">{gameState.wpm} WPM</span>
           </div>
         </div>
@@ -247,7 +247,7 @@ export default function MorseCodeGame() {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Game Control Section */}
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-800">
+          <div className="bg-white dark:bg-[#171b19] rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-800">
             <div className="flex flex-col items-center justify-center space-y-6 min-h-[200px]">
               
               <Button
@@ -283,7 +283,7 @@ export default function MorseCodeGame() {
 
         {/* Guessing Section */}
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col justify-center h-full">
+          <div className="bg-white dark:bg-[#171b19] rounded-xl p-4 md:p-6 shadow-sm border border-gray-200 dark:border-gray-800 flex flex-col justify-center h-full">
             
             {/* Word Display (Masked or Revealed) */}
             <div className="flex justify-center gap-1.5 mb-8 flex-wrap">
@@ -292,7 +292,7 @@ export default function MorseCodeGame() {
                     w-10 h-12 md:w-12 md:h-14 flex items-center justify-center text-xl md:text-2xl font-bold rounded-md border-2 transition-colors duration-300
                     ${char 
                       ? 'bg-green-100 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-600 dark:text-green-400' 
-                      : 'border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'
+                      : 'border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-[#1c211f]'
                     }
                     ${gameState.status === 'lost' && !char ? 'bg-red-100 border-red-500 text-red-700' : ''}
                   `}>
@@ -348,9 +348,9 @@ export default function MorseCodeGame() {
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
-          className="w-full space-y-2 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-sm"
+          className="w-full space-y-2 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-[#171b19] shadow-sm"
         >
-          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-gray-800/50">
+          <div className="flex items-center justify-between px-4 py-3 bg-gray-50 dark:bg-[#1c211f]">
             <h4 className="text-sm font-semibold flex items-center gap-2 text-primary">
               <HelpCircle className="h-4 w-4" />
               How to Play
@@ -366,16 +366,16 @@ export default function MorseCodeGame() {
               </Button>
             </CollapsibleTrigger>
           </div>
-          <CollapsibleContent className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 space-y-2 bg-white dark:bg-gray-900">
+          <CollapsibleContent className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400 space-y-2 bg-white dark:bg-[#171b19]">
             <p>
               Challenge yourself to decode Morse code!
             </p>
             <ul className="list-disc ml-4 space-y-1">
               <li>Press the <span className="font-semibold text-primary">Play Word</span> button to hear the sequence.</li>
               <li>You have <strong>21 tries</strong> to guess the hidden word.</li>
-              <li>Playback speed starts at <strong>40 WPM</strong>.</li>
+              <li>Playback speed starts at <strong>20 WPM</strong>.</li>
               <li>Every <strong>3 failed attempts</strong>, the speed slows down by 5 WPM to make it easier.</li>
-              <li>Type your guess in the box. Use <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">_</code> for letters you aren&apos;t sure about (e.g., <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">M_RSE</code>).</li>
+              <li>Type your guess in the box. Use <code className="bg-gray-100 dark:bg-[#1c211f] px-1 rounded">_</code> for letters you aren&apos;t sure about (e.g., <code className="bg-gray-100 dark:bg-[#1c211f] px-1 rounded">M_RSE</code>).</li>
             </ul>
           </CollapsibleContent>
         </Collapsible>
