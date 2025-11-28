@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Play, RotateCcw, HelpCircle, Trophy, ChevronDown, ChevronUp } from "lucide-react"
+import { Play, RotateCcw, HelpCircle, Trophy, ChevronDown, ChevronUp, Star, Lightbulb } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { internationalMorseCodeMap } from "@/components/ui/machine"
@@ -25,6 +25,8 @@ interface GameState {
   maskedWord: string[] // For displaying revealed letters
   tries: number
   wpm: number
+  score: number
+  highScore: number
   status: 'start' | 'playing' | 'won' | 'lost'
   history: { guess: string, result: ('correct' | 'incorrect')[] }[]
 }
@@ -40,6 +42,8 @@ export default function MorseCodeGame() {
     maskedWord: [],
     tries: INITIAL_TRIES,
     wpm: INITIAL_WPM,
+    score: 0,
+    highScore: 0,
     status: 'start',
     history: []
   })
@@ -54,20 +58,30 @@ export default function MorseCodeGame() {
 
   // Initialize game
   useEffect(() => {
+    // Load high score from local storage
+    const savedHighScore = localStorage.getItem('morseGameHighScore')
+    if (savedHighScore) {
+      setGameState(prev => ({
+        ...prev,
+        highScore: parseInt(savedHighScore, 10)
+      }))
+    }
     startNewGame()
     return () => stopAudio()
   }, [])
 
   const startNewGame = () => {
     const randomWord = WORDS[Math.floor(Math.random() * WORDS.length)]
-    setGameState({
+    setGameState(prev => ({
+      ...prev,
       word: randomWord,
       maskedWord: new Array(randomWord.length).fill(""),
       tries: INITIAL_TRIES,
       wpm: INITIAL_WPM,
+      score: 0,
       status: 'playing',
       history: []
-    })
+    }))
     setInput("")
     stopAudio()
   }
@@ -190,10 +204,27 @@ export default function MorseCodeGame() {
     const isWon = newMaskedWord.every(char => char !== "")
 
     if (isWon) {
+      // Calculate Score
+      // Base score for winning + bonus for speed (WPM) + bonus for remaining tries + bonus for word length
+      const baseScore = 1000
+      const speedBonus = gameState.wpm * 50
+      const triesBonus = gameState.tries * 100
+      const lengthBonus = gameState.word.length * 50
+      
+      const finalScore = baseScore + speedBonus + triesBonus + lengthBonus
+      const newHighScore = Math.max(gameState.highScore, finalScore)
+      
+      // Save new high score
+      if (newHighScore > gameState.highScore) {
+        localStorage.setItem('morseGameHighScore', newHighScore.toString())
+      }
+
       setGameState(prev => ({
         ...prev,
         status: 'won',
-        maskedWord: newMaskedWord
+        maskedWord: newMaskedWord,
+        score: finalScore,
+        highScore: newHighScore
       }))
       return
     }
@@ -229,17 +260,39 @@ export default function MorseCodeGame() {
     <div className="flex flex-col font-lexend rounded-lg max-w-4xl mx-auto p-4 md:p-8 w-full">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 border-b border-gray-200 dark:border-gray-700 pb-4 gap-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-primary flex items-center gap-2">
-          <Trophy className="h-6 w-6 md:h-8 md:w-8" />
-          Morse Code Game
-        </h2>
-        <div className="flex gap-2 md:gap-4 text-xs md:text-sm font-medium w-full md:w-auto justify-center">
-          <div className="bg-gray-100 dark:bg-[#1c211f] px-3 py-2 rounded-full flex-1 md:flex-none text-center">
-            Tries: <span className="text-primary font-bold">{gameState.tries}</span>
+      <div className="flex flex-col space-y-4 mb-6 md:mb-8 border-b border-gray-200 dark:border-gray-700 pb-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary flex items-center gap-2 justify-center md:justify-start">
+              <Trophy className="h-6 w-6 md:h-8 md:w-8" />
+              Morse Code Game
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              Train your ears to decode Morse code patterns.
+            </p>
           </div>
-          <div className="bg-gray-100 dark:bg-[#1c211f] px-3 py-2 rounded-full flex-1 md:flex-none text-center">
-            Speed: <span className="text-primary font-bold">{gameState.wpm} WPM</span>
+          
+          <div className="flex flex-col items-center md:items-end gap-1">
+             <div className="text-sm font-medium text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                Personal Best: <span className="font-bold text-gray-900 dark:text-gray-100">{gameState.highScore}</span>
+             </div>
+             {gameState.status === 'won' && (
+               <div className="text-lg font-bold text-green-600 dark:text-green-400 animate-pulse">
+                 Score: {gameState.score}
+               </div>
+             )}
+          </div>
+        </div>
+
+        <div className="flex gap-2 md:gap-4 text-xs md:text-sm font-medium w-full justify-center md:justify-start">
+          <div className="bg-gray-100 dark:bg-[#1c211f] px-4 py-2 rounded-full flex items-center gap-2 border border-gray-200 dark:border-gray-700">
+            <span className="text-gray-500 dark:text-gray-400">Tries:</span>
+            <span className={`font-bold ${gameState.tries <= 5 ? 'text-red-500' : 'text-primary'}`}>{gameState.tries}</span>
+          </div>
+          <div className="bg-gray-100 dark:bg-[#1c211f] px-4 py-2 rounded-full flex items-center gap-2 border border-gray-200 dark:border-gray-700">
+            <span className="text-gray-500 dark:text-gray-400">Speed:</span>
+            <span className="text-primary font-bold">{gameState.wpm} WPM</span>
           </div>
         </div>
       </div>
@@ -377,6 +430,18 @@ export default function MorseCodeGame() {
               <li>Every <strong>3 failed attempts</strong>, the speed slows down by 5 WPM to make it easier.</li>
               <li>Type your guess in the box. Use <code className="bg-gray-100 dark:bg-[#1c211f] px-1 rounded">_</code> for letters you aren&apos;t sure about (e.g., <code className="bg-gray-100 dark:bg-[#1c211f] px-1 rounded">M_RSE</code>).</li>
             </ul>
+            
+            <div className="pt-4 mt-4 border-t border-gray-100 dark:border-gray-800">
+              <h5 className="text-sm font-semibold flex items-center gap-2 text-primary mb-2">
+                <Lightbulb className="h-4 w-4" />
+                Pro Tips
+              </h5>
+              <ul className="list-disc ml-4 space-y-1 text-xs md:text-sm">
+                <li>Focus on the <strong>rhythm</strong> rather than counting individual dots and dashes.</li>
+                <li>Start with shorter words to build your confidence and speed.</li>
+                <li>Don&apos;t be afraid to use guesses to reveal part of the word—it can help you deduce the rest!</li>
+              </ul>
+            </div>
           </CollapsibleContent>
         </Collapsible>
       </div>
