@@ -205,13 +205,17 @@ export default function MorseCodeGame() {
 
     if (isWon) {
       // Calculate Score
-      // Base score for winning + bonus for speed (WPM) + bonus for remaining tries + bonus for word length
-      const baseScore = 1000
-      const speedBonus = gameState.wpm * 50
-      const triesBonus = gameState.tries * 100
-      const lengthBonus = gameState.word.length * 50
+      // Base score for winning (1000)
+      // Speed multiplier: 1.0 at 5 WPM, increasing by 0.1 for each 5 WPM increment
+      const speedMultiplier = 1 + (gameState.wpm - 5) / 10
       
-      const finalScore = baseScore + speedBonus + triesBonus + lengthBonus
+      // Tries bonus: 50 points for each remaining try
+      const triesBonus = gameState.tries * 50
+      
+      // Length bonus: 100 points per letter
+      const lengthBonus = gameState.word.length * 100
+      
+      const finalScore = Math.round((1000 + triesBonus + lengthBonus) * speedMultiplier)
       const newHighScore = Math.max(gameState.highScore, finalScore)
       
       // Save new high score
