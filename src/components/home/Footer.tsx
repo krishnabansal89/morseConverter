@@ -74,6 +74,11 @@ export default function Footer() {
                       Morse Code Keyer
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/morse-code-game" className="text-white hover:text-gray-900 dark:hover:text-gray-200">
+                      Morse Code Game
+                    </Link>
+                  </li>
               </ul>
             </div>
 
