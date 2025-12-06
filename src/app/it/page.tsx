@@ -102,10 +102,31 @@ function Features() {
         },
         {
             type: "Prodotto",
+            title: "Traduttore di Codice Morse da Immagine",
+            description: "Carica un'immagine con testo. Eseguiremo l'OCR nel tuo browser e tradurremo il testo estratto in codice Morse. Copia, ascolta o scarica come audio.",
+            href: "/morse-code-translator-picture",
+            bgColor: "bg-[#493628]"
+        },
+        {
+            type: "Prodotto",
             title: "Tasto e Risuonatore di Codice Morse",
             description: "Esplora la storia, la funzione e gli usi moderni dei tasti e risuonatori di codice Morse. Scopri come hanno plasmato la comunicazione, come funzionano e la loro rilevanza oggi nella radioamatore, nell'apprendimento e nei progetti hobbistici",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Prodotto",
+            title: "Gioco del Codice Morse",
+            description: "Metti alla prova le tue capacità di ascolto con il nostro gioco interattivo. Migliora la tua velocità in WPM, impara a decodificare punti e linee, e sfida te stesso con livelli di difficoltà adattivi.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Prodotto",
+            title: "Convertitore da Binario a Morse",
+            description: "Converti codice binario in codice Morse e viceversa. Collega il linguaggio del computer con il codice Morse, perfetto per imparare i sistemi di codifica.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 

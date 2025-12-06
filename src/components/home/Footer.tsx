@@ -79,6 +79,11 @@ export default function Footer() {
                       Morse Code Game
                     </Link>
                   </li>
+                  <li>
+                    <Link href="/binary-to-morse" className="text-white hover:text-gray-900 dark:hover:text-gray-200">
+                      Binary to Morse Converter
+                    </Link>
+                  </li>
               </ul>
             </div>
 

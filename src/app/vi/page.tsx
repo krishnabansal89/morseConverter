@@ -95,17 +95,31 @@ function Features() {
         },
         {
             type: "Sản phẩm",
-            title: "Bộ Tạo Mã Morse",
-            description: "Tạo tín hiệu mã Morse với tốc độ phát lại có thể điều chỉnh.",
-            href: "/morse-code-generator",
-            bgColor: "bg-[#31304D]"
+            title: "Bộ Dịch Mã Morse Từ Hình Ảnh",
+            description: "Tải lên một hình ảnh có văn bản. Chúng tôi sẽ chạy OCR trong trình duyệt của bạn và dịch văn bản được trích xuất thành mã Morse. Sao chép, nghe hoặc tải xuống dưới dạng âm thanh.",
+            href: "/morse-code-translator-picture",
+            bgColor: "bg-[#493628]"
         },
         {
             type: "Sản phẩm",
             title: "Máy Phát Mã Morse và Bộ Tạo Âm",
             description: "Khám phá lịch sử, chức năng và ứng dụng hiện đại của máy phát mã Morse và bộ tạo âm. Tìm hiểu cách chúng đã định hình giao tiếp, cách hoạt động và tầm quan trọng ngày nay trong radio nghiệp dư, học tập và các dự án sở thích",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Sản phẩm",
+            title: "Trò Chơi Mã Morse",
+            description: "Kiểm tra kỹ năng nghe của bạn với trò chơi tương tác của chúng tôi. Cải thiện tốc độ WPM, học cách giải mã các dấu chấm và gạch, và thử thách bản thân với các mức độ khó thích ứng.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Sản phẩm",
+            title: "Bộ Chuyển Đổi Nhị Phân sang Morse",
+            description: "Chuyển đổi mã nhị phân sang mã Morse và ngược lại. Kết nối ngôn ngữ máy tính với mã Morse, hoàn hảo để học các hệ thống mã hóa.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 
