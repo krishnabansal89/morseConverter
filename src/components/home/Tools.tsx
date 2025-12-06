@@ -76,7 +76,21 @@ export default function Features() {
             title: "Morse Code Keyer and Sounder",
             description: "Explore the history, function, and modern uses of Morse code keyers and sounders. Learn how they shaped communication, how they work, and their relevance today in ham radio, learning, and hobby projects",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Product",
+            title: "Morse Code Game",
+            description: "Test your listening skills with our interactive game. Improve your WPM speed, learn to decode dots and dashes, and challenge yourself with adaptive difficulty levels.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Product",
+            title: "Binary to Morse Converter",
+            description: "Convert binary code to Morse code and vice versa. Bridge computer language with Morse code, perfect for learning encoding systems.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 

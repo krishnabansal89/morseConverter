@@ -95,17 +95,31 @@ function Features() {
         },
         {
             type: "Produto",
-            title: "Gerador de Código Morse",
-            description: "Crie sinais de código Morse com velocidade de reprodução ajustável.",
-            href: "/morse-code-generator",
-            bgColor: "bg-[#31304D]"
+            title: "Tradutor de Código Morse de Imagem",
+            description: "Carregue uma imagem com texto. Executaremos OCR no seu navegador e traduziremos o texto extraído para código Morse. Copie, ouça ou baixe como áudio.",
+            href: "/morse-code-translator-picture",
+            bgColor: "bg-[#493628]"
         },
         {
             type: "Produto",
             title: "Manipulador e Ressoador de Código Morse",
             description: "Explore a história, função e usos modernos de manipuladores e ressoadores de código Morse. Aprenda como moldaram a comunicação, como funcionam e sua relevância hoje no rádio amador, aprendizado e projetos de hobby",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Produto",
+            title: "Jogo de Código Morse",
+            description: "Teste suas habilidades de escuta com nosso jogo interativo. Melhore sua velocidade em PPM, aprenda a decodificar pontos e traços, e desafie-se com níveis de dificuldade adaptativos.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Produto",
+            title: "Conversor de Binário para Morse",
+            description: "Converta código binário para código Morse e vice-versa. Faça a ponte entre linguagem de computador e código Morse, perfeito para aprender sistemas de codificação.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 

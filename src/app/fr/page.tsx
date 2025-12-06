@@ -98,14 +98,35 @@ function Features() {
             title: "Traducteur de Code Morse Audio",
             description: "Écoutez les signaux audio du code Morse pour n'importe quel texte.",
             href: "/morse-code-translator-audio",
-            bgColor: "bg-[31304D]"
+            bgColor: "bg-[#31304D]"
+        },
+        {
+            type: "Produit",
+            title: "Traducteur de Code Morse en Image",
+            description: "Téléchargez une image avec du texte. Nous effectuerons l'OCR dans votre navigateur et traduirons le texte extrait en code Morse. Copiez, écoutez ou téléchargez en audio.",
+            href: "/morse-code-translator-picture",
+            bgColor: "bg-[#493628]"
         },
         {
             type: "Produit",
             title: "Manipulateur et Résonateur de Code Morse",
             description: "Explorez l'histoire, la fonction et les usages modernes des manipulateurs et résonateurs de code Morse. Découvrez comment ils ont façonné la communication, leur fonctionnement et leur pertinence aujourd'hui dans la radioamateur, l'apprentissage et les projets de loisir",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Produit",
+            title: "Jeu de Code Morse",
+            description: "Testez vos compétences d'écoute avec notre jeu interactif. Améliorez votre vitesse en MPM, apprenez à décoder les points et les tirets, et défiez-vous avec des niveaux de difficulté adaptatifs.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Produit",
+            title: "Convertisseur Binaire vers Morse",
+            description: "Convertissez le code binaire en code Morse et vice versa. Faites le pont entre le langage informatique et le code Morse, parfait pour l'apprentissage des systèmes d'encodage.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 

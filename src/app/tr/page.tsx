@@ -102,10 +102,31 @@ function Features() {
         },
         {
             type: "Ürün",
+            title: "Mors Kodu Çevirici Resim",
+            description: "Metin içeren bir resim yükleyin. Tarayıcınızda OCR yapacağız ve çıkarılan metni Mors koduna çevireceğiz. Kopyalayın, dinleyin veya ses olarak indirin.",
+            href: "/morse-code-translator-picture",
+            bgColor: "bg-[#493628]"
+        },
+        {
+            type: "Ürün",
             title: "Mors Kodu Anahtarı ve Ses Üretici",
             description: "Mors kodu anahtarlarının ve ses üreticilerinin tarihini, işlevini ve modern kullanımlarını keşfedin. İletişimi nasıl şekillendirdiklerini, nasıl çalıştıklarını ve bugün amatör telsiz, öğrenme ve hobi projelerindeki önemlerini öğrenin",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Ürün",
+            title: "Mors Kodu Oyunu",
+            description: "İnteraktif oyunumuzla dinleme becerilerinizi test edin. WPM hızınızı artırın, nokta ve çizgileri çözmeyi öğrenin ve uyarlamalı zorluk seviyeleriyle kendinize meydan okuyun.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Ürün",
+            title: "İkiliden Morse'a Dönüştürücü",
+            description: "İkili kodu Mors koduna ve tersine dönüştürün. Bilgisayar dili ile Mors kodu arasında köprü kurun, kodlama sistemlerini öğrenmek için mükemmel.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 

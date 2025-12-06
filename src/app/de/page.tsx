@@ -104,10 +104,31 @@ function Features() {
         },
         {
             type: "Produkt",
+            title: "Morsecode-Übersetzer Bild",
+            description: "Laden Sie ein Bild mit Text hoch. Wir führen OCR in Ihrem Browser aus und übersetzen den extrahierten Text in Morsecode. Kopieren, hören oder als Audio herunterladen.",
+            href: "/morse-code-translator-picture",
+            bgColor: "bg-[#493628]"
+        },
+        {
+            type: "Produkt",
             title: "Morsecode-Taste und Tongeber",
             description: "Entdecken Sie die Geschichte, Funktion und moderne Nutzung von Morsecode-Tasten und Tongeneratoren. Erfahren Sie, wie sie die Kommunikation geprägt haben, wie sie funktionieren und ihre Relevanz heute im Amateurfunk, beim Lernen und in Hobbyprojekten",
             href: "/morse-code-keyer",
-            bgColor: "bg-[#493628]"
+            bgColor: "bg-[#5D4E37]"
+        },
+        {
+            type: "Produkt",
+            title: "Morsecode-Spiel",
+            description: "Testen Sie Ihre Hörfähigkeiten mit unserem interaktiven Spiel. Verbessern Sie Ihre WPM-Geschwindigkeit, lernen Sie Punkte und Striche zu dekodieren und fordern Sie sich mit adaptiven Schwierigkeitsgraden heraus.",
+            href: "/morse-code-game",
+            bgColor: "bg-[#4A4458]"
+        },
+        {
+            type: "Produkt",
+            title: "Binär-zu-Morse-Konverter",
+            description: "Konvertieren Sie Binärcode in Morsecode und umgekehrt. Verbinden Sie Computersprache mit Morsecode, perfekt zum Erlernen von Kodierungssystemen.",
+            href: "/binary-to-morse",
+            bgColor: "bg-[#3D5A5C]"
         },
     ]
 
