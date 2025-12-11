@@ -125,7 +125,7 @@ function Features() {
             type: "Ürün",
             title: "İkiliden Morse'a Dönüştürücü",
             description: "İkili kodu Mors koduna ve tersine dönüştürün. Bilgisayar dili ile Mors kodu arasında köprü kurun, kodlama sistemlerini öğrenmek için mükemmel.",
-            href: "/binary-to-morse",
+            href: "/binary-to-morse-code-translator",
             bgColor: "bg-[#3D5A5C]"
         },
     ]

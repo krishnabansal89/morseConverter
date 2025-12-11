@@ -17,7 +17,7 @@ export async function generateMetadata() {
         description: "Use our free Binary to Morse Code Converter to translate binary code to Morse and vice versa. Fast, accurate, and easy-to-use converter for learning, coding, and communication purposes.",
       },
       alternates: {
-        canonical: `${PUBLIC_URL}/binary-to-morse`,
+        canonical: `${PUBLIC_URL}/binary-to-morse-code-translator`,
       },
     };
   }

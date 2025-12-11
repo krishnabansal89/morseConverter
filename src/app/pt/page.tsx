@@ -118,7 +118,7 @@ function Features() {
             type: "Produto",
             title: "Conversor de Binário para Morse",
             description: "Converta código binário para código Morse e vice-versa. Faça a ponte entre linguagem de computador e código Morse, perfeito para aprender sistemas de codificação.",
-            href: "/binary-to-morse",
+            href: "/binary-to-morse-code-translator",
             bgColor: "bg-[#3D5A5C]"
         },
     ]

@@ -159,7 +159,7 @@ export default async function sitemap() :Promise<MetadataRoute.Sitemap>{
         priority: 0.9,
       },
       {
-        url: `${baseUrl}/binary-to-morse`,
+        url: `${baseUrl}/binary-to-morse-code-translator`,
         lastModified: new Date(),
         changeFrequency: "weekly",
         priority: 0.9,

@@ -80,7 +80,7 @@ export default function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/binary-to-morse" className="text-white hover:text-gray-900 dark:hover:text-gray-200">
+                    <Link href="/binary-to-morse-code-translator" className="text-white hover:text-gray-900 dark:hover:text-gray-200">
                       Binary to Morse Converter
                     </Link>
                   </li>

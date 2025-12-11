@@ -118,7 +118,7 @@ function Features() {
             type: "Sản phẩm",
             title: "Bộ Chuyển Đổi Nhị Phân sang Morse",
             description: "Chuyển đổi mã nhị phân sang mã Morse và ngược lại. Kết nối ngôn ngữ máy tính với mã Morse, hoàn hảo để học các hệ thống mã hóa.",
-            href: "/binary-to-morse",
+            href: "/binary-to-morse-code-translator",
             bgColor: "bg-[#3D5A5C]"
         },
     ]
