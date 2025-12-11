@@ -132,7 +132,7 @@ function Features() {
             type: "Продукт",
             title: "Конвертер Двоичного кода в Морзе",
             description: "Конвертируйте двоичный код в код Морзе и наоборот. Соедините компьютерный язык с кодом Морзе, идеально для изучения систем кодирования.",
-            href: "/binary-to-morse",
+            href: "/binary-to-morse-code-translator",
             bgColor: "bg-[#3D5A5C]"
         },
     ]

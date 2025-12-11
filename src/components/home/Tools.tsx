@@ -89,7 +89,7 @@ export default function Features() {
             type: "Product",
             title: "Binary to Morse Converter",
             description: "Convert binary code to Morse code and vice versa. Bridge computer language with Morse code, perfect for learning encoding systems.",
-            href: "/binary-to-morse",
+            href: "/binary-to-morse-code-translator",
             bgColor: "bg-[#3D5A5C]"
         },
     ]

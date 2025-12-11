@@ -1,5 +1,6 @@
 import { GoogleAnalytics } from '@next/third-parties/google'
 import type { Metadata } from "next";
+import Script from 'next/script'
 import { Geist, Geist_Mono, Poppins, Maitree } from "next/font/google";
 import { Navbar } from "../components/home/Navbar";
 import Footer from "../components/home/Footer";
@@ -84,12 +85,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
-        <script
-          data-grow-initializer=""
-          dangerouslySetInnerHTML={{
-            __html: `!(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZToxYmUxM2ExYS1kZjY0LTQwZTYtYmQwNi02OWFhYTI4OTE3M2Q=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();`,
-          }}
-        />
         <meta
           name="google-site-verification"
           content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
@@ -122,6 +117,14 @@ export default function RootLayout({
           <Footer />
           <GoogleAnalytics gaId="G-FVT0DZM79K" />
         </ThemeProvider>
+        <Script
+          id="grow-me-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `!(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZToxYmUxM2ExYS1kZjY0LTQwZTYtYmQwNi02OWFhYTI4OTE3M2Q=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();`,
+          }}
+        />
+
       </body>
     </html>
   );
