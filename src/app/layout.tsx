@@ -124,7 +124,15 @@ export default function RootLayout({
             __html: `!(function(){window.growMe||((window.growMe=function(e){window.growMe._.push(e);}),(window.growMe._=[]));var e=document.createElement("script");(e.type="text/javascript"),(e.src="https://faves.grow.me/main.js"),(e.defer=!0),e.setAttribute("data-grow-faves-site-id","U2l0ZToxYmUxM2ExYS1kZjY0LTQwZTYtYmQwNi02OWFhYTI4OTE3M2Q=");var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t);})();`,
           }}
         />
-
+        <Script
+          id="ad-script"
+          type="text/javascript"
+          async
+          data-noptimize="1"
+          data-cfasync="false"
+          src="//scripts.scriptwrapper.com/tags/1be13a1a-df64-40e6-bd06-69aaa289173d.js"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
