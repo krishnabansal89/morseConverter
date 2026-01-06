@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
         destination: '/morse-code-keyer',
         permanent: true,
       },
+      {
+        source: '/ads.txt',
+        destination: 'https://adstxt.journeymv.com/sites/1be13a1a-df64-40e6-bd06-69aaa289173d/ads.txt',
+        permanent: true,
+      },
     ];
   },
 };
